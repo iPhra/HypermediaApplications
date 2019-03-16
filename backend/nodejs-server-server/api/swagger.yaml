@@ -1,0 +1,909 @@
+---
+swagger: "2.0"
+info:
+  description: "OpenAPI specification for the RESTful API of the backend of the Hypermedia\
+    \ application course project a.y. 2018/2019.\n"
+  version: "1.0.0"
+  title: "Hypermedia course API"
+host: "localhost"
+basePath: "/v2"
+tags:
+- name: "Books"
+- name: "Authors"
+- name: "Account"
+- name: "Cart"
+schemes:
+- "http"
+paths:
+  /books:
+    get:
+      tags:
+      - "Books"
+      summary: "Returns a preview of all the books."
+      operationId: "booksGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "offset"
+        in: "query"
+        description: "Offset with regards to the current page."
+        required: false
+        type: "integer"
+        format: "int64"
+      - name: "limit"
+        in: "query"
+        description: "Items per page."
+        required: false
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "A list of titles, authors, prices and ids of all the books\
+            \ in the database."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Book"
+        400:
+          description: "Bad request."
+      x-swagger-router-controller: "Book"
+    post:
+      tags:
+      - "Books"
+      summary: "Inserts a new book."
+      operationId: "booksPOST"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "book"
+        description: "The book object to insert."
+        required: true
+        schema:
+          $ref: "#/definitions/Book"
+      responses:
+        200:
+          description: "Book inserted."
+          schema:
+            $ref: "#/definitions/Book"
+        400:
+          description: "Bad request."
+        403:
+          description: "Forbidden operation."
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "Book"
+  /books/search:
+    get:
+      tags:
+      - "Books"
+      summary: "Returns a preview of all the books filtered by keyword."
+      operationId: "booksSearchGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "keyword"
+        in: "query"
+        description: "A generic keyword to filter all the books."
+        required: false
+        type: "string"
+      - name: "title"
+        in: "query"
+        description: "The desired title of the book."
+        required: false
+        type: "string"
+      - name: "genre"
+        in: "query"
+        description: "The genre to filter the book by."
+        required: false
+        type: "string"
+      - name: "author"
+        in: "query"
+        description: "The author to search the book by."
+        required: false
+        type: "string"
+      - name: "offset"
+        in: "query"
+        description: "Offset with regards to the current page."
+        required: false
+        type: "integer"
+        format: "int64"
+      - name: "limit"
+        in: "query"
+        description: "Items per page."
+        required: false
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "A list of titles, authors, prices and ids of all the books\
+            \ matching the search parameters."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Book"
+        400:
+          description: "Bad request."
+      x-swagger-router-controller: "Book"
+  /books/{book_id}:
+    get:
+      tags:
+      - "Books"
+      summary: "Returns the full description of a book."
+      operationId: "booksBookIdGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "book_id"
+        in: "path"
+        description: "Id of the book to retrieve."
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "The full description of the retrieved book."
+          schema:
+            $ref: "#/definitions/Book"
+        400:
+          description: "Bad request."
+        404:
+          description: "Book not found."
+      x-swagger-router-controller: "Book"
+    put:
+      tags:
+      - "Books"
+      summary: "Updates an existing Book."
+      operationId: "booksBookIdPUT"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "book_id"
+        in: "path"
+        description: "The id of the desired book."
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "book"
+        description: "The new fields to update."
+        required: true
+        schema:
+          $ref: "#/definitions/Book"
+      responses:
+        200:
+          description: "Book updated."
+          schema:
+            $ref: "#/definitions/Book"
+        400:
+          description: "Bad request."
+        403:
+          description: "Forbidden operation."
+        404:
+          description: "Book not found."
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "Book"
+    delete:
+      tags:
+      - "Books"
+      summary: "Delete an existing book."
+      operationId: "booksBookIdDELETE"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "book_id"
+        in: "path"
+        description: "The id of the desired book."
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "Book deleted."
+          schema:
+            $ref: "#/definitions/Book"
+        400:
+          description: "Bad request."
+        403:
+          description: "Forbidden operation."
+        404:
+          description: "Book not found."
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "Book"
+  /books/{book_id}/similars:
+    get:
+      tags:
+      - "Books"
+      summary: "Returns the lists of books similar to a specific one."
+      operationId: "booksBookIdSimiliarsGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "book_id"
+        in: "path"
+        description: "The id of the reference book."
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "offset"
+        in: "query"
+        description: "Offset with regards to the current page."
+        required: false
+        type: "integer"
+        format: "int64"
+      - name: "limit"
+        in: "query"
+        description: "Items per page."
+        required: false
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "A list of similar books."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Book"
+        400:
+          description: "Bad request."
+        404:
+          description: "Book not found."
+      x-swagger-router-controller: "Book"
+  /genres:
+    get:
+      tags:
+      - "Books"
+      summary: "Returns the lists of all available genres."
+      operationId: "genresGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "offset"
+        in: "query"
+        description: "Offset with regards to the current page."
+        required: false
+        type: "integer"
+        format: "int64"
+      - name: "limit"
+        in: "query"
+        description: "Items per page."
+        required: false
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "A list of all genres."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Genre"
+        400:
+          description: "Bad reuqest."
+      x-swagger-router-controller: "Book"
+  /authors:
+    get:
+      tags:
+      - "Authors"
+      summary: "Returns a preview of all the authors."
+      operationId: "authorsGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "offset"
+        in: "query"
+        description: "Offset with regards to the current page."
+        required: false
+        type: "integer"
+        format: "int64"
+      - name: "limit"
+        in: "query"
+        description: "Items per page."
+        required: false
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "A list of names, surnames and ids of all authors in the database."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Author"
+        400:
+          description: "Bad request."
+      x-swagger-router-controller: "Author"
+    post:
+      tags:
+      - "Authors"
+      summary: "Inserts a new Author."
+      operationId: "authorsPOST"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "author"
+        description: "The author to be inserted."
+        required: true
+        schema:
+          $ref: "#/definitions/Author"
+      responses:
+        200:
+          description: "Author inserted."
+          schema:
+            $ref: "#/definitions/Author"
+        400:
+          description: "Bad request."
+        403:
+          description: "Forbidden operation."
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "Author"
+  /authors/{author_id}:
+    get:
+      tags:
+      - "Authors"
+      summary: "Returns the full description of an author."
+      operationId: "authorsAuthorIdGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "author_id"
+        in: "path"
+        description: "The id of the desired author."
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "The full description of the specified author."
+          schema:
+            $ref: "#/definitions/Author"
+        400:
+          description: "Bad request."
+        404:
+          description: "Author not found."
+      x-swagger-router-controller: "Author"
+    put:
+      tags:
+      - "Authors"
+      summary: "Update an existing author information."
+      operationId: "authorsAuthorIdPUT"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "author_id"
+        in: "path"
+        description: "The id of the desired author."
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "author"
+        description: "The fields to update."
+        required: true
+        schema:
+          $ref: "#/definitions/Author"
+      responses:
+        200:
+          description: "Author updated."
+          schema:
+            $ref: "#/definitions/Author"
+        400:
+          description: "Bad request."
+        403:
+          description: "Forbidden operation."
+        404:
+          description: "Author not found."
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "Author"
+    delete:
+      tags:
+      - "Authors"
+      summary: "Delete an existing author."
+      operationId: "authorsAuthorIdDELETE"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "author_id"
+        in: "path"
+        description: "The id of the desired author."
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "Author deleted."
+          schema:
+            $ref: "#/definitions/Author"
+        400:
+          description: "Bad request."
+        403:
+          description: "Forbidden operation."
+        404:
+          description: "Author not found."
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "Author"
+  /account/cart:
+    get:
+      tags:
+      - "Cart"
+      summary: "Returns list of items present in the cart of the specified user."
+      operationId: "accountCartGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "offset"
+        in: "query"
+        description: "Offset with regards to the current page."
+        required: false
+        type: "integer"
+        format: "int64"
+      - name: "limit"
+        in: "query"
+        description: "Items per page."
+        required: false
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "The list of items present in the cart."
+          schema:
+            $ref: "#/definitions/Cart"
+        401:
+          description: "Unauthorized."
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "Cart"
+    post:
+      tags:
+      - "Cart"
+      summary: "Add item to cart."
+      operationId: "accountCartPOST"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "book"
+        description: "The book to be added to cart."
+        required: true
+        schema:
+          $ref: "#/definitions/book"
+      responses:
+        200:
+          description: "Book added to cart."
+          schema:
+            $ref: "#/definitions/Cart"
+        400:
+          description: "Bad request."
+        401:
+          description: "Unauthorized."
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "Cart"
+    delete:
+      tags:
+      - "Cart"
+      summary: "Remove item(s) from cart"
+      operationId: "accountCartDELETE"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "item"
+        description: "Item to be removed and its quantity"
+        required: true
+        schema:
+          $ref: "#/definitions/item"
+      responses:
+        200:
+          description: "The new updated cart."
+          schema:
+            $ref: "#/definitions/Cart"
+        400:
+          description: "Bad request."
+        401:
+          description: "Unauthorized."
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "Cart"
+  /account/info:
+    get:
+      tags:
+      - "Account"
+      summary: "Returns info about a user."
+      operationId: "accountInfoGET"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "The info about the specified user"
+          schema:
+            $ref: "#/definitions/User"
+        401:
+          description: "Unauthorized."
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "Account"
+    post:
+      tags:
+      - "Account"
+      summary: "Updates the info of an account."
+      operationId: "accountInfoPOST"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "account"
+        description: "Account details."
+        required: false
+        schema:
+          $ref: "#/definitions/account"
+      responses:
+        200:
+          description: "Account updated."
+          schema:
+            $ref: "#/definitions/User"
+        400:
+          description: "Bad request."
+        401:
+          description: "Unauthorized."
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "Account"
+    delete:
+      tags:
+      - "Account"
+      summary: "Delete an existing acccount."
+      operationId: "accountInfoDELETE"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "Account deleted."
+          schema:
+            $ref: "#/definitions/User"
+        401:
+          description: "Unauthorized."
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "Account"
+  /account/register:
+    post:
+      tags:
+      - "Account"
+      summary: "Registers a new user."
+      operationId: "accountRegisterPOST"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "user"
+        description: "User who wants to sign up."
+        required: false
+        schema:
+          $ref: "#/definitions/user"
+      responses:
+        200:
+          description: "Registration succesful, check your email to complete the creation\
+            \ of your account\"."
+          schema:
+            $ref: "#/definitions/User"
+        400:
+          description: "Bad request."
+        409:
+          description: "Already registered."
+      x-swagger-router-controller: "Account"
+  /account/login:
+    post:
+      tags:
+      - "Account"
+      summary: "Login of a registered user."
+      operationId: "accountLoginPOST"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "login"
+        description: "Login details."
+        required: false
+        schema:
+          $ref: "#/definitions/login"
+      responses:
+        200:
+          description: "Login successful."
+          schema:
+            type: "object"
+            properties:
+              token:
+                type: "string"
+        400:
+          description: "Bad request."
+        401:
+          description: "Wrong credentials."
+      x-swagger-router-controller: "Account"
+securityDefinitions:
+  Bearer:
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"
+definitions:
+  Book:
+    required:
+    - "authors"
+    - "availability"
+    - "book_id"
+    - "current_price"
+    - "isbn10"
+    - "isbn13"
+    - "title"
+    properties:
+      book_id:
+        type: "integer"
+      title:
+        type: "string"
+      current_price:
+        type: "number"
+        format: "float"
+      authors:
+        $ref: "#/definitions/Book_authors"
+      isbn10:
+        type: "integer"
+      isbn13:
+        type: "integer"
+      info:
+        $ref: "#/definitions/Book_info"
+      availability:
+        type: "string"
+        enum:
+        - "unreleased"
+        - "available"
+        - "out_of_stock"
+      imgpath:
+        type: "string"
+    example:
+      imgpath: "imgpath"
+      isbn13: 5
+      isbn10: 5
+      book_id: 0
+      current_price: 6.0274563
+      availability: "unreleased"
+      title: "title"
+      authors:
+        author_ids:
+        - 1
+        - 1
+      info:
+        num_of_pages: 2
+        genres:
+        - "genres"
+        - "genres"
+        description: "description"
+        cover_type: "hard cover"
+  Author:
+    required:
+    - "author_id"
+    - "name"
+    - "surname"
+    properties:
+      author_id:
+        type: "integer"
+      name:
+        type: "string"
+      surname:
+        type: "string"
+      birthdate:
+        type: "string"
+      birthplace:
+        type: "string"
+      description:
+        type: "string"
+      imgpath:
+        type: "string"
+    example:
+      birthdate: "birthdate"
+      birthplace: "birthplace"
+      surname: "surname"
+      imgpath: "imgpath"
+      name: "name"
+      description: "description"
+      author_id: 0
+  User:
+    required:
+    - "activated"
+    - "email"
+    - "password"
+    - "user_id"
+    properties:
+      user_id:
+        type: "integer"
+      email:
+        type: "string"
+      password:
+        type: "string"
+      activated:
+        type: "boolean"
+    example:
+      password: "password"
+      user_id: 0
+      email: "email"
+      activated: true
+  Cart:
+    properties:
+      book_list:
+        type: "array"
+        items:
+          $ref: "#/definitions/Book"
+      total_price:
+        type: "integer"
+        format: "int64"
+    example:
+      total_price: 0
+      book_list:
+      - imgpath: "imgpath"
+        isbn13: 5
+        isbn10: 5
+        book_id: 0
+        current_price: 6.0274563
+        availability: "unreleased"
+        title: "title"
+        authors:
+          author_ids:
+          - 1
+          - 1
+        info:
+          num_of_pages: 2
+          genres:
+          - "genres"
+          - "genres"
+          description: "description"
+          cover_type: "hard cover"
+      - imgpath: "imgpath"
+        isbn13: 5
+        isbn10: 5
+        book_id: 0
+        current_price: 6.0274563
+        availability: "unreleased"
+        title: "title"
+        authors:
+          author_ids:
+          - 1
+          - 1
+        info:
+          num_of_pages: 2
+          genres:
+          - "genres"
+          - "genres"
+          description: "description"
+          cover_type: "hard cover"
+  Genre:
+    type: "string"
+    enum:
+    - "thriller"
+    - "scifi"
+    - "novel"
+    - "romance"
+    - "fantasy"
+    - "action"
+    - "crime"
+  book:
+    type: "object"
+    required:
+    - "book_id"
+    - "is_booking"
+    properties:
+      book_id:
+        type: "integer"
+        format: "int64"
+      is_booking:
+        type: "boolean"
+  item:
+    type: "object"
+    required:
+    - "book_id"
+    - "quantity"
+    properties:
+      book_id:
+        type: "integer"
+        format: "int64"
+      quantity:
+        type: "integer"
+        format: "int64"
+      is_booking:
+        type: "boolean"
+  account:
+    type: "object"
+    properties:
+      email:
+        type: "string"
+      password:
+        type: "string"
+      name:
+        type: "string"
+      surname:
+        type: "string"
+  user:
+    type: "object"
+    required:
+    - "email"
+    - "password"
+    properties:
+      email:
+        type: "string"
+      password:
+        type: "string"
+      name:
+        type: "string"
+      surname:
+        type: "string"
+  login:
+    type: "object"
+    required:
+    - "email"
+    - "password"
+    properties:
+      email:
+        type: "string"
+      password:
+        type: "string"
+  inline_response_200:
+    properties:
+      token:
+        type: "string"
+    example:
+      token: "token"
+  Book_authors:
+    properties:
+      author_ids:
+        type: "array"
+        uniqueItems: true
+        items:
+          type: "integer"
+    example:
+      author_ids:
+      - 1
+      - 1
+  Book_info:
+    properties:
+      num_of_pages:
+        type: "integer"
+      cover_type:
+        type: "string"
+        enum:
+        - "hard cover"
+        - "e-book"
+        - "soft cover"
+      description:
+        type: "string"
+      genres:
+        type: "array"
+        uniqueItems: true
+        items:
+          type: "string"
+    example:
+      num_of_pages: 2
+      genres:
+      - "genres"
+      - "genres"
+      description: "description"
+      cover_type: "hard cover"

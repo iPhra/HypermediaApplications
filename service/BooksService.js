@@ -1,25 +1,5 @@
 'use strict';
 
-let sqlDb;
-
-exports.booksDbSetup = function(database) {
-  sqlDb = database;
-  console.log("Checking if books table exists");
-  return database.schema.hasTable("books").then(exists => {
-    if (!exists) {
-      console.log("It doesn't so we create it");
-      /*return database.schema.createTable("books", table => {
-        table.increments();
-        table.text("title");
-        table.text("author");
-        table.float("value");
-        table.text("currency");
-        table.enum("status", ["available", "out of stock"]);
-      })*/;
-    }
-  });
-};
-
 /**
  * Delete an existing book.
  *

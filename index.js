@@ -10,7 +10,7 @@ var jsyaml = require('js-yaml');
 var serverPort = process.env.PORT || 8080;
 let serveStatic = require("serve-static");
 
-let { setupDatabase } = require("./service/dbconnection");
+let { setupDatabase } = require("./service/Database");
 
 // swaggerRouter configuration
 var options = {

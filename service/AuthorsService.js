@@ -129,11 +129,12 @@ exports.authorsPOST = function(author) {
     };
 
     console.log(obj);
-
       return database
           .table("author")
-          .insert(obj)
-          .then(resolve())
+          .insert(obj, ['author_id'])
+          .then(data => {
+              resolve(data);
+          })
           .catch(err => console.log(err));
   });
 };

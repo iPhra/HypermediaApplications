@@ -1,5 +1,7 @@
 'use strict';
 
+const {database} = require("./Database");
+
 /**
  * Delete an existing book.
  *
@@ -171,51 +173,15 @@ exports.booksBookIdSimiliarsGET = function(book_id,offset,limit) {
  * limit Long Items per page. (optional)
  * returns List
  **/
-exports.booksGET = function(offset,limit) {
+exports.booksGET = async function(offset,limit) {
   return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = [ {
-  "imgpath" : "imgpath",
-  "isbn13" : 5,
-  "isbn10" : 5,
-  "book_id" : 0,
-  "current_price" : 6.0274563,
-  "availability" : "unreleased",
-  "title" : "title",
-  "authors" : {
-    "author_ids" : [ 1, 1 ]
-  },
-  "info" : {
-    "num_of_pages" : 2,
-    "genres" : [ "genres", "genres" ],
-    "description" : "description",
-    "cover_type" : "hard cover"
-  }
-}, {
-  "imgpath" : "imgpath",
-  "isbn13" : 5,
-  "isbn10" : 5,
-  "book_id" : 0,
-  "current_price" : 6.0274563,
-  "availability" : "unreleased",
-  "title" : "title",
-  "authors" : {
-    "author_ids" : [ 1, 1 ]
-  },
-  "info" : {
-    "num_of_pages" : 2,
-    "genres" : [ "genres", "genres" ],
-    "description" : "description",
-    "cover_type" : "hard cover"
-  }
-} ];
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
+    const res = {};
+    res['application/json'] = database.select().table("book").then(function (result) {
+      return result;
+    });
+    resolve(res['application/json']);
   });
-}
+};
 
 
 /**

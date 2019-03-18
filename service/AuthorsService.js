@@ -1,5 +1,6 @@
 'use strict';
 
+const {database} = require("./Database");
 
 /**
  * Delete an existing author.
@@ -92,31 +93,16 @@ exports.authorsAuthorIdPUT = function(author_id,author) {
  **/
 exports.authorsGET = function(offset,limit) {
   return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = [ {
-  "birthdate" : "birthdate",
-  "birthplace" : "birthplace",
-  "surname" : "surname",
-  "imgpath" : "imgpath",
-  "name" : "name",
-  "description" : "description",
-  "author_id" : 0
-}, {
-  "birthdate" : "birthdate",
-  "birthplace" : "birthplace",
-  "surname" : "surname",
-  "imgpath" : "imgpath",
-  "name" : "name",
-  "description" : "description",
-  "author_id" : 0
-} ];
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
+      return database
+          .select()
+          .table("author")
+          .limit(limit)
+          .offset(offset)
+          .then(data => {
+              return data;
+          });
   });
-}
+};
 
 
 /**
@@ -126,22 +112,29 @@ exports.authorsGET = function(offset,limit) {
  * returns Author
  **/
 exports.authorsPOST = function(author) {
+
+  console.log(author);
+
   return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "birthdate" : "birthdate",
-  "birthplace" : "birthplace",
-  "surname" : "surname",
-  "imgpath" : "imgpath",
-  "name" : "name",
-  "description" : "description",
-  "author_id" : 0
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
+
+    // Align 'description' property in swagger with 'biography' property in db
+    // and remove this obj with author
+    const obj = {
+        'name': author.name,
+        'surname': author.surname,
+        'birthdate': author.birthdate,
+        'birthplace' : author.birthplace,
+        'biography' : author.description,
+        'imgpath': author.imgpath
+    };
+
+    console.log(obj);
+
+      return database
+          .table("author")
+          .insert(obj)
+          .then(resolve())
+          .catch(err => console.log(err));
   });
-}
+};
 

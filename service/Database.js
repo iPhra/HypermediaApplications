@@ -69,13 +69,15 @@ bookSetup = function(database) {
         		table.increments("book_id").notNullable().primary();
         		table.string("isbn10", 10);
         		table.string("isbn13", 13);
-        		table.text("title").notNullable();
-        		// TODO check if there's a better solution
+        		table.string("title").notNullable();
+        		table.text("description");
+        		//@todo check if there's a better solution
         		table.float("price").defaultTo(0);
         		table.integer("quantity").defaultTo(0);
         		table.integer("num_pages");
-        		table.string("cover_type");
-        		table.string("img_path");
+        		//@todo aggiungere availability come enum
+        		table.string("cover_type"); //@todo cambiare in enum
+        		table.text("img_path");
         	});
         }
     });

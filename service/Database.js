@@ -14,12 +14,13 @@ accountSetup = function(database) {
         if (!exists) {
             console.log("It doesn't so we create it");
             return database.schema.createTable("account", table => {
-	         	table.increments("user_id").notNullable().primary();
+	         	table.increments("user_id").primary();
           		table.string("email").notNullable();
           		table.string("password").notNullable();
           		table.string("name");
           		table.string("surname");
           		table.boolean("activated").notNullable();
+          		table.boolean("admin").defaultTo(false);
             })
         }
     });
@@ -32,13 +33,13 @@ authorSetup = function(database) {
         if (!exists) {
             console.log("It doesn't so we create it");
             return database.schema.createTable("author", table => {
-                table.increments("author_id").notNullable().primary();
+                table.increments("author_id").primary();
                 table.string("name").notNullable();
                 table.string("surname").notNullable();
                 table.date("birthdate");
                 table.string("birthplace");
                 table.text("imgpath");
-                table.text("description");
+                table.text("biography");
             })
         }
     });
@@ -51,8 +52,8 @@ authorshipSetup = function(database) {
         if (!exists) {
             console.log("It doesn't so we create it");
             return database.schema.createTable("author", table => {
-                table.integer("author_id").notNullable().references("author.author_id").onUpdate("NO ACTION").onDelete("NO ACTION");
-                table.integer("book_id").notNullable().references("book.book_id").onUpdate("NO ACTION").onDelete("NO ACTION");
+                table.integer("author_id").references("author.author_id").onUpdate("CASCADE").onDelete("CASCADE");
+                table.integer("book_id").references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
                 table.primary(["author_id", "book_id"]);
             })
         }
@@ -66,17 +67,15 @@ bookSetup = function(database) {
         if (!exists) {
             console.log("It doesn't so we create it");
         	return database.schema.createTable("book", table => {
-        		table.increments("book_id").notNullable().primary();
-        		table.string("isbn10", 10);
-        		table.string("isbn13", 13);
+        		table.increments("book_id").primary();
+        		table.string("isbn10", 10).notNullable();
+        		table.string("isbn13", 13).notNullable();
         		table.string("title").notNullable();
         		table.text("description");
-        		//@todo check if there's a better solution
-        		table.float("price").defaultTo(0);
-        		table.integer("quantity").defaultTo(0);
-        		table.integer("num_pages");
-        		//@todo aggiungere availability come enum
-        		table.string("cover_type"); //@todo cambiare in enum
+        		table.float("current_price").defaultTo(0).notNullable();
+        		table.integer("num_of_pages");
+        		table.enu("cover_type",["hard_cover","soft_cover","e-book"]);
+        		table.enu("availability",["available","unreleased","out_of_stock"]).notNullable();
         		table.text("img_path");
         	});
         }
@@ -90,8 +89,7 @@ cartSetup = function(database) {
         if (!exists) {
             console.log("It doesn't so we create it");
             return database.schema.createTable("cart", table => {
-              	table.increments("cart_id").notNullable().primary();
-              	// I want to update the cart owner and it doesn't make sense to keep a cart without owner
+              	table.increments("cart_id").primary();
               	table.integer("user_id").notNullable().references("user.user_id").onUpdate("CASCADE").onDelete("CASCADE");
               	table.integer("book_id").notNullable().references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
               	table.integer("quantity").notNullable().defaultTo(0);
@@ -108,7 +106,7 @@ genreSetup = function(database) {
             console.log("It doesn't so we create it");
             return database.schema.createTable("genre", table => {
       			table.integer("book_id").notNullable().references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
-              	table.text("genre").notNullable();
+              	table.enu("genre",["thriller","fantasy","novel","horror","crime","romance","action","sci-fi"]);
  	          	table.primary(["book_id", "genre"]);
 	        });
         }
@@ -123,8 +121,8 @@ purchaseSetup = function(database) {
             console.log("It doesn't so we create it");
             return database.schema.createTable("purchase", table => {
             	table.increments("purchase_id").primary();
-            	table.integer("user_id").notNullable().references("user.user_id").onUpdate("CASCADE").onDelete("CASCADE");
-              	table.integer("book_id").notNullable().references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
+            	table.integer("user_id").notNullable().references("user.user_id").onUpdate("CASCADE").onDelete("SET NULL");
+              	table.integer("book_id").notNullable().references("book.book_id").onUpdate("CASCADE").onDelete("SET NULL");
               	
               	// TODO: this must be reviewed: how to handle multiple items in the same purchase sessions?
               	// If the model remains like this, a possible solution is to:
@@ -133,7 +131,7 @@ purchaseSetup = function(database) {
               	// When retreiving purchasing sessions, just check for same timestamp and you will get the whole session
               	// I know it's tricky but it's a possible solution for keeping this structure, otherwise another solution could be add a new table. (purchase_id, item_id, qnt)
 
-              	table.timestamp("timestamp").defaultTo(knex.fn.now());
+              	table.timestamp("timestamp").notNullable().defaultTo(knex.fn.now());
               	table.float("price").notNullable().defaultTo(0);
             });
         }
@@ -148,10 +146,10 @@ reservationSetup = function(database) {
             console.log("It doesn't so we create it");
             return database.schema.createTable("reservation", table => {
 	            table.increments("reservation_id").primary();
-              	table.integer("user_id").notNullable().references("user.user_id").onUpdate("CASCADE").onDelete("CASCADE");
-      			table.integer("book_id").notNullable().references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
-			   	// Same issue as before
-		   	  	table.timestamp("timestamp").defaultTo(knex.fn.now());
+              	table.integer("user_id").notNullable().references("user.user_id").onUpdate("CASCADE").onDelete("NO ACTION");
+      			table.integer("book_id").notNullable().references("book.book_id").onUpdate("CASCADE").onDelete("NO ACTION");
+			   	// TODO: Same issue as before
+		   	  	table.timestamp("timestamp").notNullable().defaultTo(knex.fn.now());
               	table.float("price").notNullable().defaultTo(0);
             });
         }
@@ -165,8 +163,9 @@ similaritySetup = function(database) {
         if (!exists) {
             console.log("It doesn't so we create it");
             return database.schema.createTable("similarity", table => {
-      			table.integer("book_id1").notNullable().references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
-      			table.integer("book_id2").notNullable().references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
+      			table.integer("book_id1").references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
+      			table.integer("book_id2").references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
+      			table.primary(["book_id1","book_id2"]);
             });
         }
     });

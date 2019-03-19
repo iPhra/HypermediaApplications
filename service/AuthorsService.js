@@ -1,5 +1,6 @@
 'use strict';
 
+const {database} = require("./Database");
 
 /**
  * Delete an existing author.
@@ -98,7 +99,7 @@ exports.authorsGET = (offset,limit) => {
         .limit(limit)
         .offset(offset)
         .then(data => {
-          return data;
+          resolve(data);
         });
   });
 };
@@ -130,8 +131,9 @@ exports.authorsPOST = function(author) {
             .table("author")
             .insert(obj, ['author_id'])
             .then(data => {
+                console.log(data);
                 resolve(data);
             })
             .catch(err => console.log(err));
     });
-}
+};

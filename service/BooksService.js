@@ -1,5 +1,6 @@
 'use strict';
 
+const {database} = require("./Database");
 
 /**
  * Delete an existing book.
@@ -191,32 +192,29 @@ exports.booksGET = function(offset,limit) {
  **/
 exports.booksPOST = function(book) {
   return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "imgpath" : "imgpath",
-  "isbn13" : 5,
-  "isbn10" : 5,
-  "book_id" : 0,
-  "current_price" : 6.0274563,
-  "availability" : "unreleased",
-  "title" : "title",
-  "authors" : {
-    "author_ids" : [ 1, 1 ]
-  },
-  "info" : {
-    "num_of_pages" : 2,
-    "genres" : [ "genres", "genres" ],
-    "description" : "description",
-    "cover_type" : "hard cover"
-  }
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
+
+      // TODO align backend and db cover type names and add covr_type
+      const obj = {
+          'title': book.title,
+          'isbn10': book.isbn10,
+          'isbn13': book.isbn13,
+          'description': book.info.description,
+          'current_price': book.info.current_price,
+          'num_of_pages': book.num_of_pages,
+          'availability': book.availability,
+          'img_path': book.imgpath
+      };
+
+      return database
+          .table("book")
+          .insert(obj, ['book_id'])
+          .then(data => {
+              console.log(data);
+              resolve(data);
+          })
+          .catch(err => console.log(err));
   });
-}
+};
 
 
 /**

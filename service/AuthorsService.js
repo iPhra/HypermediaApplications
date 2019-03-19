@@ -91,8 +91,8 @@ exports.authorsAuthorIdPUT = function(author_id,author) {
  * limit Long Items per page. (optional)
  * returns List
  **/
-exports.authorsGET = function(offset,limit) {
-  return new Promise(function(resolve, reject) {
+exports.authorsGET = (offset,limit) => {
+  return new Promise((resolve, reject) => {
       return database
           .select()
           .table("author")
@@ -115,7 +115,7 @@ exports.authorsPOST = function(author) {
 
   console.log(author);
 
-  return new Promise(function(resolve, reject) {
+  return new Promise((resolve, reject) => {
 
     // Align 'description' property in swagger with 'biography' property in db
     // and remove this obj with author

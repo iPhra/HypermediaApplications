@@ -173,10 +173,10 @@ exports.booksBookIdSimiliarsGET = function(book_id,offset,limit) {
  * limit Long Items per page. (optional)
  * returns List
  **/
-exports.booksGET = async function(offset,limit) {
-  return new Promise(function(resolve, reject) {
+exports.booksGET = (offset,limit) => {
+  return new Promise((resolve, reject) => {
     const res = {};
-    res['application/json'] = database.select().table("book").then(function (result) {
+    res['application/json'] = database.select().table("book").limit(limit).offset(offset).then((result) => {
       return result;
     });
     resolve(res['application/json']);
@@ -190,7 +190,7 @@ exports.booksGET = async function(offset,limit) {
  * book Book The book object to insert.
  * returns Book
  **/
-exports.booksPOST = function(book) {
+exports.booksPOST = (book) => {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {

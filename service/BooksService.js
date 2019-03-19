@@ -1,6 +1,5 @@
 'use strict';
 
-const {database} = require("./Database");
 
 /**
  * Delete an existing book.
@@ -173,7 +172,7 @@ exports.booksBookIdSimiliarsGET = function(book_id,offset,limit) {
  * limit Long Items per page. (optional)
  * returns List
  **/
-exports.booksGET = (offset,limit) => {
+exports.booksGET = function(offset,limit) {
   return new Promise((resolve, reject) => {
     const res = {};
     res['application/json'] = database.select().table("book").limit(limit).offset(offset).then((result) => {
@@ -190,7 +189,7 @@ exports.booksGET = (offset,limit) => {
  * book Book The book object to insert.
  * returns Book
  **/
-exports.booksPOST = (book) => {
+exports.booksPOST = function(book) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {

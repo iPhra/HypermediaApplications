@@ -1,6 +1,5 @@
 'use strict';
 
-const {database} = require("./Database");
 
 /**
  * Delete an existing author.
@@ -93,14 +92,14 @@ exports.authorsAuthorIdPUT = function(author_id,author) {
  **/
 exports.authorsGET = (offset,limit) => {
   return new Promise((resolve, reject) => {
-      return database
-          .select()
-          .table("author")
-          .limit(limit)
-          .offset(offset)
-          .then(data => {
-              return data;
-          });
+    return database
+        .select()
+        .table("author")
+        .limit(limit)
+        .offset(offset)
+        .then(data => {
+          return data;
+        });
   });
 };
 
@@ -112,30 +111,27 @@ exports.authorsGET = (offset,limit) => {
  * returns Author
  **/
 exports.authorsPOST = function(author) {
+    console.log(author);
 
-  console.log(author);
+    return new Promise((resolve, reject) => {
 
-  return new Promise((resolve, reject) => {
+        // and remove this obj with author
+        const obj = {
+            'name': author.name,
+            'surname': author.surname,
+            'birthdate': author.birthdate,
+            'birthplace': author.birthplace,
+            'description': author.description,
+            'imgpath': author.imgpath
+        };
 
-    // Align 'description' property in swagger with 'biography' property in db
-    // and remove this obj with author
-    const obj = {
-        'name': author.name,
-        'surname': author.surname,
-        'birthdate': author.birthdate,
-        'birthplace' : author.birthplace,
-        'biography' : author.description,
-        'imgpath': author.imgpath
-    };
-
-    console.log(obj);
-      return database
-          .table("author")
-          .insert(obj, ['author_id'])
-          .then(data => {
-              resolve(data);
-          })
-          .catch(err => console.log(err));
-  });
-};
-
+        console.log(obj);
+        return database
+            .table("author")
+            .insert(obj, ['author_id'])
+            .then(data => {
+                resolve(data);
+            })
+            .catch(err => console.log(err));
+    });
+}

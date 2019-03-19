@@ -39,7 +39,7 @@ authorSetup = (database) => {
                 table.date("birthdate");
                 table.string("birthplace");
                 table.text("imgpath");
-                table.text("biography");
+                table.text("description");
             })
         }
     });

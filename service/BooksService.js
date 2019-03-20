@@ -165,13 +165,17 @@ exports.booksBookIdSimiliarsGET = function(book_id,offset,limit) {
  **/
 exports.booksGET = function(offset,limit) {
   return new Promise((resolve, reject) => {
-    database.select('book_id','title', 'current_price').table("book").limit(limit).offset(offset).then((result) => {
+    database.select('book_id','title', 'current_price').table("book").limit(limit).offset(offset).then(  async (result) => {
       for(let i=0; i<result.length; i++) {
+        result[i]["authors"] = await database("author")
+            .join("authorship","author.author_id","authorship.author_id")
+            .where("authorship.book_id","=",result[i].book_id)
+            .select("name","surname","author.author_id")
       }
       resolve(result);
     });
   });
-}
+};
 
 
 /**

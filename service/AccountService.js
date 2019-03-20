@@ -89,24 +89,24 @@ exports.accountLoginPOST = function(login) {
  * user User User who wants to sign up. (optional)
  * returns User
  **/
-exports.accountRegisterPOST = function(user) {
-  return new Promise(function(resolve, reject) {
-      return database
-          .table('account')
-          .select()
-          .where({ email:  user.email })
-          .then(rows => {
-              // Check if some user already exist
-              if (rows.length>0) reject('User already registered');
-              // Insert new user into database
-              database
-                  .table("account")
-                  .insert(user, ['user_id'])
-                  .then(user_id => {
-                      resolve(user_id);
-                  })
-                  .catch(err => console.log(err));
-          });
-  });
+exports.accountRegisterPOST = async function(user) {
+
+    // Retrieve user with same email
+    const rows = await database
+      .table('account')
+      .select()
+      .where({ email:  user.email });
+
+    // Check if some user already exist
+    if (rows.length>0) throw 'User already existing';
+
+    // Create new Account
+    return await database
+      .table("account")
+      .insert(user, ['user_id'])
+      .then(user_id => {
+          return user_id;
+      })
+      .catch(err => console.log(err));
 };
 

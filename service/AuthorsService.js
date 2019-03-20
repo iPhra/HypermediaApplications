@@ -60,30 +60,15 @@ exports.authorsGET = async (offset,limit) => {
  * author AuthorContent The author to be inserted.
  * returns inline_response_200_1
  **/
-exports.authorsPOST = function(author) {
-  console.log(author);
+exports.authorsPOST = async (author) => {
 
-  return new Promise((resolve, reject) => {
-
-    // and remove this obj with author
-    const obj = {
-      'name': author.name,
-      'surname': author.surname,
-      'birthdate': author.birthdate,
-      'birthplace': author.birthplace,
-      'description': author.description,
-      'imgpath': author.imgpath
-    };
-
-    console.log(obj);
-    return database
+    // Insert a new author into author table
+    return await database
         .table("author")
-        .insert(obj, ['author_id'])
+        .insert(author, ['author_id'])
         .then(data => {
-          console.log(data);
-          resolve(data);
+          return data;
         })
-        .catch(err => console.log(err));
-  });
-}
+        .catch(err => { throw err; });
+};
 

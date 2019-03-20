@@ -69,7 +69,11 @@ paths:
         200:
           description: "Book inserted."
           schema:
-            $ref: "#/definitions/Book"
+            type: "object"
+            properties:
+              book_id:
+                type: "integer"
+                format: "int64"
         400:
           description: "Bad request."
         403:
@@ -181,8 +185,6 @@ paths:
       responses:
         200:
           description: "Book updated."
-          schema:
-            $ref: "#/definitions/Book"
         400:
           description: "Bad request."
         403:
@@ -211,8 +213,6 @@ paths:
       responses:
         200:
           description: "Book deleted."
-          schema:
-            $ref: "#/definitions/Book"
         400:
           description: "Bad request."
         403:
@@ -288,13 +288,13 @@ paths:
         format: "int64"
       responses:
         200:
-          description: "A list of all genres."
+          description: "A list of genres."
           schema:
             type: "array"
             items:
               $ref: "#/definitions/Genre"
         400:
-          description: "Bad reuqest."
+          description: "Bad request."
       x-swagger-router-controller: "Books"
   /authors:
     get:
@@ -349,7 +349,11 @@ paths:
         200:
           description: "Author inserted."
           schema:
-            $ref: "#/definitions/Author"
+            type: "object"
+            properties:
+              author_id:
+                type: "integer"
+                format: "int64"
         400:
           description: "Bad request."
         403:
@@ -407,8 +411,6 @@ paths:
       responses:
         200:
           description: "Author updated."
-          schema:
-            $ref: "#/definitions/Author"
         400:
           description: "Bad request."
         403:
@@ -437,8 +439,6 @@ paths:
       responses:
         200:
           description: "Author deleted."
-          schema:
-            $ref: "#/definitions/Author"
         400:
           description: "Bad request."
         403:
@@ -617,8 +617,7 @@ paths:
           $ref: "#/definitions/user"
       responses:
         200:
-          description: "Registration succesful, check your email to complete the creation\
-            \ of your account\"."
+          description: "Registration successful."
           schema:
             $ref: "#/definitions/User"
         400:
@@ -663,11 +662,8 @@ definitions:
   Book:
     required:
     - "authors"
-    - "availability"
     - "book_id"
     - "current_price"
-    - "isbn10"
-    - "isbn13"
     - "title"
     properties:
       book_id:
@@ -678,7 +674,9 @@ definitions:
         type: "number"
         format: "float"
       authors:
-        $ref: "#/definitions/Book_authors"
+        type: "array"
+        items:
+          $ref: "#/definitions/Author"
       isbn10:
         type: "integer"
       isbn13:
@@ -721,9 +719,20 @@ definitions:
       title: "title"
       cover_type: "hard cover"
       authors:
-        author_ids:
-        - 1
-        - 1
+      - birthdate: "birthdate"
+        birthplace: "birthplace"
+        surname: "surname"
+        imgpath: "imgpath"
+        name: "name"
+        description: "description"
+        author_id: 1
+      - birthdate: "birthdate"
+        birthplace: "birthplace"
+        surname: "surname"
+        imgpath: "imgpath"
+        name: "name"
+        description: "description"
+        author_id: 1
   BookContent:
     required:
     - "authors"
@@ -739,7 +748,7 @@ definitions:
         type: "number"
         format: "float"
       authors:
-        $ref: "#/definitions/Book_authors"
+        $ref: "#/definitions/BookContent_authors"
       isbn10:
         type: "integer"
       isbn13:
@@ -777,20 +786,20 @@ definitions:
       - "genres"
       - "genres"
       imgpath: "imgpath"
-      isbn13: 1
+      isbn13: 5
       similars:
-      - 5
-      - 5
+      - 2
+      - 2
       description: "description"
-      isbn10: 6
+      isbn10: 1
       current_price: 0.8008282
       availability: "unreleased"
       title: "title"
       cover_type: "hard cover"
       authors:
         author_ids:
-        - 1
-        - 1
+        - 6
+        - 6
   Author:
     required:
     - "author_id"
@@ -818,7 +827,7 @@ definitions:
       imgpath: "imgpath"
       name: "name"
       description: "description"
-      author_id: 0
+      author_id: 1
   AuthorContent:
     required:
     - "name"
@@ -889,9 +898,20 @@ definitions:
         title: "title"
         cover_type: "hard cover"
         authors:
-          author_ids:
-          - 1
-          - 1
+        - birthdate: "birthdate"
+          birthplace: "birthplace"
+          surname: "surname"
+          imgpath: "imgpath"
+          name: "name"
+          description: "description"
+          author_id: 1
+        - birthdate: "birthdate"
+          birthplace: "birthplace"
+          surname: "surname"
+          imgpath: "imgpath"
+          name: "name"
+          description: "description"
+          author_id: 1
       - num_of_pages: 2
         genres:
         - "genres"
@@ -906,9 +926,20 @@ definitions:
         title: "title"
         cover_type: "hard cover"
         authors:
-          author_ids:
-          - 1
-          - 1
+        - birthdate: "birthdate"
+          birthplace: "birthplace"
+          surname: "surname"
+          imgpath: "imgpath"
+          name: "name"
+          description: "description"
+          author_id: 1
+        - birthdate: "birthdate"
+          birthplace: "birthplace"
+          surname: "surname"
+          imgpath: "imgpath"
+          name: "name"
+          description: "description"
+          author_id: 1
   Genre:
     type: "string"
     enum:
@@ -919,6 +950,20 @@ definitions:
     - "fantasy"
     - "action"
     - "crime"
+  inline_response_200:
+    properties:
+      book_id:
+        type: "integer"
+        format: "int64"
+    example:
+      book_id: 0
+  inline_response_200_1:
+    properties:
+      author_id:
+        type: "integer"
+        format: "int64"
+    example:
+      author_id: 0
   book:
     type: "object"
     required:
@@ -979,13 +1024,13 @@ definitions:
         type: "string"
       password:
         type: "string"
-  inline_response_200:
+  inline_response_200_2:
     properties:
       token:
         type: "string"
     example:
       token: "token"
-  Book_authors:
+  BookContent_authors:
     properties:
       author_ids:
         type: "array"
@@ -994,5 +1039,5 @@ definitions:
           type: "integer"
     example:
       author_ids:
-      - 1
-      - 1
+      - 6
+      - 6

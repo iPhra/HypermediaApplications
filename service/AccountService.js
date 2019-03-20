@@ -75,7 +75,7 @@ exports.accountInfoPOST = function(account) {
  * Login of a registered user.
  *
  * login Login Login details. (optional)
- * returns inline_response_200
+ * returns inline_response_200_2
  **/
 exports.accountLoginPOST = function(login) {
   return new Promise(function(resolve, reject) {

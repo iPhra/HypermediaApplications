@@ -1,30 +1,15 @@
 'use strict';
 
-const {database} = require("./Database");
 
 /**
  * Delete an existing author.
  *
  * author_id Long The id of the desired author.
- * returns Author
+ * no response value expected for this operation
  **/
 exports.authorsAuthorIdDELETE = function(author_id) {
   return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "birthdate" : "birthdate",
-  "birthplace" : "birthplace",
-  "surname" : "surname",
-  "imgpath" : "imgpath",
-  "name" : "name",
-  "description" : "description",
-  "author_id" : 0
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
+    resolve();
   });
 }
 
@@ -45,7 +30,7 @@ exports.authorsAuthorIdGET = function(author_id) {
   "imgpath" : "imgpath",
   "name" : "name",
   "description" : "description",
-  "author_id" : 0
+  "author_id" : 1
 };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
@@ -61,25 +46,11 @@ exports.authorsAuthorIdGET = function(author_id) {
  *
  * author_id Long The id of the desired author.
  * author AuthorContent The fields to update.
- * returns Author
+ * no response value expected for this operation
  **/
 exports.authorsAuthorIdPUT = function(author_id,author) {
   return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "birthdate" : "birthdate",
-  "birthplace" : "birthplace",
-  "surname" : "surname",
-  "imgpath" : "imgpath",
-  "name" : "name",
-  "description" : "description",
-  "author_id" : 0
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
+    resolve();
   });
 }
 
@@ -109,7 +80,7 @@ exports.authorsGET = function(offset,limit) {
  * Inserts a new Author.
  *
  * author AuthorContent The author to be inserted.
- * returns Author
+ * returns inline_response_200_1
  **/
 exports.authorsPOST = function(author) {
   console.log(author);

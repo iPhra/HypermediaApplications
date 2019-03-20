@@ -24,9 +24,23 @@ exports.accountCartDELETE = function(item) {
     "availability" : "unreleased",
     "title" : "title",
     "cover_type" : "hard cover",
-    "authors" : {
-      "author_ids" : [ 1, 1 ]
-    }
+    "authors" : [ {
+      "birthdate" : "birthdate",
+      "birthplace" : "birthplace",
+      "surname" : "surname",
+      "imgpath" : "imgpath",
+      "name" : "name",
+      "description" : "description",
+      "author_id" : 1
+    }, {
+      "birthdate" : "birthdate",
+      "birthplace" : "birthplace",
+      "surname" : "surname",
+      "imgpath" : "imgpath",
+      "name" : "name",
+      "description" : "description",
+      "author_id" : 1
+    } ]
   }, {
     "num_of_pages" : 2,
     "genres" : [ "genres", "genres" ],
@@ -39,9 +53,23 @@ exports.accountCartDELETE = function(item) {
     "availability" : "unreleased",
     "title" : "title",
     "cover_type" : "hard cover",
-    "authors" : {
-      "author_ids" : [ 1, 1 ]
-    }
+    "authors" : [ {
+      "birthdate" : "birthdate",
+      "birthplace" : "birthplace",
+      "surname" : "surname",
+      "imgpath" : "imgpath",
+      "name" : "name",
+      "description" : "description",
+      "author_id" : 1
+    }, {
+      "birthdate" : "birthdate",
+      "birthplace" : "birthplace",
+      "surname" : "surname",
+      "imgpath" : "imgpath",
+      "name" : "name",
+      "description" : "description",
+      "author_id" : 1
+    } ]
   } ]
 };
     if (Object.keys(examples).length > 0) {
@@ -77,9 +105,23 @@ exports.accountCartGET = function(offset,limit) {
     "availability" : "unreleased",
     "title" : "title",
     "cover_type" : "hard cover",
-    "authors" : {
-      "author_ids" : [ 1, 1 ]
-    }
+    "authors" : [ {
+      "birthdate" : "birthdate",
+      "birthplace" : "birthplace",
+      "surname" : "surname",
+      "imgpath" : "imgpath",
+      "name" : "name",
+      "description" : "description",
+      "author_id" : 1
+    }, {
+      "birthdate" : "birthdate",
+      "birthplace" : "birthplace",
+      "surname" : "surname",
+      "imgpath" : "imgpath",
+      "name" : "name",
+      "description" : "description",
+      "author_id" : 1
+    } ]
   }, {
     "num_of_pages" : 2,
     "genres" : [ "genres", "genres" ],
@@ -92,9 +134,23 @@ exports.accountCartGET = function(offset,limit) {
     "availability" : "unreleased",
     "title" : "title",
     "cover_type" : "hard cover",
-    "authors" : {
-      "author_ids" : [ 1, 1 ]
-    }
+    "authors" : [ {
+      "birthdate" : "birthdate",
+      "birthplace" : "birthplace",
+      "surname" : "surname",
+      "imgpath" : "imgpath",
+      "name" : "name",
+      "description" : "description",
+      "author_id" : 1
+    }, {
+      "birthdate" : "birthdate",
+      "birthplace" : "birthplace",
+      "surname" : "surname",
+      "imgpath" : "imgpath",
+      "name" : "name",
+      "description" : "description",
+      "author_id" : 1
+    } ]
   } ]
 };
     if (Object.keys(examples).length > 0) {
@@ -129,9 +185,23 @@ exports.accountCartPOST = function(book) {
     "availability" : "unreleased",
     "title" : "title",
     "cover_type" : "hard cover",
-    "authors" : {
-      "author_ids" : [ 1, 1 ]
-    }
+    "authors" : [ {
+      "birthdate" : "birthdate",
+      "birthplace" : "birthplace",
+      "surname" : "surname",
+      "imgpath" : "imgpath",
+      "name" : "name",
+      "description" : "description",
+      "author_id" : 1
+    }, {
+      "birthdate" : "birthdate",
+      "birthplace" : "birthplace",
+      "surname" : "surname",
+      "imgpath" : "imgpath",
+      "name" : "name",
+      "description" : "description",
+      "author_id" : 1
+    } ]
   }, {
     "num_of_pages" : 2,
     "genres" : [ "genres", "genres" ],
@@ -144,9 +214,23 @@ exports.accountCartPOST = function(book) {
     "availability" : "unreleased",
     "title" : "title",
     "cover_type" : "hard cover",
-    "authors" : {
-      "author_ids" : [ 1, 1 ]
-    }
+    "authors" : [ {
+      "birthdate" : "birthdate",
+      "birthplace" : "birthplace",
+      "surname" : "surname",
+      "imgpath" : "imgpath",
+      "name" : "name",
+      "description" : "description",
+      "author_id" : 1
+    }, {
+      "birthdate" : "birthdate",
+      "birthplace" : "birthplace",
+      "surname" : "surname",
+      "imgpath" : "imgpath",
+      "name" : "name",
+      "description" : "description",
+      "author_id" : 1
+    } ]
   } ]
 };
     if (Object.keys(examples).length > 0) {

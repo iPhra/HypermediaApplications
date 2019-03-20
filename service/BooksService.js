@@ -6,32 +6,11 @@ const {database} = require("./Database");
  * Delete an existing book.
  *
  * book_id Long The id of the desired book.
- * returns Book
+ * no response value expected for this operation
  **/
 exports.booksBookIdDELETE = function(book_id) {
   return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "num_of_pages" : 2,
-  "genres" : [ "genres", "genres" ],
-  "imgpath" : "imgpath",
-  "isbn13" : 5,
-  "description" : "description",
-  "isbn10" : 5,
-  "book_id" : 0,
-  "current_price" : 6.0274563,
-  "availability" : "unreleased",
-  "title" : "title",
-  "cover_type" : "hard cover",
-  "authors" : {
-    "author_ids" : [ 1, 1 ]
-  }
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
+    resolve();
   });
 }
 
@@ -57,9 +36,23 @@ exports.booksBookIdGET = function(book_id) {
   "availability" : "unreleased",
   "title" : "title",
   "cover_type" : "hard cover",
-  "authors" : {
-    "author_ids" : [ 1, 1 ]
-  }
+  "authors" : [ {
+    "birthdate" : "birthdate",
+    "birthplace" : "birthplace",
+    "surname" : "surname",
+    "imgpath" : "imgpath",
+    "name" : "name",
+    "description" : "description",
+    "author_id" : 1
+  }, {
+    "birthdate" : "birthdate",
+    "birthplace" : "birthplace",
+    "surname" : "surname",
+    "imgpath" : "imgpath",
+    "name" : "name",
+    "description" : "description",
+    "author_id" : 1
+  } ]
 };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
@@ -75,32 +68,11 @@ exports.booksBookIdGET = function(book_id) {
  *
  * book_id Long The id of the desired book.
  * book BookContent The new fields to update.
- * returns Book
+ * no response value expected for this operation
  **/
 exports.booksBookIdPUT = function(book_id,book) {
   return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "num_of_pages" : 2,
-  "genres" : [ "genres", "genres" ],
-  "imgpath" : "imgpath",
-  "isbn13" : 5,
-  "description" : "description",
-  "isbn10" : 5,
-  "book_id" : 0,
-  "current_price" : 6.0274563,
-  "availability" : "unreleased",
-  "title" : "title",
-  "cover_type" : "hard cover",
-  "authors" : {
-    "author_ids" : [ 1, 1 ]
-  }
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
+    resolve();
   });
 }
 
@@ -128,9 +100,23 @@ exports.booksBookIdSimiliarsGET = function(book_id,offset,limit) {
   "availability" : "unreleased",
   "title" : "title",
   "cover_type" : "hard cover",
-  "authors" : {
-    "author_ids" : [ 1, 1 ]
-  }
+  "authors" : [ {
+    "birthdate" : "birthdate",
+    "birthplace" : "birthplace",
+    "surname" : "surname",
+    "imgpath" : "imgpath",
+    "name" : "name",
+    "description" : "description",
+    "author_id" : 1
+  }, {
+    "birthdate" : "birthdate",
+    "birthplace" : "birthplace",
+    "surname" : "surname",
+    "imgpath" : "imgpath",
+    "name" : "name",
+    "description" : "description",
+    "author_id" : 1
+  } ]
 }, {
   "num_of_pages" : 2,
   "genres" : [ "genres", "genres" ],
@@ -143,9 +129,23 @@ exports.booksBookIdSimiliarsGET = function(book_id,offset,limit) {
   "availability" : "unreleased",
   "title" : "title",
   "cover_type" : "hard cover",
-  "authors" : {
-    "author_ids" : [ 1, 1 ]
-  }
+  "authors" : [ {
+    "birthdate" : "birthdate",
+    "birthplace" : "birthplace",
+    "surname" : "surname",
+    "imgpath" : "imgpath",
+    "name" : "name",
+    "description" : "description",
+    "author_id" : 1
+  }, {
+    "birthdate" : "birthdate",
+    "birthplace" : "birthplace",
+    "surname" : "surname",
+    "imgpath" : "imgpath",
+    "name" : "name",
+    "description" : "description",
+    "author_id" : 1
+  } ]
 } ];
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
@@ -165,8 +165,9 @@ exports.booksBookIdSimiliarsGET = function(book_id,offset,limit) {
  **/
 exports.booksGET = function(offset,limit) {
   return new Promise((resolve, reject) => {
-    //fare la query sull'autore
-    database.select('title').table("book").limit(limit).offset(offset).then((result) => {
+    database.select('book_id','title', 'current_price').table("book").limit(limit).offset(offset).then((result) => {
+      for(let i=0; i<result.length; i++) {
+      }
       resolve(result);
     });
   });
@@ -177,7 +178,7 @@ exports.booksGET = function(offset,limit) {
  * Inserts a new book.
  *
  * book BookContent The book object to insert.
- * returns Book
+ * returns inline_response_200
  **/
 exports.booksPOST = function(book) {
   return new Promise(function(resolve, reject) {
@@ -232,9 +233,23 @@ exports.booksSearchGET = function(keyword,title,genre,author,offset,limit) {
   "availability" : "unreleased",
   "title" : "title",
   "cover_type" : "hard cover",
-  "authors" : {
-    "author_ids" : [ 1, 1 ]
-  }
+  "authors" : [ {
+    "birthdate" : "birthdate",
+    "birthplace" : "birthplace",
+    "surname" : "surname",
+    "imgpath" : "imgpath",
+    "name" : "name",
+    "description" : "description",
+    "author_id" : 1
+  }, {
+    "birthdate" : "birthdate",
+    "birthplace" : "birthplace",
+    "surname" : "surname",
+    "imgpath" : "imgpath",
+    "name" : "name",
+    "description" : "description",
+    "author_id" : 1
+  } ]
 }, {
   "num_of_pages" : 2,
   "genres" : [ "genres", "genres" ],
@@ -247,9 +262,23 @@ exports.booksSearchGET = function(keyword,title,genre,author,offset,limit) {
   "availability" : "unreleased",
   "title" : "title",
   "cover_type" : "hard cover",
-  "authors" : {
-    "author_ids" : [ 1, 1 ]
-  }
+  "authors" : [ {
+    "birthdate" : "birthdate",
+    "birthplace" : "birthplace",
+    "surname" : "surname",
+    "imgpath" : "imgpath",
+    "name" : "name",
+    "description" : "description",
+    "author_id" : 1
+  }, {
+    "birthdate" : "birthdate",
+    "birthplace" : "birthplace",
+    "surname" : "surname",
+    "imgpath" : "imgpath",
+    "name" : "name",
+    "description" : "description",
+    "author_id" : 1
+  } ]
 } ];
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);

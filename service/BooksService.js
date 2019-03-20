@@ -165,11 +165,10 @@ exports.booksBookIdSimiliarsGET = function(book_id,offset,limit) {
  **/
 exports.booksGET = function(offset,limit) {
   return new Promise((resolve, reject) => {
-    const res = {};
-    res['application/json'] = database.select().table("book").limit(limit).offset(offset).then((result) => {
-      return result;
+    //fare la query sull'autore
+    database.select('title').table("book").limit(limit).offset(offset).then((result) => {
+      resolve(result);
     });
-    resolve(res['application/json']);
   });
 }
 

@@ -2,7 +2,7 @@ const sqlDbFactory = require("knex");
 
 let sqlDb = sqlDbFactory({
     client: "pg",
-    connection: process.env.DATABASE_URL || "postgres://bciddqzwubzgxb:c0154d9c774c7b7da88220d33d4ab6bd3be0b5b32492aacf6e62c049865f3162@ec2-54-247-70-127.eu-west-1.compute.amazonaws.com:5432/d6ifalhrov4ije?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory",
+    connection: process.env.DATABASE_URL || "postgres://pirqmnrjssujvc:8d68dd15b6d95c75eb108c77689389893ac5d4823018c69a5e0f43facb229c90@ec2-54-75-238-138.eu-west-1.compute.amazonaws.com:5432/d2g0b7p216e89i?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory",
     ssl: true,
     debug: true
 });

@@ -21,46 +21,17 @@ exports.booksBookIdDELETE = function(book_id) {
  * book_id Long Id of the book to retrieve.
  * returns Book
  **/
-exports.booksBookIdGET = function(book_id) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "num_of_pages" : 2,
-  "genres" : [ "genres", "genres" ],
-  "imgpath" : "imgpath",
-  "isbn13" : 5,
-  "description" : "description",
-  "isbn10" : 5,
-  "book_id" : 0,
-  "current_price" : 6.0274563,
-  "availability" : "unreleased",
-  "title" : "title",
-  "cover_type" : "hard cover",
-  "authors" : [ {
-    "birthdate" : "birthdate",
-    "birthplace" : "birthplace",
-    "surname" : "surname",
-    "imgpath" : "imgpath",
-    "name" : "name",
-    "description" : "description",
-    "author_id" : 1
-  }, {
-    "birthdate" : "birthdate",
-    "birthplace" : "birthplace",
-    "surname" : "surname",
-    "imgpath" : "imgpath",
-    "name" : "name",
-    "description" : "description",
-    "author_id" : 1
-  } ]
+exports.booksBookIdGET = async (book_id) => {
+    //find the given book
+    const book = (await database.select().table("book").where("book_id","=",book_id))[0];
+
+    //find the authors of the book
+    book["authors"] = await database("author")
+        .join("authorship","author.author_id","authorship.author_id")
+        .where("authorship.book_id","=",book_id)
+        .select("name","surname","author.author_id");
+    return book;
 };
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
-  });
-}
 
 
 /**
@@ -86,9 +57,22 @@ exports.booksBookIdPUT = function(book_id,book) {
  * returns List
  **/
 exports.booksBookIdSimiliarsGET = async (book_id,offset,limit) => {
-  let books = await database("book").join("similarity","similarity.book_id1","book.book_id").where("similarity.book_id2","=",book_id).select("book.*");
-  books = books.concat(await database("book").join("similarity","similarity.book_id2","book.book_id").where("similarity.book_id1","=",book_id).select("book.*"));
-  return books;
+    //find the books similar to the given one, in rows of the form (similar_book, given_book) in the database
+    let books = await database("book")
+      .join("similarity","similarity.book_id1","book.book_id")
+      .where("similarity.book_id2","=",book_id)
+      .select("book.*")
+      .offset(offset)
+      .limit(limit);
+
+    //concatenate the previous books to the ones in the form (given_book, similar_book) in the database
+    books = books.concat(await database("book")
+      .join("similarity","similarity.book_id2","book.book_id")
+      .where("similarity.book_id1","=",book_id)
+      .select("book.*")
+      .offset(offset)
+      .limit(limit));
+    return books;
 };
 
 
@@ -100,14 +84,17 @@ exports.booksBookIdSimiliarsGET = async (book_id,offset,limit) => {
  * returns List
  **/
 exports.booksGET = async (offset,limit) => {
-  const books = await database.select('book_id','title', 'current_price').table("book").limit(limit).offset(offset);
-  for(let i=0; i<books.length; i++) {
+    //find all the books matching the offset and limit
+    const books = await database.select('book_id','title', 'current_price').table("book").limit(limit).offset(offset);
+
+    //for each book, find its authors
+    for(let i=0; i<books.length; i++) {
     books[i]["authors"] = await database("author")
         .join("authorship","author.author_id","authorship.author_id")
         .where("authorship.book_id","=",books[i].book_id)
         .select("name","surname","author.author_id")
-  }
-  return books;
+    }
+    return books;
 };
 
 
@@ -251,7 +238,7 @@ exports.booksSearchGET = function(keyword,title,genre,author,offset,limit) {
       resolve();
     }
   });
-}
+};
 
 
 /**
@@ -261,15 +248,7 @@ exports.booksSearchGET = function(keyword,title,genre,author,offset,limit) {
  * limit Long Items per page. (optional)
  * returns List
  **/
-exports.genresGET = function(offset,limit) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = [ { }, { } ];
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
-  });
-}
+exports.genresGET = async (offset,limit) => {
+    //@todo vedere come risolvere ritorno di genre
+};
 

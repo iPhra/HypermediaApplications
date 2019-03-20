@@ -30,22 +30,12 @@ exports.accountInfoDELETE = function() {
  *
  * returns User
  **/
-exports.accountInfoGET = function() {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "password" : "password",
-  "user_id" : 0,
-  "email" : "email",
-  "activated" : true
+exports.accountInfoGET = async () => {
+    const user_id = 0; //@todo check if he's logged in and get his user_id
+
+    //retrieve the info about the account
+    return await database.select().table("account").where("user_id","=",user_id);
 };
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
-  });
-}
 
 
 /**

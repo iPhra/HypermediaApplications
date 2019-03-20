@@ -21,25 +21,10 @@ exports.authorsAuthorIdDELETE = function(author_id) {
  * author_id Long The id of the desired author.
  * returns Author
  **/
-exports.authorsAuthorIdGET = function(author_id) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "birthdate" : "birthdate",
-  "birthplace" : "birthplace",
-  "surname" : "surname",
-  "imgpath" : "imgpath",
-  "name" : "name",
-  "description" : "description",
-  "author_id" : 1
+exports.authorsAuthorIdGET = async (author_id) => {
+  //find the given author
+  return (await database.select().table("author").where("author_id","=",author_id))[0];
 };
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
-  });
-}
 
 
 /**
@@ -63,18 +48,10 @@ exports.authorsAuthorIdPUT = function(author_id,author) {
  * limit Long Items per page. (optional)
  * returns List
  **/
-exports.authorsGET = function(offset,limit) {
-  return new Promise((resolve, reject) => {
-    return database
-        .select()
-        .table("author")
-        .limit(limit)
-        .offset(offset)
-        .then(data => {
-          resolve(data);
-        });
-  });
-}
+exports.authorsGET = async (offset,limit) => {
+  //find all the authors matching the offset and limit
+  return await database.select('author_id','name', 'surname').table("author").limit(limit).offset(offset);
+};
 
 
 /**

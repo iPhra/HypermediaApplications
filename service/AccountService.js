@@ -1,5 +1,6 @@
 'use strict';
 
+const {database} = require("./Database");
 
 /**
  * Delete an existing acccount.
@@ -100,18 +101,22 @@ exports.accountLoginPOST = function(login) {
  **/
 exports.accountRegisterPOST = function(user) {
   return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "password" : "password",
-  "user_id" : 0,
-  "email" : "email",
-  "activated" : true
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
+      return database
+          .table('account')
+          .select()
+          .where({ email:  user.email })
+          .then(rows => {
+              // Check if some user already exist
+              if (rows.length>0) reject('User already registered');
+              // Insert new user into database
+              database
+                  .table("account")
+                  .insert(user, ['user_id'])
+                  .then(user_id => {
+                      resolve(user_id);
+                  })
+                  .catch(err => console.log(err));
+          });
   });
-}
+};
 

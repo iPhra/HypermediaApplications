@@ -1,5 +1,6 @@
 'use strict';
 
+const {database} = require("./Database");
 
 /**
  * Delete an existing author.

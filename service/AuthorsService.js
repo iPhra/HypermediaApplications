@@ -60,7 +60,7 @@ exports.authorsAuthorIdGET = function(author_id) {
  * Update an existing author information.
  *
  * author_id Long The id of the desired author.
- * author Author The fields to update.
+ * author AuthorContent The fields to update.
  * returns Author
  **/
 exports.authorsAuthorIdPUT = function(author_id,author) {
@@ -91,7 +91,7 @@ exports.authorsAuthorIdPUT = function(author_id,author) {
  * limit Long Items per page. (optional)
  * returns List
  **/
-exports.authorsGET = (offset,limit) => {
+exports.authorsGET = function(offset,limit) {
   return new Promise((resolve, reject) => {
     return database
         .select()
@@ -102,38 +102,39 @@ exports.authorsGET = (offset,limit) => {
           resolve(data);
         });
   });
-};
+}
 
 
 /**
  * Inserts a new Author.
  *
- * author Author The author to be inserted.
+ * author AuthorContent The author to be inserted.
  * returns Author
  **/
 exports.authorsPOST = function(author) {
-    console.log(author);
+  console.log(author);
 
-    return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
 
-        // and remove this obj with author
-        const obj = {
-            'name': author.name,
-            'surname': author.surname,
-            'birthdate': author.birthdate,
-            'birthplace': author.birthplace,
-            'description': author.description,
-            'imgpath': author.imgpath
-        };
+    // and remove this obj with author
+    const obj = {
+      'name': author.name,
+      'surname': author.surname,
+      'birthdate': author.birthdate,
+      'birthplace': author.birthplace,
+      'description': author.description,
+      'imgpath': author.imgpath
+    };
 
-        console.log(obj);
-        return database
-            .table("author")
-            .insert(obj, ['author_id'])
-            .then(data => {
-                console.log(data);
-                resolve(data);
-            })
-            .catch(err => console.log(err));
-    });
-};
+    console.log(obj);
+    return database
+        .table("author")
+        .insert(obj, ['author_id'])
+        .then(data => {
+          console.log(data);
+          resolve(data);
+        })
+        .catch(err => console.log(err));
+  });
+}
+

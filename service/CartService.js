@@ -13,38 +13,34 @@ exports.accountCartDELETE = function(item) {
     examples['application/json'] = {
   "total_price" : 0,
   "book_list" : [ {
+    "num_of_pages" : 2,
+    "genres" : [ "genres", "genres" ],
     "imgpath" : "imgpath",
     "isbn13" : 5,
+    "description" : "description",
     "isbn10" : 5,
     "book_id" : 0,
     "current_price" : 6.0274563,
     "availability" : "unreleased",
     "title" : "title",
+    "cover_type" : "hard cover",
     "authors" : {
       "author_ids" : [ 1, 1 ]
-    },
-    "info" : {
-      "num_of_pages" : 2,
-      "genres" : [ "genres", "genres" ],
-      "description" : "description",
-      "cover_type" : "hard cover"
     }
   }, {
+    "num_of_pages" : 2,
+    "genres" : [ "genres", "genres" ],
     "imgpath" : "imgpath",
     "isbn13" : 5,
+    "description" : "description",
     "isbn10" : 5,
     "book_id" : 0,
     "current_price" : 6.0274563,
     "availability" : "unreleased",
     "title" : "title",
+    "cover_type" : "hard cover",
     "authors" : {
       "author_ids" : [ 1, 1 ]
-    },
-    "info" : {
-      "num_of_pages" : 2,
-      "genres" : [ "genres", "genres" ],
-      "description" : "description",
-      "cover_type" : "hard cover"
     }
   } ]
 };
@@ -70,38 +66,34 @@ exports.accountCartGET = function(offset,limit) {
     examples['application/json'] = {
   "total_price" : 0,
   "book_list" : [ {
+    "num_of_pages" : 2,
+    "genres" : [ "genres", "genres" ],
     "imgpath" : "imgpath",
     "isbn13" : 5,
+    "description" : "description",
     "isbn10" : 5,
     "book_id" : 0,
     "current_price" : 6.0274563,
     "availability" : "unreleased",
     "title" : "title",
+    "cover_type" : "hard cover",
     "authors" : {
       "author_ids" : [ 1, 1 ]
-    },
-    "info" : {
-      "num_of_pages" : 2,
-      "genres" : [ "genres", "genres" ],
-      "description" : "description",
-      "cover_type" : "hard cover"
     }
   }, {
+    "num_of_pages" : 2,
+    "genres" : [ "genres", "genres" ],
     "imgpath" : "imgpath",
     "isbn13" : 5,
+    "description" : "description",
     "isbn10" : 5,
     "book_id" : 0,
     "current_price" : 6.0274563,
     "availability" : "unreleased",
     "title" : "title",
+    "cover_type" : "hard cover",
     "authors" : {
       "author_ids" : [ 1, 1 ]
-    },
-    "info" : {
-      "num_of_pages" : 2,
-      "genres" : [ "genres", "genres" ],
-      "description" : "description",
-      "cover_type" : "hard cover"
     }
   } ]
 };
@@ -126,38 +118,34 @@ exports.accountCartPOST = function(book) {
     examples['application/json'] = {
   "total_price" : 0,
   "book_list" : [ {
+    "num_of_pages" : 2,
+    "genres" : [ "genres", "genres" ],
     "imgpath" : "imgpath",
     "isbn13" : 5,
+    "description" : "description",
     "isbn10" : 5,
     "book_id" : 0,
     "current_price" : 6.0274563,
     "availability" : "unreleased",
     "title" : "title",
+    "cover_type" : "hard cover",
     "authors" : {
       "author_ids" : [ 1, 1 ]
-    },
-    "info" : {
-      "num_of_pages" : 2,
-      "genres" : [ "genres", "genres" ],
-      "description" : "description",
-      "cover_type" : "hard cover"
     }
   }, {
+    "num_of_pages" : 2,
+    "genres" : [ "genres", "genres" ],
     "imgpath" : "imgpath",
     "isbn13" : 5,
+    "description" : "description",
     "isbn10" : 5,
     "book_id" : 0,
     "current_price" : 6.0274563,
     "availability" : "unreleased",
     "title" : "title",
+    "cover_type" : "hard cover",
     "authors" : {
       "author_ids" : [ 1, 1 ]
-    },
-    "info" : {
-      "num_of_pages" : 2,
-      "genres" : [ "genres", "genres" ],
-      "description" : "description",
-      "cover_type" : "hard cover"
     }
   } ]
 };

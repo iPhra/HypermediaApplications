@@ -12,21 +12,19 @@ exports.booksBookIdDELETE = function(book_id) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
+  "num_of_pages" : 2,
+  "genres" : [ "genres", "genres" ],
   "imgpath" : "imgpath",
   "isbn13" : 5,
+  "description" : "description",
   "isbn10" : 5,
   "book_id" : 0,
   "current_price" : 6.0274563,
   "availability" : "unreleased",
   "title" : "title",
+  "cover_type" : "hard cover",
   "authors" : {
     "author_ids" : [ 1, 1 ]
-  },
-  "info" : {
-    "num_of_pages" : 2,
-    "genres" : [ "genres", "genres" ],
-    "description" : "description",
-    "cover_type" : "hard cover"
   }
 };
     if (Object.keys(examples).length > 0) {
@@ -48,21 +46,19 @@ exports.booksBookIdGET = function(book_id) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
+  "num_of_pages" : 2,
+  "genres" : [ "genres", "genres" ],
   "imgpath" : "imgpath",
   "isbn13" : 5,
+  "description" : "description",
   "isbn10" : 5,
   "book_id" : 0,
   "current_price" : 6.0274563,
   "availability" : "unreleased",
   "title" : "title",
+  "cover_type" : "hard cover",
   "authors" : {
     "author_ids" : [ 1, 1 ]
-  },
-  "info" : {
-    "num_of_pages" : 2,
-    "genres" : [ "genres", "genres" ],
-    "description" : "description",
-    "cover_type" : "hard cover"
   }
 };
     if (Object.keys(examples).length > 0) {
@@ -78,28 +74,26 @@ exports.booksBookIdGET = function(book_id) {
  * Updates an existing Book.
  *
  * book_id Long The id of the desired book.
- * book Book The new fields to update.
+ * book BookContent The new fields to update.
  * returns Book
  **/
 exports.booksBookIdPUT = function(book_id,book) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
+  "num_of_pages" : 2,
+  "genres" : [ "genres", "genres" ],
   "imgpath" : "imgpath",
   "isbn13" : 5,
+  "description" : "description",
   "isbn10" : 5,
   "book_id" : 0,
   "current_price" : 6.0274563,
   "availability" : "unreleased",
   "title" : "title",
+  "cover_type" : "hard cover",
   "authors" : {
     "author_ids" : [ 1, 1 ]
-  },
-  "info" : {
-    "num_of_pages" : 2,
-    "genres" : [ "genres", "genres" ],
-    "description" : "description",
-    "cover_type" : "hard cover"
   }
 };
     if (Object.keys(examples).length > 0) {
@@ -123,38 +117,34 @@ exports.booksBookIdSimiliarsGET = function(book_id,offset,limit) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = [ {
+  "num_of_pages" : 2,
+  "genres" : [ "genres", "genres" ],
   "imgpath" : "imgpath",
   "isbn13" : 5,
+  "description" : "description",
   "isbn10" : 5,
   "book_id" : 0,
   "current_price" : 6.0274563,
   "availability" : "unreleased",
   "title" : "title",
+  "cover_type" : "hard cover",
   "authors" : {
     "author_ids" : [ 1, 1 ]
-  },
-  "info" : {
-    "num_of_pages" : 2,
-    "genres" : [ "genres", "genres" ],
-    "description" : "description",
-    "cover_type" : "hard cover"
   }
 }, {
+  "num_of_pages" : 2,
+  "genres" : [ "genres", "genres" ],
   "imgpath" : "imgpath",
   "isbn13" : 5,
+  "description" : "description",
   "isbn10" : 5,
   "book_id" : 0,
   "current_price" : 6.0274563,
   "availability" : "unreleased",
   "title" : "title",
+  "cover_type" : "hard cover",
   "authors" : {
     "author_ids" : [ 1, 1 ]
-  },
-  "info" : {
-    "num_of_pages" : 2,
-    "genres" : [ "genres", "genres" ],
-    "description" : "description",
-    "cover_type" : "hard cover"
   }
 } ];
     if (Object.keys(examples).length > 0) {
@@ -181,40 +171,40 @@ exports.booksGET = function(offset,limit) {
     });
     resolve(res['application/json']);
   });
-};
+}
 
 
 /**
  * Inserts a new book.
  *
- * book Book The book object to insert.
+ * book BookContent The book object to insert.
  * returns Book
  **/
 exports.booksPOST = function(book) {
   return new Promise(function(resolve, reject) {
 
-      // TODO align backend and db cover type names and add covr_type
-      const obj = {
-          'title': book.title,
-          'isbn10': book.isbn10,
-          'isbn13': book.isbn13,
-          'description': book.info.description,
-          'current_price': book.info.current_price,
-          'num_of_pages': book.num_of_pages,
-          'availability': book.availability,
-          'img_path': book.imgpath
-      };
+    // TODO align backend and db cover type names and add covr_type
+    const obj = {
+      'title': book.title,
+      'isbn10': book.isbn10,
+      'isbn13': book.isbn13,
+      'description': book.info.description,
+      'current_price': book.info.current_price,
+      'num_of_pages': book.num_of_pages,
+      'availability': book.availability,
+      'img_path': book.imgpath
+    };
 
-      return database
-          .table("book")
-          .insert(obj, ['book_id'])
-          .then(data => {
-              console.log(data);
-              resolve(data);
-          })
-          .catch(err => console.log(err));
+    return database
+        .table("book")
+        .insert(obj, ['book_id'])
+        .then(data => {
+          console.log(data);
+          resolve(data);
+        })
+        .catch(err => console.log(err));
   });
-};
+}
 
 
 /**
@@ -232,38 +222,34 @@ exports.booksSearchGET = function(keyword,title,genre,author,offset,limit) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = [ {
+  "num_of_pages" : 2,
+  "genres" : [ "genres", "genres" ],
   "imgpath" : "imgpath",
   "isbn13" : 5,
+  "description" : "description",
   "isbn10" : 5,
   "book_id" : 0,
   "current_price" : 6.0274563,
   "availability" : "unreleased",
   "title" : "title",
+  "cover_type" : "hard cover",
   "authors" : {
     "author_ids" : [ 1, 1 ]
-  },
-  "info" : {
-    "num_of_pages" : 2,
-    "genres" : [ "genres", "genres" ],
-    "description" : "description",
-    "cover_type" : "hard cover"
   }
 }, {
+  "num_of_pages" : 2,
+  "genres" : [ "genres", "genres" ],
   "imgpath" : "imgpath",
   "isbn13" : 5,
+  "description" : "description",
   "isbn10" : 5,
   "book_id" : 0,
   "current_price" : 6.0274563,
   "availability" : "unreleased",
   "title" : "title",
+  "cover_type" : "hard cover",
   "authors" : {
     "author_ids" : [ 1, 1 ]
-  },
-  "info" : {
-    "num_of_pages" : 2,
-    "genres" : [ "genres", "genres" ],
-    "description" : "description",
-    "cover_type" : "hard cover"
   }
 } ];
     if (Object.keys(examples).length > 0) {

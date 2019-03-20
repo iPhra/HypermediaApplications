@@ -14,13 +14,13 @@ accountSetup = (database) => {
         if (!exists) {
             console.log("It doesn't so we create it");
             return database.schema.createTable("account", table => {
-	         	table.increments("user_id");
-          		table.string("email").notNullable();
-          		table.string("password").notNullable();
-          		table.string("name");
-          		table.string("surname");
-          		table.boolean("activated").notNullable();
-          		table.boolean("admin").defaultTo(false);
+                table.increments("user_id");
+                table.string("email").notNullable();
+                table.string("password").notNullable();
+                table.string("name");
+                table.string("surname");
+                table.boolean("activated").notNullable();
+                table.boolean("admin").defaultTo(false);
             })
         }
     });
@@ -66,18 +66,18 @@ bookSetup = (database) => {
     return database.schema.hasTable("book").then(exists => {
         if (!exists) {
             console.log("It doesn't so we create it");
-        	return database.schema.createTable("book", table => {
-        		table.increments("book_id");
-        		table.string("isbn10", 10).notNullable();
-        		table.string("isbn13", 13).notNullable();
-        		table.string("title").notNullable();
-        		table.text("description");
-        		table.float("current_price").defaultTo(0).notNullable();
-        		table.integer("num_of_pages");
-        		table.enu("cover_type",["hard_cover","soft_cover","e-book"]);
-        		table.enu("availability",["available","unreleased","out_of_stock"]).notNullable();
-        		table.text("img_path");
-        	});
+            return database.schema.createTable("book", table => {
+                table.increments("book_id");
+                table.string("isbn10", 10).notNullable();
+                table.string("isbn13", 13).notNullable();
+                table.string("title").notNullable();
+                table.text("description");
+                table.float("current_price").defaultTo(0).notNullable();
+                table.integer("num_of_pages");
+                table.enu("cover_type",["hard_cover","soft_cover","e-book"]);
+                table.enu("availability",["available","unreleased","out_of_stock"]).notNullable();
+                table.text("img_path");
+            });
         }
     });
 };
@@ -89,10 +89,10 @@ cartSetup = (database) => {
         if (!exists) {
             console.log("It doesn't so we create it");
             return database.schema.createTable("cart", table => {
-              	table.increments("cart_id");
-              	table.integer("user_id").notNullable().references("account.user_id").onUpdate("CASCADE").onDelete("CASCADE");
-              	table.integer("book_id").notNullable().references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
-              	table.integer("quantity").defaultTo(1);
+                table.increments("cart_id");
+                table.integer("user_id").notNullable().references("account.user_id").onUpdate("CASCADE").onDelete("CASCADE");
+                table.integer("book_id").notNullable().references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
+                table.integer("quantity").defaultTo(1);
             });
         }
     });
@@ -105,10 +105,10 @@ genreSetup = (database) => {
         if (!exists) {
             console.log("It doesn't so we create it");
             return database.schema.createTable("genre", table => {
-      			table.integer("book_id").references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
-              	table.enu("genre",["thriller","fantasy","novel","horror","crime","romance","action","sci-fi"]);
- 	          	table.primary(["book_id", "genre"]);
-	        });
+                table.integer("book_id").references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
+                table.enu("genre",["thriller","fantasy","novel","horror","crime","romance","action","sci-fi"]);
+                table.primary(["book_id", "genre"]);
+            });
         }
     });
 };
@@ -120,10 +120,10 @@ purchaseSetup = (database) => {
         if (!exists) {
             console.log("It doesn't so we create it");
             return database.schema.createTable("purchase", table => {
-            	table.increments("purchase_id");
-            	table.integer("user_id").notNullable().references("account.user_id").onUpdate("CASCADE").onDelete("SET NULL");
-              	table.timestamp("timestamp").notNullable().defaultTo(database.fn.now());
-              	table.float("total_price").notNullable();
+                table.increments("purchase_id");
+                table.integer("user_id").notNullable().references("account.user_id").onUpdate("CASCADE").onDelete("SET NULL");
+                table.timestamp("timestamp").notNullable().defaultTo(database.fn.now());
+                table.float("total_price").notNullable();
             });
         }
     });
@@ -153,12 +153,12 @@ reservationSetup = (database) => {
         if (!exists) {
             console.log("It doesn't so we create it");
             return database.schema.createTable("reservation", table => {
-	            table.increments("reservation_id");
-              	table.integer("user_id").notNullable().references("account.user_id").onUpdate("CASCADE").onDelete("NO ACTION");
-      			table.integer("book_id").notNullable().references("book.book_id").onUpdate("CASCADE").onDelete("NO ACTION");
-		   	  	table.timestamp("timestamp").notNullable().defaultTo(database.fn.now());
-              	table.float("price").notNullable();
-              	table.integer("quantity").defaultTo(1);
+                table.increments("reservation_id");
+                table.integer("user_id").notNullable().references("account.user_id").onUpdate("CASCADE").onDelete("NO ACTION");
+                table.integer("book_id").notNullable().references("book.book_id").onUpdate("CASCADE").onDelete("NO ACTION");
+                table.timestamp("timestamp").notNullable().defaultTo(database.fn.now());
+                table.float("price").notNullable();
+                table.integer("quantity").defaultTo(1);
             });
         }
     });
@@ -171,9 +171,9 @@ similaritySetup = (database) => {
         if (!exists) {
             console.log("It doesn't so we create it");
             return database.schema.createTable("similarity", table => {
-      			table.integer("book_id1").references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
-      			table.integer("book_id2").references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
-      			table.primary(["book_id1","book_id2"]);
+                table.integer("book_id1").references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
+                table.integer("book_id2").references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
+                table.primary(["book_id1","book_id2"]);
             });
         }
     });

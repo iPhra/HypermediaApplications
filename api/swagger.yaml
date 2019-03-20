@@ -29,12 +29,14 @@ paths:
         description: "Offset with regards to the current page."
         required: false
         type: "integer"
+        default: 0
         format: "int64"
       - name: "limit"
         in: "query"
         description: "Items per page."
         required: false
         type: "integer"
+        default: 20
         format: "int64"
       responses:
         200:
@@ -62,7 +64,7 @@ paths:
         description: "The book object to insert."
         required: true
         schema:
-          $ref: "#/definitions/Book"
+          $ref: "#/definitions/BookContent"
       responses:
         200:
           description: "Book inserted."
@@ -109,12 +111,14 @@ paths:
         description: "Offset with regards to the current page."
         required: false
         type: "integer"
+        default: 0
         format: "int64"
       - name: "limit"
         in: "query"
         description: "Items per page."
         required: false
         type: "integer"
+        default: 20
         format: "int64"
       responses:
         200:
@@ -173,7 +177,7 @@ paths:
         description: "The new fields to update."
         required: true
         schema:
-          $ref: "#/definitions/Book"
+          $ref: "#/definitions/BookContent"
       responses:
         200:
           description: "Book updated."
@@ -238,12 +242,14 @@ paths:
         description: "Offset with regards to the current page."
         required: false
         type: "integer"
+        default: 0
         format: "int64"
       - name: "limit"
         in: "query"
         description: "Items per page."
         required: false
         type: "integer"
+        default: 20
         format: "int64"
       responses:
         200:
@@ -271,12 +277,14 @@ paths:
         description: "Offset with regards to the current page."
         required: false
         type: "integer"
+        default: 0
         format: "int64"
       - name: "limit"
         in: "query"
         description: "Items per page."
         required: false
         type: "integer"
+        default: 20
         format: "int64"
       responses:
         200:
@@ -302,12 +310,14 @@ paths:
         description: "Offset with regards to the current page."
         required: false
         type: "integer"
+        default: 0
         format: "int64"
       - name: "limit"
         in: "query"
         description: "Items per page."
         required: false
         type: "integer"
+        default: 20
         format: "int64"
       responses:
         200:
@@ -334,7 +344,7 @@ paths:
         description: "The author to be inserted."
         required: true
         schema:
-          $ref: "#/definitions/Author"
+          $ref: "#/definitions/AuthorContent"
       responses:
         200:
           description: "Author inserted."
@@ -393,7 +403,7 @@ paths:
         description: "The fields to update."
         required: true
         schema:
-          $ref: "#/definitions/Author"
+          $ref: "#/definitions/AuthorContent"
       responses:
         200:
           description: "Author updated."
@@ -452,12 +462,14 @@ paths:
         description: "Offset with regards to the current page."
         required: false
         type: "integer"
+        default: 0
         format: "int64"
       - name: "limit"
         in: "query"
         description: "Items per page."
         required: false
         type: "integer"
+        default: 20
         format: "int64"
       responses:
         200:
@@ -671,8 +683,21 @@ definitions:
         type: "integer"
       isbn13:
         type: "integer"
-      info:
-        $ref: "#/definitions/Book_info"
+      num_of_pages:
+        type: "integer"
+      cover_type:
+        type: "string"
+        enum:
+        - "hard cover"
+        - "e-book"
+        - "soft cover"
+      description:
+        type: "string"
+      genres:
+        type: "array"
+        uniqueItems: true
+        items:
+          type: "string"
       availability:
         type: "string"
         enum:
@@ -682,24 +707,83 @@ definitions:
       imgpath:
         type: "string"
     example:
+      num_of_pages: 2
+      genres:
+      - "genres"
+      - "genres"
       imgpath: "imgpath"
       isbn13: 5
+      description: "description"
       isbn10: 5
       book_id: 0
       current_price: 6.0274563
       availability: "unreleased"
       title: "title"
+      cover_type: "hard cover"
       authors:
         author_ids:
         - 1
         - 1
-      info:
-        num_of_pages: 2
-        genres:
-        - "genres"
-        - "genres"
-        description: "description"
-        cover_type: "hard cover"
+  BookContent:
+    required:
+    - "authors"
+    - "availability"
+    - "current_price"
+    - "isbn10"
+    - "isbn13"
+    - "title"
+    properties:
+      title:
+        type: "string"
+      current_price:
+        type: "number"
+        format: "float"
+      authors:
+        $ref: "#/definitions/Book_authors"
+      isbn10:
+        type: "integer"
+      isbn13:
+        type: "integer"
+      num_of_pages:
+        type: "integer"
+      cover_type:
+        type: "string"
+        enum:
+        - "hard cover"
+        - "e-book"
+        - "soft cover"
+      description:
+        type: "string"
+      genres:
+        type: "array"
+        uniqueItems: true
+        items:
+          type: "string"
+      availability:
+        type: "string"
+        enum:
+        - "unreleased"
+        - "available"
+        - "out_of_stock"
+      imgpath:
+        type: "string"
+    example:
+      num_of_pages: 5
+      genres:
+      - "genres"
+      - "genres"
+      imgpath: "imgpath"
+      isbn13: 1
+      description: "description"
+      isbn10: 6
+      current_price: 0.8008282
+      availability: "unreleased"
+      title: "title"
+      cover_type: "hard cover"
+      authors:
+        author_ids:
+        - 1
+        - 1
   Author:
     required:
     - "author_id"
@@ -728,6 +812,30 @@ definitions:
       name: "name"
       description: "description"
       author_id: 0
+  AuthorContent:
+    required:
+    - "name"
+    - "surname"
+    properties:
+      name:
+        type: "string"
+      surname:
+        type: "string"
+      birthdate:
+        type: "string"
+      birthplace:
+        type: "string"
+      description:
+        type: "string"
+      imgpath:
+        type: "string"
+    example:
+      birthdate: "birthdate"
+      birthplace: "birthplace"
+      surname: "surname"
+      imgpath: "imgpath"
+      name: "name"
+      description: "description"
   User:
     required:
     - "activated"
@@ -760,42 +868,40 @@ definitions:
     example:
       total_price: 0
       book_list:
-      - imgpath: "imgpath"
+      - num_of_pages: 2
+        genres:
+        - "genres"
+        - "genres"
+        imgpath: "imgpath"
         isbn13: 5
+        description: "description"
         isbn10: 5
         book_id: 0
         current_price: 6.0274563
         availability: "unreleased"
         title: "title"
+        cover_type: "hard cover"
         authors:
           author_ids:
           - 1
           - 1
-        info:
-          num_of_pages: 2
-          genres:
-          - "genres"
-          - "genres"
-          description: "description"
-          cover_type: "hard cover"
-      - imgpath: "imgpath"
+      - num_of_pages: 2
+        genres:
+        - "genres"
+        - "genres"
+        imgpath: "imgpath"
         isbn13: 5
+        description: "description"
         isbn10: 5
         book_id: 0
         current_price: 6.0274563
         availability: "unreleased"
         title: "title"
+        cover_type: "hard cover"
         authors:
           author_ids:
           - 1
           - 1
-        info:
-          num_of_pages: 2
-          genres:
-          - "genres"
-          - "genres"
-          description: "description"
-          cover_type: "hard cover"
   Genre:
     type: "string"
     enum:
@@ -883,27 +989,3 @@ definitions:
       author_ids:
       - 1
       - 1
-  Book_info:
-    properties:
-      num_of_pages:
-        type: "integer"
-      cover_type:
-        type: "string"
-        enum:
-        - "hard cover"
-        - "e-book"
-        - "soft cover"
-      description:
-        type: "string"
-      genres:
-        type: "array"
-        uniqueItems: true
-        items:
-          type: "string"
-    example:
-      num_of_pages: 2
-      genres:
-      - "genres"
-      - "genres"
-      description: "description"
-      cover_type: "hard cover"

@@ -50,14 +50,16 @@ exports.accountInfoGET = async (token) => {
  * account Account Account details. (optional)
  * returns User
  **/
-exports.accountInfoPOST = async (account) => {
-    // TODO check if it's logged
+exports.accountInfoPOST = async (account, token) => {
+    //check if the user is logged in, if so retrieve his user_id
+    const user_id = await checkToken(token);
 
     //encrypt the password
-    account["password"] = await hashPassword(account["password"]);
+    if(account["password"]) account["password"] = await hashPassword(account["password"]);
 
     //update existing account
-    return await database.table("account").update(account, ['user_id'])
+    const result = await database.update(account, ['email', 'password', 'name', 'surname', 'admin']).table("account").where({ 'user_id': user_id });
+    return result[0];
 };
 
 
@@ -106,6 +108,7 @@ exports.accountRegisterPOST = async (user) => {
     user["password"] = await hashPassword(user["password"]);
 
     //create new Account
-    return await database.table("account").insert(user, ['user_id'])
+    const result = await database.table("account").insert(user, ['email', 'password', 'name', 'surname']);
+    return result;
 };
 

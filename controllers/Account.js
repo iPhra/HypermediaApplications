@@ -26,7 +26,8 @@ module.exports.accountInfoGET = function accountInfoGET (req, res, next) {
 
 module.exports.accountInfoPOST = function accountInfoPOST (req, res, next) {
   const account = req.swagger.params['account'].value;
-  Account.accountInfoPOST(account)
+  const token = req.headers.authorization;
+  Account.accountInfoPOST(account, token)
     .then(function (response) {
       utils.writeJson(res, response);
     })

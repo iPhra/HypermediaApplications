@@ -48,22 +48,15 @@ exports.accountInfoGET = async () => {
  * account Account Account details. (optional)
  * returns User
  **/
-exports.accountInfoPOST = function(account) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "password" : "password",
-  "user_id" : 0,
-  "email" : "email",
-  "activated" : true
+exports.accountInfoPOST = async (account) => {
+    // TODO check if it's logged
+
+    //encrypt the password
+    account["password"] = await hashPassword(account["password"]);
+
+    //update existing account
+    return await database.table("account").update(account, ['user_id'])
 };
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
-  });
-}
 
 
 /**
@@ -101,13 +94,10 @@ exports.accountLoginPOST = async (login) => {
  **/
 exports.accountRegisterPOST = async (user) => {
     //retrieve users with the same email
-    const account = await database
-      .table('account')
-      .select()
-      .where({ email:  user.email });
+    const account = await database.table('account').select().where({ email: user.email });
 
     //check if some user already exists
-    if (account.length>0)
+    if (account.length > 0)
         throw new Error('User already existing');
 
     //encrypt the password

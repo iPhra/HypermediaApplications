@@ -170,74 +170,18 @@ exports.booksPOST = function(book) {
  * limit Long Items per page. (optional)
  * returns List
  **/
-exports.booksSearchGET = function(keyword,title,genre,author,offset,limit) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = [ {
-  "num_of_pages" : 2,
-  "genres" : [ "genres", "genres" ],
-  "imgpath" : "imgpath",
-  "isbn13" : 5,
-  "description" : "description",
-  "isbn10" : 5,
-  "book_id" : 0,
-  "current_price" : 6.0274563,
-  "availability" : "unreleased",
-  "title" : "title",
-  "cover_type" : "hard cover",
-  "authors" : [ {
-    "birthdate" : "birthdate",
-    "birthplace" : "birthplace",
-    "surname" : "surname",
-    "imgpath" : "imgpath",
-    "name" : "name",
-    "description" : "description",
-    "author_id" : 1
-  }, {
-    "birthdate" : "birthdate",
-    "birthplace" : "birthplace",
-    "surname" : "surname",
-    "imgpath" : "imgpath",
-    "name" : "name",
-    "description" : "description",
-    "author_id" : 1
-  } ]
-}, {
-  "num_of_pages" : 2,
-  "genres" : [ "genres", "genres" ],
-  "imgpath" : "imgpath",
-  "isbn13" : 5,
-  "description" : "description",
-  "isbn10" : 5,
-  "book_id" : 0,
-  "current_price" : 6.0274563,
-  "availability" : "unreleased",
-  "title" : "title",
-  "cover_type" : "hard cover",
-  "authors" : [ {
-    "birthdate" : "birthdate",
-    "birthplace" : "birthplace",
-    "surname" : "surname",
-    "imgpath" : "imgpath",
-    "name" : "name",
-    "description" : "description",
-    "author_id" : 1
-  }, {
-    "birthdate" : "birthdate",
-    "birthplace" : "birthplace",
-    "surname" : "surname",
-    "imgpath" : "imgpath",
-    "name" : "name",
-    "description" : "description",
-    "author_id" : 1
-  } ]
-} ];
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
+exports.booksSearchGET = async (keyword,title,genre,author,offset,limit) => {
+    //find all the books matching the offset and limit
+    const books = await database.select('book_id','title', 'current_price').table("book").limit(limit).offset(offset);
+
+    //for each book, find its authors
+    for(let i=0; i<books.length; i++) {
+        books[i]["authors"] = await database("author")
+            .join("authorship","author.author_id","authorship.author_id")
+            .where("authorship.book_id","=",books[i].book_id)
+            .select("name","surname","author.author_id")
     }
-  });
+    return books;
 };
 
 
@@ -249,6 +193,16 @@ exports.booksSearchGET = function(keyword,title,genre,author,offset,limit) {
  * returns List
  **/
 exports.genresGET = async (offset,limit) => {
-    //@todo vedere come risolvere ritorno di genre
+    //retrieve all the genres associated to at least one book
+    const genres =  await database.select('genre').table("genre").limit(limit).offset(offset);
+
+    //convert the array of objects into array of strings
+    const result = [];
+    for(let i =0; i<genres.length; i++) {
+        result[i] = genres[i]["genre"];
+    }
+    return result;
 };
+
+
 

@@ -128,7 +128,14 @@ exports.booksGET = async (offset,limit) => {
  * book BookContent The book object to insert.
  * returns inline_response_200
  **/
-exports.booksPOST = async (book) => {
+exports.booksPOST = async (book, token) => {
+
+    //check if the user is logged in, if so retrieve his user_id
+    const user_id = await checkToken(token);
+
+    //check if the user is an admin
+    const admin = await database.select('admin').table('book').where({ user_id: user_id});
+    if(!admin) throw new Error('Forbidden operation.');
 
     let data;
     data = {

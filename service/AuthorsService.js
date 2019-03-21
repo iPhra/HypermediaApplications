@@ -60,15 +60,15 @@ exports.authorsGET = async (offset,limit) => {
  * author AuthorContent The author to be inserted.
  * returns inline_response_200_1
  **/
-exports.authorsPOST = async (author) => {
+exports.authorsPOST = async (author, token) => {
+    //check if the user is logged in, if so retrieve his user_id
+    const user_id = await checkToken(token);
+
+    //check if the user is an admin
+    const admin = await database.select('admin').table('book').where({ user_id: user_id});
+    if(!admin) throw new Error('Forbidden operation.');
 
     // Insert a new author into author table
-    return await database
-        .table("author")
-        .insert(author, ['author_id'])
-        .then(data => {
-          return data;
-        })
-        .catch(err => { throw err; });
+    return await database.table("author").insert(author, ['author_id']);
 };
 

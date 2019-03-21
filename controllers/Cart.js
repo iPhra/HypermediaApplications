@@ -15,9 +15,10 @@ module.exports.accountCartDELETE = function accountCartDELETE (req, res, next) {
 };
 
 module.exports.accountCartGET = function accountCartGET (req, res, next) {
-  var offset = req.swagger.params['offset'].value;
-  var limit = req.swagger.params['limit'].value;
-  Cart.accountCartGET(offset,limit)
+  const offset = req.swagger.params['offset'].value;
+  const limit = req.swagger.params['limit'].value;
+  const token = req.headers.authorization;
+  Cart.accountCartGET(offset,limit,token)
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -28,7 +29,8 @@ module.exports.accountCartGET = function accountCartGET (req, res, next) {
 
 module.exports.accountCartPOST = function accountCartPOST (req, res, next) {
   var book = req.swagger.params['book'].value;
-  Cart.accountCartPOST(book)
+  const token = req.headers.authorization;
+  Cart.accountCartPOST(book, token)
     .then(function (response) {
       utils.writeJson(res, response);
     })

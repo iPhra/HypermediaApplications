@@ -19,7 +19,6 @@ accountSetup = (database) => {
                 table.string("password").notNullable();
                 table.string("name");
                 table.string("surname");
-                table.boolean("activated").notNullable();
                 table.boolean("admin").defaultTo(false);
             })
         }

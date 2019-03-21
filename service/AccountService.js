@@ -4,7 +4,8 @@ const {database} = require("./Database");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
-const hashPassword = require("../utils/authenticator.js").hashPassword;
+const checkToken = require("../utils/authenticator").checkToken;
+const hashPassword = require("../utils/authenticator").hashPassword;
 
 /**
  * Delete an existing acccount.
@@ -27,11 +28,12 @@ exports.accountInfoDELETE = async () => {
  *
  * returns User
  **/
-exports.accountInfoGET = async () => {
-    const user_id = 0; //@todo check if he's logged in and get his user_id
+exports.accountInfoGET = async (token) => {
+    //check if the user is logged in, if so retrieve his user_id
+    const user_id = await checkToken(token);
 
     //retrieve the info about the account
-    return await database.select().table("account").where("user_id","=",user_id);
+    return (await database.select().table("account").where("user_id","=",user_id))[0];
 };
 
 
@@ -41,22 +43,17 @@ exports.accountInfoGET = async () => {
  * account Account Account details. (optional)
  * returns User
  **/
-exports.accountInfoPOST = function(account) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "password" : "password",
-  "user_id" : 0,
-  "email" : "email",
-  "activated" : true
+exports.accountInfoPOST = async (account, token) => {
+    //check if the user is logged in, if so retrieve his user_id
+    const user_id = await checkToken(token);
+
+    //encrypt the password
+    if(account["password"]) account["password"] = await hashPassword(account["password"]);
+
+    //update existing account
+    const result = await database.update(account, ['email', 'password', 'name', 'surname', 'admin']).table("account").where({ 'user_id': user_id });
+    return result[0];
 };
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
-  });
-}
 
 
 /**
@@ -94,19 +91,17 @@ exports.accountLoginPOST = async (login) => {
  **/
 exports.accountRegisterPOST = async (user) => {
     //retrieve users with the same email
-    const account = await database
-      .table('account')
-      .select()
-      .where({ email:  user.email });
+    const account = await database.table('account').select().where({ email: user.email });
 
     //check if some user already exists
-    if (account.length>0)
+    if (account.length > 0)
         throw new Error('User already existing');
 
     //encrypt the password
     user["password"] = await hashPassword(user["password"]);
 
     //create new Account
-    return await database.table("account").insert(user, ['user_id'])
+    const result = await database.table("account").insert(user, ['email', 'password', 'name', 'surname']);
+    return result;
 };
 

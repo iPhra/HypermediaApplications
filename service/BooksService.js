@@ -30,6 +30,12 @@ exports.booksBookIdGET = async (book_id) => {
         .join("authorship","author.author_id","authorship.author_id")
         .where("authorship.book_id","=",book_id)
         .select("name","surname","author.author_id");
+
+    //find the genres of the book
+    book["genres"] = (await database("genre")
+        .join("book","book.book_id","genre.book_id")
+        .where("genre.book_id","=",book_id)
+        .select("genre")).map(a => a.genre);
     return book;
 };
 
@@ -123,6 +129,19 @@ exports.booksBookIdSimiliarsGET = async (book_id,offset,limit) => {
       .select("book.*")
       .offset(offset)
       .limit(limit));
+
+    //for each book, find its authors and its genres
+    for(let i=0; i<books.length; i++) {
+        books[i]["authors"] = await database("author")
+            .join("authorship","author.author_id","authorship.author_id")
+            .where("authorship.book_id","=",books[i].book_id)
+            .select("name","surname","author.author_id");
+
+        books[i]["genres"] = (await database("genre")
+            .join("book","book.book_id","genre.book_id")
+            .where("genre.book_id","=",books[i].book_id)
+            .select("genre")).map(a => a.genre);
+    }
     return books;
 };
 
@@ -138,12 +157,17 @@ exports.booksGET = async (offset,limit) => {
     //find all the books matching the offset and limit
     const books = await database.select('book_id','title', 'current_price').table("book").limit(limit).offset(offset);
 
-    //for each book, find its authors
+    //for each book, find its authors and its genres
     for(let i=0; i<books.length; i++) {
-    books[i]["authors"] = await database("author")
-        .join("authorship","author.author_id","authorship.author_id")
-        .where("authorship.book_id","=",books[i].book_id)
-        .select("name","surname","author.author_id")
+        books[i]["authors"] = await database("author")
+            .join("authorship","author.author_id","authorship.author_id")
+            .where("authorship.book_id","=",books[i].book_id)
+            .select("name","surname","author.author_id");
+
+        books[i]["genres"] = (await database("genre")
+            .join("book","book.book_id","genre.book_id")
+            .where("genre.book_id","=",books[i].book_id)
+            .select("genre")).map(a => a.genre);
     }
     return books;
 };
@@ -155,7 +179,14 @@ exports.booksGET = async (offset,limit) => {
  * book BookContent The book object to insert.
  * returns inline_response_200
  **/
-exports.booksPOST = async (book) => {
+exports.booksPOST = async (book, token) => {
+
+    //check if the user is logged in, if so retrieve his user_id
+    const user_id = await checkToken(token);
+
+    //check if the user is an admin
+    const admin = await database.select('admin').table('book').where({ user_id: user_id});
+    if(!admin) throw new Error('Forbidden operation.');
 
     let data;
     data = {
@@ -201,17 +232,32 @@ exports.booksPOST = async (book) => {
  * returns List
  **/
 exports.booksSearchGET = async (keyword,title,genre,author,offset,limit) => {
-    //find all the books matching the offset and limit
-    const books = await database.select('book_id','title', 'current_price').table("book").limit(limit).offset(offset);
+    /*
+    //retrieve all the books in the database
+    let books = await database.select('book_id','title', 'current_price').table("book").limit(limit).offset(offset);
 
-    //for each book, find its authors
+    //for each book, find its authors and its genres
     for(let i=0; i<books.length; i++) {
         books[i]["authors"] = await database("author")
             .join("authorship","author.author_id","authorship.author_id")
             .where("authorship.book_id","=",books[i].book_id)
-            .select("name","surname","author.author_id")
+            .select("name","surname","author.author_id");
+
+        books[i]["genres"] = (await database("genre")
+            .join("book","book.book_id","genre.book_id")
+            .where("genre.book_id","=",books[i].book_id)
+            .select("genre")).map(a => a.genre);
     }
-    return books;
+
+    const result = [];
+    for(let i=0; i<books.length; i++)
+        if((!title || (title && books[i].title===title))
+            && (!genre || (genre && genre in books[i].genres))
+            && (!author || (author && author in books[i].authors))
+            && (!keyword || (keyword && books[i].title.includes(keyword))))
+            results.concat(books[i]);
+
+    return result;*/
 };
 
 

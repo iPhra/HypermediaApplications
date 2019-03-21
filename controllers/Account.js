@@ -14,7 +14,8 @@ module.exports.accountInfoDELETE = function accountInfoDELETE (req, res, next) {
 };
 
 module.exports.accountInfoGET = function accountInfoGET (req, res, next) {
-  Account.accountInfoGET()
+  const token = req.headers.authorization;
+  Account.accountInfoGET(token)
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -24,8 +25,9 @@ module.exports.accountInfoGET = function accountInfoGET (req, res, next) {
 };
 
 module.exports.accountInfoPOST = function accountInfoPOST (req, res, next) {
-  var account = req.swagger.params['account'].value;
-  Account.accountInfoPOST(account)
+  const account = req.swagger.params['account'].value;
+  const token = req.headers.authorization;
+  Account.accountInfoPOST(account, token)
     .then(function (response) {
       utils.writeJson(res, response);
     })

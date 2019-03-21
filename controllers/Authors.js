@@ -51,7 +51,8 @@ module.exports.authorsGET = function authorsGET (req, res, next) {
 
 module.exports.authorsPOST = function authorsPOST (req, res, next) {
   var author = req.swagger.params['author'].value;
-  Authors.authorsPOST(author)
+    const token = req.headers.authorization;
+  Authors.authorsPOST(author, token)
     .then(function (response) {
       utils.writeJson(res, response);
     })

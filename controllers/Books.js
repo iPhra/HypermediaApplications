@@ -64,7 +64,8 @@ module.exports.booksGET = function booksGET (req, res, next) {
 
 module.exports.booksPOST = function booksPOST (req, res, next) {
   var book = req.swagger.params['book'].value;
-  Books.booksPOST(book)
+  const token = req.headers.authorization;
+  Books.booksPOST(book, token)
     .then(function (response) {
       utils.writeJson(res, response);
     })

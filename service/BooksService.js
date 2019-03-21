@@ -30,6 +30,12 @@ exports.booksBookIdGET = async (book_id) => {
         .join("authorship","author.author_id","authorship.author_id")
         .where("authorship.book_id","=",book_id)
         .select("name","surname","author.author_id");
+
+    //find the genres of the book
+    book["genres"] = (await database("genre")
+        .join("book","book.book_id","genre.book_id")
+        .where("genre.book_id","=",book_id)
+        .select("genre")).map(a => a.genre);
     return book;
 };
 
@@ -72,6 +78,19 @@ exports.booksBookIdSimiliarsGET = async (book_id,offset,limit) => {
       .select("book.*")
       .offset(offset)
       .limit(limit));
+
+    //for each book, find its authors and its genres
+    for(let i=0; i<books.length; i++) {
+        books[i]["authors"] = await database("author")
+            .join("authorship","author.author_id","authorship.author_id")
+            .where("authorship.book_id","=",books[i].book_id)
+            .select("name","surname","author.author_id");
+
+        books[i]["genres"] = (await database("genre")
+            .join("book","book.book_id","genre.book_id")
+            .where("genre.book_id","=",books[i].book_id)
+            .select("genre")).map(a => a.genre);
+    }
     return books;
 };
 
@@ -87,12 +106,17 @@ exports.booksGET = async (offset,limit) => {
     //find all the books matching the offset and limit
     const books = await database.select('book_id','title', 'current_price').table("book").limit(limit).offset(offset);
 
-    //for each book, find its authors
+    //for each book, find its authors and its genres
     for(let i=0; i<books.length; i++) {
-    books[i]["authors"] = await database("author")
-        .join("authorship","author.author_id","authorship.author_id")
-        .where("authorship.book_id","=",books[i].book_id)
-        .select("name","surname","author.author_id")
+        books[i]["authors"] = await database("author")
+            .join("authorship","author.author_id","authorship.author_id")
+            .where("authorship.book_id","=",books[i].book_id)
+            .select("name","surname","author.author_id");
+
+        books[i]["genres"] = (await database("genre")
+            .join("book","book.book_id","genre.book_id")
+            .where("genre.book_id","=",books[i].book_id)
+            .select("genre")).map(a => a.genre);
     }
     return books;
 };
@@ -152,15 +176,28 @@ exports.booksPOST = async (book) => {
  * returns List
  **/
 exports.booksSearchGET = async (keyword,title,genre,author,offset,limit) => {
-    //find all the books matching the offset and limit
-    const books = await database.select('book_id','title', 'current_price').table("book").limit(limit).offset(offset);
+    //retrieve all the books in the database
+    let books = await database.select('book_id','title', 'current_price').table("book").limit(limit).offset(offset);
 
-    //for each book, find its authors
+    /*for(let i=0; i<books.length; i++)
+    books = books.filter(function (el) {
+        return (title? el.title = title : true) && //if title is present in the request, keep only the books having that title
+            (author? el.author = author : true) && //if the author is present in the request, keep only the books of that author
+            (genre? el.genre = genre : true) && //if the genre is present in the request, keep only the books of that genre
+            (keyword? el.title.includes(keyword) || el.author.includes(keyword) || el.genre.includes(keyword) : true); //try to
+    });*/
+
+    //for each book, find its authors and its genres
     for(let i=0; i<books.length; i++) {
         books[i]["authors"] = await database("author")
             .join("authorship","author.author_id","authorship.author_id")
             .where("authorship.book_id","=",books[i].book_id)
-            .select("name","surname","author.author_id")
+            .select("name","surname","author.author_id");
+
+        books[i]["genres"] = await database("genre")
+            .join("book","book.book_id","genre.book_id")
+            .where("genre.book_id","=",books[i].book_id)
+            .select("genre");
     }
     return books;
 };

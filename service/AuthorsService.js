@@ -22,7 +22,7 @@ exports.authorsAuthorIdDELETE = function(author_id) {
  * returns Author
  **/
 exports.authorsAuthorIdGET = async (author_id) => {
-  //find the given author
+  //retrieve the given author
   return (await database.select().table("author").where("author_id","=",author_id))[0];
 };
 

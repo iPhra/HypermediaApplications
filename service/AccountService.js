@@ -4,7 +4,8 @@ const {database} = require("./Database");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
-const hashPassword = require("../utils/authenticator.js").hashPassword;
+const checkToken = require("../utils/authenticator").checkToken;
+const hashPassword = require("../utils/authenticator").hashPassword;
 
 /**
  * Delete an existing acccount.
@@ -34,11 +35,12 @@ exports.accountInfoDELETE = function() {
  *
  * returns User
  **/
-exports.accountInfoGET = async () => {
-    const user_id = 0; //@todo check if he's logged in and get his user_id
+exports.accountInfoGET = async (token) => {
+    //check if the user is logged in, if so retrieve his user_id
+    const user_id = await checkToken(token);
 
     //retrieve the info about the account
-    return await database.select().table("account").where("user_id","=",user_id);
+    return (await database.select().table("account").where("user_id","=",user_id))[0];
 };
 
 

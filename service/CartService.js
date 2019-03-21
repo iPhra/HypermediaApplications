@@ -3,6 +3,7 @@
 const {database} = require("./Database");
 const checkToken = require("../utils/authenticator").checkToken;
 
+
 /**
  * Remove item(s) from cart
  *

@@ -8,11 +8,11 @@ const {database} = require("./Database");
  * author_id Long The id of the desired author.
  * no response value expected for this operation
  **/
-exports.authorsAuthorIdDELETE = function(author_id) {
-  return new Promise(function(resolve, reject) {
-    resolve();
-  });
-}
+exports.authorsAuthorIdDELETE = async (author_id) => {
+    //todo handle exceptions here
+    await database("author").where("author_id", author_id).del();
+    return "Author deleted.";
+};
 
 
 /**
@@ -34,12 +34,27 @@ exports.authorsAuthorIdGET = async (author_id) => {
  * author AuthorContent The fields to update.
  * no response value expected for this operation
  **/
-exports.authorsAuthorIdPUT = function(author_id,author) {
-  return new Promise(function(resolve, reject) {
-    resolve();
-  });
-}
+exports.authorsAuthorIdPUT = async (author_id,author) => {
+    let old_author = await database.select("*").from("author").where("author_id", author_id);
+    if (old_author.length === 1) {
 
+        await database("author").where("author", author_id).update({
+                name        : author.name,
+                surname     : author.surname,
+                birthdate   : author.birthdate,
+                birthplace  : author.birthplace,
+                description : author.description,
+                img_path    : author.img_path
+            }
+        );
+
+        return "Author updated!"
+
+    }
+    else{
+        //todo handle error here
+    }
+};
 
 /**
  * Returns a preview of all the authors.

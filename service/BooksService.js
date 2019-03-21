@@ -8,11 +8,11 @@ const {database} = require("./Database");
  * book_id Long The id of the desired book.
  * no response value expected for this operation
  **/
-exports.booksBookIdDELETE = function(book_id) {
-  return new Promise(function(resolve, reject) {
-    resolve();
-  });
-}
+exports.booksBookIdDELETE = async (book_id) => {
+    //todo handle exceptions here
+    await database("book").where("book_id", book_id).del();
+    return "Book deleted.";
+};
 
 
 /**
@@ -41,11 +41,62 @@ exports.booksBookIdGET = async (book_id) => {
  * book BookContent The new fields to update.
  * no response value expected for this operation
  **/
-exports.booksBookIdPUT = function(book_id,book) {
-  return new Promise(function(resolve, reject) {
-    resolve();
-  });
-}
+exports.booksBookIdPUT = async (book_id,book) => {
+    let oldBook = await database.select("*").from("book").where("book_id", book_id);
+    if (oldBook.length === 1) {
+
+        await database("book").where("book_id", book_id).update({
+                title           : book.title,
+                current_price   : book.current_price,
+                isbn10          : book.isbn10,
+                isbn13          : book.isbn13,
+                num_of_pages    : book.num_of_pages,
+                cover_type      : book.cover_type,
+                description     : book.description,
+                availability    : book.availability,
+                img_path        : book.img_path
+            }
+
+        );
+
+
+        await database.transaction(async trx => {
+
+            let data = book.genres.map(genre => {
+                return { 'book_id': book_id, 'genre' : genre };
+            });
+
+            await trx.insert(data, 'genre').into('genre');
+
+            data = book.authors.author_ids.map(author_id => {
+                return { 'book_id': book_id, 'author_id' : author_id };
+            });
+
+            await trx.insert(data, 'author_id').into('authorship');
+
+            data = book.similars.map(similar_book_id => {
+                return { 'book_id1': book_id, 'book_id2' : similar_book_id };
+            });
+
+            await trx.insert(data).into('similarity')
+                            .whereNotExists(
+                                database("similarity").where({
+                                    book_id1    : data.book_id1,
+                                    book_id2    : data.book_id2
+                            }).union(
+                                database("similarity").where({
+                                    book_id1    : data.book_id1,
+                                    book_id2    : data.book_id2
+                            })));
+        });
+
+        return "Book updated!"
+
+    }
+    else{
+        //todo handle error here
+    }
+};
 
 
 /**
@@ -134,8 +185,6 @@ exports.booksPOST = async (book) => {
         });
 
         await trx.insert(data, 'author_id').into('authorship');
-
-        return id[0];
     });
 };
 

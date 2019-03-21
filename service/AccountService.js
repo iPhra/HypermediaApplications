@@ -11,22 +11,15 @@ const hashPassword = require("../utils/authenticator.js").hashPassword;
  *
  * returns User
  **/
-exports.accountInfoDELETE = function() {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "password" : "password",
-  "user_id" : 0,
-  "email" : "email",
-  "activated" : true
+exports.accountInfoDELETE = async () => {
+    //todo handle exceptions here
+
+
+    //todo when updating API, remove this 0 with the right params
+    let account_id = 0;
+    await database("account").where("account_id", account_id).del();
+    return "Account deleted.";
 };
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
-  });
-}
 
 
 /**

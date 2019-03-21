@@ -29,7 +29,8 @@ module.exports.accountCartGET = function accountCartGET (req, res, next) {
 
 module.exports.accountCartPOST = function accountCartPOST (req, res, next) {
   var book = req.swagger.params['book'].value;
-  Cart.accountCartPOST(book)
+  const token = req.headers.authorization;
+  Cart.accountCartPOST(book, token)
     .then(function (response) {
       utils.writeJson(res, response);
     })

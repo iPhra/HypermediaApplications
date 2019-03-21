@@ -95,30 +95,7 @@ exports.accountCartGET = async (offset,limit, token) => {
   //check if the user is logged in, if so retrieve his user_id
   const user_id = await checkToken(token);
 
-  //retrieve all the book_ids in the cart
-  const book_ids = await database.table("cart")
-      .select("book_id","quantity")
-      .where("user_id","=",user_id)
-      .limit(limit)
-      .offset(offset);
-  const ids = book_ids.map(a => a.book_id);
-
-  //retrieve all the books associated to those ids
-  const books = await database.table("book")
-      .select("book_id","title","current_price")
-      .whereIn("book_id",ids);
-
-  let total_price = 0;
-  let price = 0;
-  //for each book, add the price as the current_price*quantity of that book, and sum that value to the total value of the cart
-  for(let i=0; i<books.length; i++) {
-    price = books[i].current_price * book_ids[i].quantity;
-    books[i].price = price;
-    total_price += price;
-  }
-
-  return { "book_list":books,
-    "total_price":total_price };
+  retriveCart();
 
 };
 
@@ -129,12 +106,40 @@ exports.accountCartGET = async (offset,limit, token) => {
  * book Book The book to be added to cart.
  * returns Cart
  **/
-exports.accountCartPOST = async (book) => {
+exports.accountCartPOST = async (book, token) => {
+    //check if the user is logged in, if so retrieve his user_id
+    const user_id = await checkToken(token);
+    book["user_id"] = user_id;
 
-  console.log(book);
-  // Check if it's logged in
-
+    //insert the new book into the cart
     await database.table("cart").insert(book);
-    await  database.table("cart").select().where({ user_id: 1 });
+
+    retriveCart();
 };
+
+async function retriveCart() {
+    //retrieve all the book_ids in the cart
+    const book_ids = await database.table("cart")
+        .select("book_id","quantity")
+        .where("user_id","=",user_id)
+        .limit(limit)
+        .offset(offset);
+    const ids = book_ids.map(a => a.book_id);
+
+    //retrieve all the books associated to those ids
+    const books = await database.table("book")
+        .select("book_id","title","current_price")
+        .whereIn("book_id",ids);
+
+    let total_price = 0;
+    let price = 0;
+    //for each book, add the price as the current_price*quantity of that book, and sum that value to the total value of the cart
+    for(let i=0; i<books.length; i++) {
+        price = books[i].current_price * book_ids[i].quantity;
+        books[i].price = price;
+        total_price += price;
+    }
+
+    return { "book_list": books, "total_price": total_price };
+}
 

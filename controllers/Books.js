@@ -1,10 +1,10 @@
 'use strict';
 
-var utils = require('../utils/writer.js');
-var Books = require('../service/BooksService');
+const utils = require('../utils/writer.js');
+const Books = require('../service/BooksService');
 
 module.exports.booksBookIdDELETE = function booksBookIdDELETE (req, res, next) {
-  var book_id = req.swagger.params['book_id'].value;
+  const book_id = req.swagger.params['book_id'].value;
   Books.booksBookIdDELETE(book_id)
     .then(function (response) {
       utils.writeJson(res, response);
@@ -15,7 +15,7 @@ module.exports.booksBookIdDELETE = function booksBookIdDELETE (req, res, next) {
 };
 
 module.exports.booksBookIdGET = function booksBookIdGET (req, res, next) {
-  var book_id = req.swagger.params['book_id'].value;
+  const book_id = req.swagger.params['book_id'].value;
   Books.booksBookIdGET(book_id)
     .then(function (response) {
       utils.writeJson(res, response);
@@ -26,8 +26,8 @@ module.exports.booksBookIdGET = function booksBookIdGET (req, res, next) {
 };
 
 module.exports.booksBookIdPUT = function booksBookIdPUT (req, res, next) {
-  var book_id = req.swagger.params['book_id'].value;
-  var book = req.swagger.params['book'].value;
+  const book_id = req.swagger.params['book_id'].value;
+  const book = req.swagger.params['book'].value;
   Books.booksBookIdPUT(book_id,book)
     .then(function (response) {
       utils.writeJson(res, response);
@@ -38,9 +38,9 @@ module.exports.booksBookIdPUT = function booksBookIdPUT (req, res, next) {
 };
 
 module.exports.booksBookIdSimiliarsGET = function booksBookIdSimiliarsGET (req, res, next) {
-  var book_id = req.swagger.params['book_id'].value;
-  var offset = req.swagger.params['offset'].value;
-  var limit = req.swagger.params['limit'].value;
+  const book_id = req.swagger.params['book_id'].value;
+  const offset = req.swagger.params['offset'].value;
+  const limit = req.swagger.params['limit'].value;
   Books.booksBookIdSimiliarsGET(book_id,offset,limit)
     .then(function (response) {
       utils.writeJson(res, response);
@@ -51,8 +51,8 @@ module.exports.booksBookIdSimiliarsGET = function booksBookIdSimiliarsGET (req, 
 };
 
 module.exports.booksGET = function booksGET (req, res, next) {
-  var offset = req.swagger.params['offset'].value;
-  var limit = req.swagger.params['limit'].value;
+  const offset = req.swagger.params['offset'].value;
+  const limit = req.swagger.params['limit'].value;
   Books.booksGET(offset,limit)
     .then(function (response) {
       utils.writeJson(res, response);
@@ -63,9 +63,8 @@ module.exports.booksGET = function booksGET (req, res, next) {
 };
 
 module.exports.booksPOST = function booksPOST (req, res, next) {
-  var book = req.swagger.params['book'].value;
-  const token = req.headers.authorization;
-  Books.booksPOST(book, token)
+    const book_container = req.swagger.params['book_container'].value;
+    Books.booksPOST(book_container)
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -75,13 +74,12 @@ module.exports.booksPOST = function booksPOST (req, res, next) {
 };
 
 module.exports.booksSearchGET = function booksSearchGET (req, res, next) {
-  var keyword = req.swagger.params['keyword'].value;
-  var title = req.swagger.params['title'].value;
-  var genre = req.swagger.params['genre'].value;
-  var author = req.swagger.params['author'].value;
-  var offset = req.swagger.params['offset'].value;
-  var limit = req.swagger.params['limit'].value;
-  Books.booksSearchGET(keyword,title,genre,author,offset,limit)
+    const title = req.swagger.params['title'].value;
+    const genre = req.swagger.params['genre'].value;
+    const author = req.swagger.params['author'].value;
+    const offset = req.swagger.params['offset'].value;
+    const limit = req.swagger.params['limit'].value;
+    Books.booksSearchGET(title,genre,author,offset,limit)
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -91,9 +89,9 @@ module.exports.booksSearchGET = function booksSearchGET (req, res, next) {
 };
 
 module.exports.genresGET = function genresGET (req, res, next) {
-  var offset = req.swagger.params['offset'].value;
-  var limit = req.swagger.params['limit'].value;
-  Books.genresGET(offset,limit)
+    const offset = req.swagger.params['offset'].value;
+    const limit = req.swagger.params['limit'].value;
+    Books.genresGET(offset,limit)
     .then(function (response) {
       utils.writeJson(res, response);
     })

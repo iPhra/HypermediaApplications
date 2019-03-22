@@ -40,12 +40,12 @@ paths:
         format: "int64"
       responses:
         200:
-          description: "A list of titles, authors, prices and ids of all the books\
-            \ in the database."
+          description: "A list of titles, authors, prices, ids and images of all the\
+            \ books in the database."
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/Book"
+              $ref: "#/definitions/BookSnippet"
         400:
           description: "Bad request."
       x-swagger-router-controller: "Books"
@@ -60,11 +60,11 @@ paths:
       - "application/json"
       parameters:
       - in: "body"
-        name: "book"
-        description: "The book object to insert."
+        name: "book_container"
+        description: "The book object to insert and its similars."
         required: true
         schema:
-          $ref: "#/definitions/BookContent"
+          $ref: "#/definitions/book_container"
       responses:
         200:
           description: "Book inserted."
@@ -80,6 +80,8 @@ paths:
           description: "Forbidden operation."
       security:
       - Bearer: []
+      x-security-scopes:
+      - "admin"
       x-swagger-router-controller: "Books"
   /books/search:
     get:
@@ -90,11 +92,6 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "keyword"
-        in: "query"
-        description: "A generic keyword to filter all the books."
-        required: false
-        type: "string"
       - name: "title"
         in: "query"
         description: "The desired title of the book."
@@ -126,12 +123,12 @@ paths:
         format: "int64"
       responses:
         200:
-          description: "A list of titles, authors, prices and ids of all the books\
-            \ matching the search parameters."
+          description: "A list of titles, authors, prices, ids and images of all the\
+            \ books matching the search parameters."
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/Book"
+              $ref: "#/definitions/BookSnippet"
         400:
           description: "Bad request."
       x-swagger-router-controller: "Books"
@@ -167,8 +164,6 @@ paths:
       operationId: "booksBookIdPUT"
       consumes:
       - "application/json"
-      produces:
-      - "application/json"
       parameters:
       - name: "book_id"
         in: "path"
@@ -181,7 +176,7 @@ paths:
         description: "The new fields to update."
         required: true
         schema:
-          $ref: "#/definitions/BookContent"
+          $ref: "#/definitions/Book"
       responses:
         200:
           description: "Book updated."
@@ -193,16 +188,14 @@ paths:
           description: "Book not found."
       security:
       - Bearer: []
+      x-security-scopes:
+      - "admin"
       x-swagger-router-controller: "Books"
     delete:
       tags:
       - "Books"
       summary: "Delete an existing book."
       operationId: "booksBookIdDELETE"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
       parameters:
       - name: "book_id"
         in: "path"
@@ -221,6 +214,8 @@ paths:
           description: "Book not found."
       security:
       - Bearer: []
+      x-security-scopes:
+      - "admin"
       x-swagger-router-controller: "Books"
   /books/{book_id}/similars:
     get:
@@ -321,11 +316,12 @@ paths:
         format: "int64"
       responses:
         200:
-          description: "A list of names, surnames and ids of all authors in the database."
+          description: "A list of names, surnames, ids and images of all authors in\
+            \ the database."
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/Author"
+              $ref: "#/definitions/AuthorSnippet"
         400:
           description: "Bad request."
       x-swagger-router-controller: "Authors"
@@ -344,7 +340,7 @@ paths:
         description: "The author to be inserted."
         required: true
         schema:
-          $ref: "#/definitions/AuthorContent"
+          $ref: "#/definitions/Author"
       responses:
         200:
           description: "Author inserted."
@@ -360,6 +356,8 @@ paths:
           description: "Forbidden operation."
       security:
       - Bearer: []
+      x-security-scopes:
+      - "admin"
       x-swagger-router-controller: "Authors"
   /authors/{author_id}:
     get:
@@ -393,8 +391,6 @@ paths:
       operationId: "authorsAuthorIdPUT"
       consumes:
       - "application/json"
-      produces:
-      - "application/json"
       parameters:
       - name: "author_id"
         in: "path"
@@ -407,7 +403,7 @@ paths:
         description: "The fields to update."
         required: true
         schema:
-          $ref: "#/definitions/AuthorContent"
+          $ref: "#/definitions/Author"
       responses:
         200:
           description: "Author updated."
@@ -419,6 +415,8 @@ paths:
           description: "Author not found."
       security:
       - Bearer: []
+      x-security-scopes:
+      - "admin"
       x-swagger-router-controller: "Authors"
     delete:
       tags:
@@ -426,8 +424,6 @@ paths:
       summary: "Delete an existing author."
       operationId: "authorsAuthorIdDELETE"
       consumes:
-      - "application/json"
-      produces:
       - "application/json"
       parameters:
       - name: "author_id"
@@ -447,6 +443,8 @@ paths:
           description: "Author not found."
       security:
       - Bearer: []
+      x-security-scopes:
+      - "admin"
       x-swagger-router-controller: "Authors"
   /account/cart:
     get:
@@ -508,11 +506,14 @@ paths:
           description: "Unauthorized."
       security:
       - Bearer: []
+      x-security-scopes:
+      - "admin"
+      - "user"
       x-swagger-router-controller: "Cart"
     delete:
       tags:
       - "Cart"
-      summary: "Remove item(s) from cart"
+      summary: "Remove an item from the cart"
       operationId: "accountCartDELETE"
       produces:
       - "application/json"
@@ -534,6 +535,27 @@ paths:
           description: "Unauthorized."
       security:
       - Bearer: []
+      x-security-scopes:
+      - "admin"
+      - "user"
+      x-swagger-router-controller: "Cart"
+  /account/cart/checkout:
+    post:
+      tags:
+      - "Cart"
+      summary: "Buy the items in the cart."
+      operationId: "accountCartCheckoutPOST"
+      parameters: []
+      responses:
+        200:
+          description: "Purchase successful."
+        401:
+          description: "Unauthorized."
+      security:
+      - Bearer: []
+      x-security-scopes:
+      - "admin"
+      - "user"
       x-swagger-router-controller: "Cart"
   /account/info:
     get:
@@ -553,6 +575,9 @@ paths:
           description: "Unauthorized."
       security:
       - Bearer: []
+      x-security-scopes:
+      - "admin"
+      - "user"
       x-swagger-router-controller: "Account"
     post:
       tags:
@@ -569,7 +594,7 @@ paths:
         description: "Account details."
         required: false
         schema:
-          $ref: "#/definitions/account"
+          $ref: "#/definitions/User"
       responses:
         200:
           description: "Account updated."
@@ -581,24 +606,26 @@ paths:
           description: "Unauthorized."
       security:
       - Bearer: []
+      x-security-scopes:
+      - "admin"
+      - "user"
       x-swagger-router-controller: "Account"
     delete:
       tags:
       - "Account"
       summary: "Delete an existing acccount."
       operationId: "accountInfoDELETE"
-      produces:
-      - "application/json"
       parameters: []
       responses:
         200:
           description: "Account deleted."
-          schema:
-            $ref: "#/definitions/User"
         401:
           description: "Unauthorized."
       security:
       - Bearer: []
+      x-security-scopes:
+      - "admin"
+      - "user"
       x-swagger-router-controller: "Account"
   /account/register:
     post:
@@ -607,6 +634,8 @@ paths:
       summary: "Registers a new user."
       operationId: "accountRegisterPOST"
       consumes:
+      - "application/json"
+      produces:
       - "application/json"
       parameters:
       - in: "body"
@@ -619,7 +648,10 @@ paths:
         200:
           description: "Registration successful."
           schema:
-            $ref: "#/definitions/User"
+            type: "object"
+            properties:
+              user_id:
+                type: "string"
         400:
           description: "Bad request."
         409:
@@ -632,6 +664,8 @@ paths:
       summary: "Login of a registered user."
       operationId: "accountLoginPOST"
       consumes:
+      - "application/json"
+      produces:
       - "application/json"
       parameters:
       - in: "body"
@@ -662,8 +696,69 @@ definitions:
   Book:
     required:
     - "authors"
+    - "availability"
+    - "current_price"
+    - "isbn10"
+    - "isbn13"
+    - "title"
+    properties:
+      title:
+        type: "string"
+      current_price:
+        type: "number"
+        format: "float"
+      authors:
+        $ref: "#/definitions/Book_authors"
+      isbn10:
+        type: "integer"
+      isbn13:
+        type: "integer"
+      num_of_pages:
+        type: "integer"
+      cover_type:
+        type: "string"
+        enum:
+        - "hard cover"
+        - "e-book"
+        - "soft cover"
+      description:
+        type: "string"
+      genres:
+        type: "array"
+        uniqueItems: true
+        items:
+          type: "string"
+      availability:
+        type: "string"
+        enum:
+        - "unreleased"
+        - "available"
+        - "out_of_stock"
+      imgpath:
+        type: "string"
+    example:
+      num_of_pages: 5
+      genres:
+      - "genres"
+      - "genres"
+      imgpath: "imgpath"
+      isbn13: 5
+      description: "description"
+      isbn10: 1
+      current_price: 0.8008282
+      availability: "unreleased"
+      title: "title"
+      cover_type: "hard cover"
+      authors:
+        author_ids:
+        - 6
+        - 6
+  BookSnippet:
+    required:
+    - "authors"
     - "book_id"
     - "current_price"
+    - "imgpath"
     - "title"
     properties:
       book_id:
@@ -677,47 +772,13 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/Author"
-      isbn10:
-        type: "integer"
-      isbn13:
-        type: "integer"
-      num_of_pages:
-        type: "integer"
-      cover_type:
-        type: "string"
-        enum:
-        - "hard cover"
-        - "e-book"
-        - "soft cover"
-      description:
-        type: "string"
-      genres:
-        type: "array"
-        uniqueItems: true
-        items:
-          type: "string"
-      availability:
-        type: "string"
-        enum:
-        - "unreleased"
-        - "available"
-        - "out_of_stock"
       imgpath:
         type: "string"
     example:
-      num_of_pages: 2
-      genres:
-      - "genres"
-      - "genres"
       imgpath: "imgpath"
-      isbn13: 5
-      description: "description"
-      isbn10: 5
       book_id: 0
       current_price: 6.0274563
-      availability: "unreleased"
       title: "title"
-      cover_type: "hard cover"
       authors:
       - birthdate: "birthdate"
         birthplace: "birthplace"
@@ -725,84 +786,40 @@ definitions:
         imgpath: "imgpath"
         name: "name"
         description: "description"
-        author_id: 1
       - birthdate: "birthdate"
         birthplace: "birthplace"
         surname: "surname"
         imgpath: "imgpath"
         name: "name"
         description: "description"
-        author_id: 1
-  BookContent:
-    required:
-    - "authors"
-    - "availability"
-    - "current_price"
-    - "isbn10"
-    - "isbn13"
-    - "title"
-    properties:
-      title:
-        type: "string"
-      current_price:
-        type: "number"
-        format: "float"
-      authors:
-        $ref: "#/definitions/BookContent_authors"
-      isbn10:
-        type: "integer"
-      isbn13:
-        type: "integer"
-      num_of_pages:
-        type: "integer"
-      cover_type:
-        type: "string"
-        enum:
-        - "hard cover"
-        - "e-book"
-        - "soft cover"
-      description:
-        type: "string"
-      genres:
-        type: "array"
-        uniqueItems: true
-        items:
-          type: "string"
-      availability:
-        type: "string"
-        enum:
-        - "unreleased"
-        - "available"
-        - "out_of_stock"
-      imgpath:
-        type: "string"
-      similars:
-        type: "array"
-        items:
-          type: "integer"
-    example:
-      num_of_pages: 5
-      genres:
-      - "genres"
-      - "genres"
-      imgpath: "imgpath"
-      isbn13: 5
-      similars:
-      - 2
-      - 2
-      description: "description"
-      isbn10: 1
-      current_price: 0.8008282
-      availability: "unreleased"
-      title: "title"
-      cover_type: "hard cover"
-      authors:
-        author_ids:
-        - 6
-        - 6
   Author:
     required:
+    - "name"
+    - "surname"
+    properties:
+      name:
+        type: "string"
+      surname:
+        type: "string"
+      birthdate:
+        type: "string"
+      birthplace:
+        type: "string"
+      description:
+        type: "string"
+      imgpath:
+        type: "string"
+    example:
+      birthdate: "birthdate"
+      birthplace: "birthplace"
+      surname: "surname"
+      imgpath: "imgpath"
+      name: "name"
+      description: "description"
+  AuthorSnippet:
+    required:
     - "author_id"
+    - "imgpath"
     - "name"
     - "surname"
     properties:
@@ -812,134 +829,54 @@ definitions:
         type: "string"
       surname:
         type: "string"
-      birthdate:
-        type: "string"
-      birthplace:
-        type: "string"
-      description:
-        type: "string"
       imgpath:
         type: "string"
     example:
-      birthdate: "birthdate"
-      birthplace: "birthplace"
       surname: "surname"
       imgpath: "imgpath"
       name: "name"
-      description: "description"
-      author_id: 1
-  AuthorContent:
-    required:
-    - "name"
-    - "surname"
-    properties:
-      name:
-        type: "string"
-      surname:
-        type: "string"
-      birthdate:
-        type: "string"
-      birthplace:
-        type: "string"
-      description:
-        type: "string"
-      imgpath:
-        type: "string"
-    example:
-      birthdate: "birthdate"
-      birthplace: "birthplace"
-      surname: "surname"
-      imgpath: "imgpath"
-      name: "name"
-      description: "description"
+      author_id: 0
   User:
     required:
-    - "activated"
     - "email"
     - "password"
-    - "user_id"
     properties:
-      user_id:
-        type: "integer"
       email:
         type: "string"
       password:
         type: "string"
-      activated:
+      name:
+        type: "string"
+      surname:
+        type: "string"
+      admin:
         type: "boolean"
     example:
       password: "password"
-      user_id: 0
+      surname: "surname"
+      name: "name"
+      admin: true
       email: "email"
-      activated: true
   Cart:
     properties:
       book_list:
         type: "array"
         items:
-          $ref: "#/definitions/Book"
+          $ref: "#/definitions/Cart_book_list"
       total_price:
-        type: "integer"
-        format: "int64"
+        type: "number"
+        format: "float"
     example:
-      total_price: 0
+      total_price: 5.962134
       book_list:
-      - num_of_pages: 2
-        genres:
-        - "genres"
-        - "genres"
-        imgpath: "imgpath"
-        isbn13: 5
-        description: "description"
-        isbn10: 5
+      - price: 1.4658129
         book_id: 0
         current_price: 6.0274563
-        availability: "unreleased"
         title: "title"
-        cover_type: "hard cover"
-        authors:
-        - birthdate: "birthdate"
-          birthplace: "birthplace"
-          surname: "surname"
-          imgpath: "imgpath"
-          name: "name"
-          description: "description"
-          author_id: 1
-        - birthdate: "birthdate"
-          birthplace: "birthplace"
-          surname: "surname"
-          imgpath: "imgpath"
-          name: "name"
-          description: "description"
-          author_id: 1
-      - num_of_pages: 2
-        genres:
-        - "genres"
-        - "genres"
-        imgpath: "imgpath"
-        isbn13: 5
-        description: "description"
-        isbn10: 5
+      - price: 1.4658129
         book_id: 0
         current_price: 6.0274563
-        availability: "unreleased"
         title: "title"
-        cover_type: "hard cover"
-        authors:
-        - birthdate: "birthdate"
-          birthplace: "birthplace"
-          surname: "surname"
-          imgpath: "imgpath"
-          name: "name"
-          description: "description"
-          author_id: 1
-        - birthdate: "birthdate"
-          birthplace: "birthplace"
-          surname: "surname"
-          imgpath: "imgpath"
-          name: "name"
-          description: "description"
-          author_id: 1
   Genre:
     type: "string"
     enum:
@@ -950,6 +887,18 @@ definitions:
     - "fantasy"
     - "action"
     - "crime"
+  book_container:
+    type: "object"
+    required:
+    - "book"
+    properties:
+      book:
+        $ref: "#/definitions/Book"
+      similars:
+        type: "array"
+        items:
+          type: "integer"
+          format: "int64"
   inline_response_200:
     properties:
       book_id:
@@ -968,13 +917,14 @@ definitions:
     type: "object"
     required:
     - "book_id"
-    - "is_booking"
+    - "quantity"
     properties:
       book_id:
         type: "integer"
         format: "int64"
-      is_booking:
-        type: "boolean"
+      quantity:
+        type: "integer"
+        format: "int64"
   item:
     type: "object"
     required:
@@ -987,24 +937,13 @@ definitions:
       quantity:
         type: "integer"
         format: "int64"
-      is_booking:
-        type: "boolean"
-  account:
-    type: "object"
-    properties:
-      email:
-        type: "string"
-      password:
-        type: "string"
-      name:
-        type: "string"
-      surname:
-        type: "string"
   user:
     type: "object"
     required:
     - "email"
+    - "name"
     - "password"
+    - "surname"
     properties:
       email:
         type: "string"
@@ -1014,6 +953,12 @@ definitions:
         type: "string"
       surname:
         type: "string"
+  inline_response_200_2:
+    properties:
+      user_id:
+        type: "string"
+    example:
+      user_id: "user_id"
   login:
     type: "object"
     required:
@@ -1024,13 +969,13 @@ definitions:
         type: "string"
       password:
         type: "string"
-  inline_response_200_2:
+  inline_response_200_3:
     properties:
       token:
         type: "string"
     example:
       token: "token"
-  BookContent_authors:
+  Book_authors:
     properties:
       author_ids:
         type: "array"
@@ -1041,3 +986,25 @@ definitions:
       author_ids:
       - 6
       - 6
+  Cart_book_list:
+    required:
+    - "book_id"
+    - "current_price"
+    - "price"
+    - "title"
+    properties:
+      book_id:
+        type: "integer"
+      title:
+        type: "string"
+      current_price:
+        type: "number"
+        format: "float"
+      price:
+        type: "number"
+        format: "float"
+    example:
+      price: 1.4658129
+      book_id: 0
+      current_price: 6.0274563
+      title: "title"

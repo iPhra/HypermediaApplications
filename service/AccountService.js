@@ -10,7 +10,7 @@ const hashPassword = require("../utils/authenticator").hashPassword;
 /**
  * Delete an existing acccount.
  *
- * returns User
+ * no response value expected for this operation
  **/
 exports.accountInfoDELETE = async () => {
     //todo handle exceptions here
@@ -40,7 +40,7 @@ exports.accountInfoGET = async (token) => {
 /**
  * Updates the info of an account.
  *
- * account Account Account details. (optional)
+ * account User Account details. (optional)
  * returns User
  **/
 exports.accountInfoPOST = async (account, token) => {
@@ -60,7 +60,7 @@ exports.accountInfoPOST = async (account, token) => {
  * Login of a registered user.
  *
  * login Login Login details. (optional)
- * returns inline_response_200_2
+ * returns inline_response_200_3
  **/
 exports.accountLoginPOST = async (login) => {
     //query the database to find an existing account with the provided credentials
@@ -87,7 +87,7 @@ exports.accountLoginPOST = async (login) => {
  * Registers a new user.
  *
  * user User User who wants to sign up. (optional)
- * returns User
+ * returns inline_response_200_2
  **/
 exports.accountRegisterPOST = async (user) => {
     //retrieve users with the same email
@@ -101,7 +101,6 @@ exports.accountRegisterPOST = async (user) => {
     user["password"] = await hashPassword(user["password"]);
 
     //create new Account
-    const result = await database.table("account").insert(user, ['email', 'password', 'name', 'surname']);
-    return result;
+    return await database.table("account").insert(user, ['email', 'password', 'name', 'surname']);
 };
 

@@ -9,9 +9,71 @@ const checkToken = require("../utils/authenticator").checkToken;
  * no response value expected for this operation
  **/
 exports.accountCartCheckoutPOST = async (token) => {
-  return new Promise(function(resolve, reject) {
-    resolve();
-  });
+    //check if the user is logged in, if so retrieve his user_id
+    const user_id = await checkToken(token);
+
+    //moving books to purchases and reservations is done with triggers
+    return database.transaction(async trx => {
+
+      //retrieve all the book_ids in the cart
+      const book_ids = await trx.table("cart")
+          .select("book_id","quantity")
+          .where("user_id","=",user_id);
+      const ids = book_ids.map(a => a.book_id);
+
+      //retrieve all the books associated to those ids
+      const books = await trx.table("book")
+          .select("book_id","title","current_price", "availability")
+          .whereIn("book_id",ids);
+
+      //add books to purchases or reservation
+      let total_price = 0;
+      let purchases = [];
+      let reservations = [];
+
+      for(let i=0; i<books.length; i++) {
+          total_price += books[i].current_price * book_ids[i].quantity;
+          if (books[i].availability === 'available') {
+              //add book to purchases
+              purchases.push({
+                  book_id: books[i].book_id,
+                  price: books[i].current_price,
+                  quantity: book_ids[i].quantity
+              });
+          }
+          else {
+            //add book to reservations
+            reservations.push({
+                user_id: user_id,
+                book_id: books[i].book_id,
+                //timestamp: Date.now(),
+                price: books[i].current_price,
+                quantity: book_ids[i].quantity
+            });
+          }
+      }
+
+      let data = {
+        user_id: user_id,
+        total_price: total_price
+      };
+
+      // insert total purchases into purchase table
+      let purchase_id = await trx.insert(data, 'purchase_id').into('purchase');
+      purchase_id = purchase_id[0];
+
+      //insert purchases into purchase_session table
+      purchases = purchases.map(p => { p.purchase_id = purchase_id; return p });
+      await trx.insert(purchases).into('purchase_session');
+
+      //insert reservations into reservation table
+      await trx.insert(reservations).into('reservation');
+
+      //delete books from cart
+      await trx.table('cart').where({ user_id: user_id }).del();
+
+      return { message: 'OK'};
+    });
 };
 
 

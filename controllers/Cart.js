@@ -4,7 +4,8 @@ const utils = require('../utils/writer.js');
 const Cart = require('../service/CartService');
 
 module.exports.accountCartCheckoutPOST = function accountCartCheckoutPOST (req, res, next) {
-  Cart.accountCartCheckoutPOST()
+    const token = req.headers.authorization;
+    Cart.accountCartCheckoutPOST(token)
     .then(function (response) {
       utils.writeJson(res, response);
     })

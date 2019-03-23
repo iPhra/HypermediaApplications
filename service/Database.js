@@ -75,7 +75,7 @@ bookSetup = (database) => {
                 table.integer("num_of_pages");
                 table.enu("cover_type",["hard cover","soft cover","e-book"]);
                 table.enu("availability",["available","unreleased","out_of_stock"]).notNullable();
-                table.text("img_path");
+                table.text("imgpath");
             });
         }
     });
@@ -88,10 +88,10 @@ cartSetup = (database) => {
         if (!exists) {
             console.log("It doesn't so we create it");
             return database.schema.createTable("cart", table => {
-                table.increments("cart_id");
-                table.integer("user_id").notNullable().references("account.user_id").onUpdate("CASCADE").onDelete("CASCADE");
-                table.integer("book_id").notNullable().references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
+                table.integer("user_id").references("account.user_id").onUpdate("CASCADE").onDelete("CASCADE");
+                table.integer("book_id").references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
                 table.integer("quantity").defaultTo(1);
+                table.primary(["user_id","book_id"]);
             });
         }
     });

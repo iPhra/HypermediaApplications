@@ -25,15 +25,14 @@ module.exports.accountCartDELETE = function accountCartDELETE (req, res, next) {
 };
 
 module.exports.accountCartGET = function accountCartGET (req, res, next) {
-  const offset = req.swagger.params['offset'].value;
-  const limit = req.swagger.params['limit'].value;
   const token = req.headers.authorization;
-  Cart.accountCartGET(offset,limit,token)
+  Cart.accountCartGET(token)
       .then(function (response) {
-        utils.writeJson(res, response);
+          utils.writeJson(res, response);
       })
       .catch(function (response) {
-        utils.writeJson(res, response);
+          res.writeHead(response.code);
+          res.end();
       });
 };
 

@@ -54,7 +54,7 @@ exports.accountCartDELETE = async (item) => {
  * limit Long Items per page. (optional)
  * returns Cart
  **/
-exports.accountCartGET = async (offset,limit, token) => {
+exports.accountCartGET = async (token) => {
   //check if the user is logged in, if so retrieve his user_id
   const user_id = await checkToken(token);
   return retrieveCart(user_id);
@@ -79,13 +79,11 @@ exports.accountCartPOST = async (book, token) => {
 };
 
 
-async function retrieveCart(offset, limit, user_id) {
+async function retrieveCart(user_id) {
   //retrieve all the book_ids in the cart
   const book_ids = await database.table("cart")
       .select("book_id","quantity")
-      .where("user_id","=",user_id)
-      .limit(limit)
-      .offset(offset);
+      .where("user_id","=",user_id);
   const ids = book_ids.map(a => a.book_id);
 
   //retrieve all the books associated to those ids
@@ -99,6 +97,7 @@ async function retrieveCart(offset, limit, user_id) {
   for(let i=0; i<books.length; i++) {
     price = books[i].current_price * book_ids[i].quantity;
     books[i].price = price;
+    books[i].quantity = book_ids[i].quantity;
     total_price += price;
   }
 

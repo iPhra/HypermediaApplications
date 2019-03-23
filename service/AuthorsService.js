@@ -24,7 +24,7 @@ exports.authorsAuthorIdDELETE = async (author_id) => {
  **/
 exports.authorsAuthorIdGET = async (author_id) => {
   //retrieve the given author
-  return (await database.select().table("author").where("author_id","=",author_id))[0];
+  return (await database.select("name","surname","birthdate","birthplace","description","imgpath").table("author").where("author_id","=",author_id))[0];
 };
 
 
@@ -67,7 +67,7 @@ exports.authorsAuthorIdPUT = async (author_id,author) => {
  **/
 exports.authorsGET = async (offset,limit) => {
   //find all the authors matching the offset and limit
-  return await database.select('author_id','name', 'surname').table("author").limit(limit).offset(offset);
+  return await database.select('author_id','name', 'surname',"imgpath").table("author").limit(limit).offset(offset);
 };
 
 

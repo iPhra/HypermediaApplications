@@ -17,10 +17,11 @@ module.exports.accountInfoGET = function accountInfoGET (req, res, next) {
   const token = req.headers.authorization;
   Account.accountInfoGET(token)
       .then(function (response) {
-        utils.writeJson(res, response);
+          utils.writeJson(res, response);
       })
       .catch(function (response) {
-        utils.writeJson(res, response);
+          res.writeHead(response.code);
+          res.end();
       });
 };
 

@@ -78,9 +78,7 @@ module.exports.booksSearchGET = function booksSearchGET (req, res, next) {
     const title = req.swagger.params['title'].value;
     const genre = req.swagger.params['genre'].value;
     const author = req.swagger.params['author'].value;
-    const offset = req.swagger.params['offset'].value;
-    const limit = req.swagger.params['limit'].value;
-    Books.booksSearchGET(title,genre,author,offset,limit)
+    Books.booksSearchGET(title,genre,author)
     .then(function (response) {
       utils.writeJson(res, response);
     })

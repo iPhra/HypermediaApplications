@@ -69,13 +69,13 @@ exports.accountCartGET = async (token) => {
  **/
 exports.accountCartPOST = async (book, token) => {
   //check if the user is logged in, if so retrieve his user_id
-  book["user_id"] = await checkToken(token);
+  const user_id = await checkToken(token);
+  book["user_id"] = user_id;
 
   //insert the new book into the cart
   await database.table("cart").insert(book);
 
-  //@todo ???
-  //retrieveCart();
+  return retrieveCart(user_id);
 };
 
 

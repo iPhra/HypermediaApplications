@@ -199,7 +199,7 @@ exports.booksPOST = async (book_container, token) => {
     'num_of_pages': book_container.book.num_of_pages,
     'availability': book_container.book.availability,
     'cover_type' : book_container.book.cover_type,
-    'img_path': book_container.book.imgpath
+    'imgpath': book_container.book.imgpath
   };
 
   return database.transaction(async trx => {

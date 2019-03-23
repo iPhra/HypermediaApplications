@@ -82,10 +82,11 @@ exports.authorsPOST = async (author, token) => {
   const user_id = await checkToken(token);
 
   //check if the user is an admin
-  const admin = await database.select('admin').table('book').where({ user_id: user_id});
-  if(!admin) throw new Error('Forbidden operation.');
+  const admin = await database.select('admin').table('account').where({ user_id: user_id});
+  if(!admin[0]["admin"]) throw new Error('Forbidden operation.');
 
-  // Insert a new author into author table
-  return await database.table("author").insert(author, ['author_id']);
+  //insert a new author into author table
+  const res = await database.table("author").insert(author, ['author_id']);
+  return res[0];
 };
 

@@ -180,43 +180,54 @@ exports.booksGET = async (offset,limit) => {
  * book_container Book_container The book object to insert and its similars.
  * returns inline_response_200
  **/
-exports.booksPOST = async (book, token) => {
+exports.booksPOST = async (book_container, token) => {
 
   //check if the user is logged in, if so retrieve his user_id
   const user_id = await checkToken(token);
 
   //check if the user is an admin
-  const admin = await database.select('admin').table('book').where({ user_id: user_id});
-  if(!admin) throw new Error('Forbidden operation.');
+  const admin = await database.select('admin').table('account').where({ user_id: user_id});
+  if(!admin[0]["admin"]) throw new Error('Forbidden operation.');
 
   let data;
   data = {
-    'title': book.title,
-    'isbn10': book.isbn10,
-    'isbn13': book.isbn13,
-    'description': book.description,
-    'current_price': book.current_price,
-    'num_of_pages': book.num_of_pages,
-    'availability': book.availability,
-    'cover_type' : book.cover_type,
-    'img_path': book.imgpath
+    'title': book_container.book.title,
+    'isbn10': book_container.book.isbn10,
+    'isbn13': book_container.book.isbn13,
+    'description': book_container.book.description,
+    'current_price': book_container.book.current_price,
+    'num_of_pages': book_container.book.num_of_pages,
+    'availability': book_container.book.availability,
+    'cover_type' : book_container.book.cover_type,
+    'img_path': book_container.book.imgpath
   };
 
   return database.transaction(async trx => {
-    const id = await trx.insert(data, ['book_id'])
+
+    //insert book into book table
+    const res = await trx.insert(data, ['book_id'])
         .into('book');
+    const id = res[0]["book_id"];
 
-    data = book.genres.map(genre => {
-      return { 'book_id': id[0].book_id, 'genre' : genre };
+    //insert genres into genre table
+    data = book_container.book.genres.map(genre => {
+      return { 'book_id': id, 'genre' : genre };
     });
-
     await trx.insert(data, 'genre').into('genre');
 
-    data = book.authors.author_ids.map(author_id => {
-      return { 'book_id': id[0].book_id, 'author_id' : author_id };
+    //insert authors into table authorship
+    data = book_container.book.authors.author_ids.map(author_id => {
+      return { 'book_id': id, 'author_id' : author_id };
     });
-
     await trx.insert(data, 'author_id').into('authorship');
+
+    //insert similars into table similarity
+    data = book_container.similars.map(book_id => {
+        return { 'book_id1': id, 'book_id2' : book_id };
+    });
+    await trx.insert(data).into('similarity');
+
+    return res[0];
   });
 };
 

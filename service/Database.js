@@ -75,6 +75,7 @@ bookSetup = (database) => {
                 table.integer("num_of_pages");
                 table.enu("cover_type",["hard cover","soft cover","e-book"]);
                 table.enu("availability",["available","unreleased","out_of_stock"]).notNullable();
+                table.integer("available_quantity").defaultTo(0);
                 table.text("imgpath");
             });
         }

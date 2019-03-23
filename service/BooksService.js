@@ -295,13 +295,6 @@ exports.booksSearchGET = async (title,genre,author) => {
  **/
 exports.genresGET = async (offset,limit) => {
   //retrieve all the genres associated to at least one book
-  const genres =  await database.select('genre').table("genre").limit(limit).offset(offset);
-
-  //convert the array of objects into array of strings
-  const result = [];
-  for(let i =0; i<genres.length; i++) {
-    result[i] = genres[i]["genre"];
-  }
-  return result;
+  return (await database.distinct().select('genre').table("genre").limit(limit).offset(offset)).map(a => a.genre);
 };
 

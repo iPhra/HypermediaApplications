@@ -69,23 +69,21 @@ exports.accountCartGET = async (offset,limit, token) => {
  **/
 exports.accountCartPOST = async (book, token) => {
   //check if the user is logged in, if so retrieve his user_id
-  book["user_id"] = await checkToken(token);
+  const user_id = await checkToken(token);
+  book["user_id"] = user_id;
 
   //insert the new book into the cart
   await database.table("cart").insert(book);
 
-  //@todo ???
-  //retrieveCart();
+  return retrieveCart(user_id);
 };
 
 
-async function retrieveCart(offset, limit, user_id) {
+async function retrieveCart(user_id) {
   //retrieve all the book_ids in the cart
   const book_ids = await database.table("cart")
       .select("book_id","quantity")
-      .where("user_id","=",user_id)
-      .limit(limit)
-      .offset(offset);
+      .where("user_id","=",user_id);
   const ids = book_ids.map(a => a.book_id);
 
   //retrieve all the books associated to those ids

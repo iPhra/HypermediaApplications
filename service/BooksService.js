@@ -26,6 +26,9 @@ exports.booksBookIdGET = async (book_id) => {
   //find the given book
   const book = (await database.select().table("book").where("book_id","=",book_id))[0];
 
+  //if the book doesn't exist
+  if(!book) throw {code: 404};
+
   //find the authors of the book
   book["authors"] = await database("author")
       .join("authorship","author.author_id","authorship.author_id")
@@ -115,6 +118,12 @@ exports.booksBookIdPUT = async (book_id,book) => {
  * returns List
  **/
 exports.booksBookIdSimiliarsGET = async (book_id,offset,limit) => {
+  //find the requested book
+  const book = (await database.select().table("book").where("book_id","=",book_id))[0];
+
+  //if the book doesn't exist
+  if(!book) throw {code: 404};
+
   //find the books similar to the given one, in rows of the form (similar_book, given_book) in the database
   let books = await database("book")
       .join("similarity","similarity.book_id1","book.book_id")
@@ -244,45 +253,24 @@ exports.booksPOST = async (book_container, token) => {
  * returns List
  **/
 exports.booksSearchGET = async (title,genre,author) => {
-  /*
-  //if title is specified, then retrieve all books with that title, otherwise return all books
-  let books = (title ?
-      await database("book")
-            .select('book_id','title','current_price')
-            .whereRaw("title = ?",[title])
-      :
-      await database("book")
-            .select('book_id','title','current_price'));
+  //if title is specified, then retrieve all books with that title
+  if (title) {
+    let books = await database("book").select('book_id', 'title', 'current_price').where("title", "LIKE", "%"+title+"%");
 
-  //for each book, find its authors and its genres (matching the constraints if specified)
-  for(let i=0; i<books.length; i++) {
-      books[i]["authors"] = (author ?
-          await database("author")
-              .select("name","surname","author.author_id")
-              .join("authorship","author.author_id","authorship.author_id")
-              .whereRaw("(authorship.book_id = ?) and exists(" +
-                  "select * from authorship join author" +
-                  "where author.name = ? and authorship.book_id = ?)",[books[i].book_id,author,books[i].book_id])
-          :
-          await database("author")
-              .join("authorship","author.author_id","authorship.author_id")
-              .where("authorship.book_id","=",books[i].book_id)
-              .select("name","surname","author.author_id"));
+    //for each book, find its authors and its genres
+    for (let i = 0; i < books.length; i++) {
+      books[i]["authors"] = await database("author")
+          .join("authorship", "author.author_id", "authorship.author_id")
+          .where("authorship.book_id", "=", books[i].book_id)
+          .select("name", "surname", "author.author_id", "author.imgpath");
 
-      books[i]["genres"] = (genre ?
-          await database("genre")
-              .join("book","book.book_id","genre.book_id")
-              .whereExists(database("genre").select().join("book","book.book_id","genre.book_id").where("genre.book_id","=",books[i].book_id).andWhere("genre.genre","=",genre))
-              .andWhere("genre.book_id","=",books[i].book_id)
-          :
-          await database("genre")
-              .join("book","book.book_id","genre.book_id")
-              .where("genre.book_id","=",books[i].book_id)
-              .select("genre"))
-          .map(a => a.genre);
+      books[i]["genres"] = (await database("genre")
+          .join("book", "book.book_id", "genre.book_id")
+          .where("genre.book_id", "=", books[i].book_id)
+          .select("genre")).map(a => a.genre);
+    }
+    return books;
   }
-  return books;
-  */
 };
 
 

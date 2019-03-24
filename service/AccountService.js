@@ -14,12 +14,13 @@ const respondWithCode = require("../utils/writer").respondWithCode;
  * no response value expected for this operation
  **/
 exports.accountInfoDELETE = async () => {
-    //todo handle exceptions here
 
+    const user_id = await checkToken(token);
+    const user = await database.select('user_id').table('account').where({ user_id: user_id});
 
-    //todo when updating API, remove this 0 with the right params
-    let account_id = 0;
-    await database("account").where("account_id", account_id).del();
+    if(!user_id) throw {code: 401}
+
+    await database("account").where("account_id", user_id).del();
     return "Account deleted.";
 };
 

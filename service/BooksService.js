@@ -10,7 +10,17 @@ const checkToken = require("../utils/authenticator").checkToken;
  * no response value expected for this operation
  **/
 exports.booksBookIdDELETE = async (book_id) => {
-  //todo handle exceptions here
+
+  //check admin permission
+  const user_id = await checkToken(token);
+  const admin = await database.select('admin').table('account').where({ user_id: user_id});
+  if(!admin[0]) throw {code : 403};
+
+  //check if the book doesn't exists
+  const book = (await database.select().table("book").where("book_id","=",book_id))[0];
+  if(!book) throw {code: 404};
+
+  //from here, checklist OK, delete the book
   await database("book").where("book_id", book_id).del();
   return "Book deleted.";
 };
@@ -49,8 +59,17 @@ exports.booksBookIdGET = async (book_id) => {
  * no response value expected for this operation
  **/
 exports.booksBookIdPUT = async (book_id,book) => {
-  let oldBook = await database.select("*").from("book").where("book_id", book_id);
-  if (oldBook.length === 1) {
+
+  //check admin permission
+  const user_id = await checkToken(token);
+  const admin = await database.select('admin').table('account').where({ user_id: user_id});
+  if(!admin[0]) throw {code : 403};
+
+
+  //check if the book doesn't exists
+  const oldBook = (await database.select("*").from("book").where("book_id", book_id))[0];
+  if(!oldBook) throw {code: 404};
+
 
     await database("book").where("book_id", book_id).update({
           title           : book.title,
@@ -67,42 +86,38 @@ exports.booksBookIdPUT = async (book_id,book) => {
     );
 
 
-    await database.transaction(async trx => {
+  await database.transaction(async trx => {
 
-      let data = book.genres.map(genre => {
-        return { 'book_id': book_id, 'genre' : genre };
-      });
-
-      await trx.insert(data, 'genre').into('genre');
-
-      data = book.authors.author_ids.map(author_id => {
-        return { 'book_id': book_id, 'author_id' : author_id };
-      });
-
-      await trx.insert(data, 'author_id').into('authorship');
-
-      data = book.similars.map(similar_book_id => {
-        return { 'book_id1': book_id, 'book_id2' : similar_book_id };
-      });
-
-      await trx.insert(data).into('similarity')
-          .whereNotExists(
-              database("similarity").where({
-                book_id1    : data.book_id1,
-                book_id2    : data.book_id2
-              }).union(
-                  database("similarity").where({
-                    book_id1    : data.book_id1,
-                    book_id2    : data.book_id2
-                  })));
+    let data = book.genres.map(genre => {
+      return { 'book_id': book_id, 'genre' : genre };
     });
 
-    return "Book updated!"
+    await trx.insert(data, 'genre').into('genre');
 
-  }
-  else{
-    //todo handle error here
-  }
+    data = book.authors.author_ids.map(author_id => {
+      return { 'book_id': book_id, 'author_id' : author_id };
+    });
+
+    await trx.insert(data, 'author_id').into('authorship');
+
+    data = book.similars.map(similar_book_id => {
+      return { 'book_id1': book_id, 'book_id2' : similar_book_id };
+    });
+
+    await trx.insert(data).into('similarity')
+        .whereNotExists(
+            database("similarity").where({
+              book_id1    : data.book_id1,
+              book_id2    : data.book_id2
+            }).union(
+                database("similarity").where({
+                  book_id1    : data.book_id1,
+                  book_id2    : data.book_id2
+                })));
+  });
+
+  return "Book updated!"
+
 };
 
 

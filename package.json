@@ -16,11 +16,11 @@
     "bcryptjs": "^2.4.3",
     "config": "^3.0.1",
     "connect": "^3.2.0",
-    "js-yaml": "^3.3.0",
+    "js-yaml": "^3.13.0",
     "jsonwebtoken": "^8.5.1",
     "knex": "latest",
     "pg": "^7.9.0",
     "serve-static": "latest",
-    "swagger-tools": "0.10.1"
+    "swagger-tools": "^0.10.4"
   }
 }

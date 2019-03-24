@@ -84,28 +84,30 @@ exports.accountCartCheckoutPOST = async (token) => {
  * returns Cart
  **/
 exports.accountCartDELETE = async (item) => {
-  return new Promise(function(resolve, reject) {
-    const examples = {};
-    examples['application/json'] = {
-  "total_price" : 5.962134,
-  "book_list" : [ {
-    "price" : 1.4658129,
-    "book_id" : 0,
-    "current_price" : 6.0274563,
-    "title" : "title"
-  }, {
-    "price" : 1.4658129,
-    "book_id" : 0,
-    "current_price" : 6.0274563,
-    "title" : "title"
-  } ]
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
+    const user_id = checkToken(token);
+    const qnt = await database("cart").select("quantity").where({
+        "user_id" : user_id,
+        "book_id" : item.book_id})
+        .andWhere("quantity", ">=", item.quantity);
+
+    if(!qnt[0]) throw {code: 401};
+
+    let count = qnt[0] - item.quantity;
+
+    if(count > 0) {
+        await database("cart").where({
+            "user_id" : user_id,
+            "book_id" : item.book_id
+        }).update("quantity", count)
     }
-  });
+    else {
+        await database("cart").where({
+            "user_id" : user_id,
+            "book_id" : item.book_id
+        }).del()
+    }
+
+    return "Item removed from cart!"
 };
 
 

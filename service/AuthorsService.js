@@ -33,7 +33,12 @@ exports.authorsAuthorIdDELETE = async (author_id) => {
  **/
 exports.authorsAuthorIdGET = async (author_id) => {
   //retrieve the given author
-  return (await database.select("name","surname","birthdate","birthplace","description","imgpath").table("author").where("author_id","=",author_id))[0];
+  const author = (await database.select("name","surname","birthdate","birthplace","description","imgpath").table("author").where("author_id","=",author_id))[0];
+
+  //if the author doesn't exist
+  if(!author) throw {code: 404};
+
+  return author;
 };
 
 

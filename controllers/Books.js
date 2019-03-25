@@ -11,7 +11,8 @@ module.exports.booksBookIdDELETE = function booksBookIdDELETE (req, res, next) {
       utils.writeJson(res, response);
     })
     .catch(function (response) {
-      utils.writeJson(res, response);
+        res.writeHead(response.code);
+        res.end();
     });
 };
 
@@ -36,7 +37,8 @@ module.exports.booksBookIdPUT = function booksBookIdPUT (req, res, next) {
       utils.writeJson(res, response);
     })
     .catch(function (response) {
-      utils.writeJson(res, response);
+        res.writeHead(response.code);
+        res.end();
     });
 };
 
@@ -62,7 +64,8 @@ module.exports.booksGET = function booksGET (req, res, next) {
       utils.writeJson(res, response);
     })
     .catch(function (response) {
-      utils.writeJson(res, response);
+      res.writeHead(response.code);
+      res.end();
     });
 };
 
@@ -88,7 +91,8 @@ module.exports.booksSearchGET = function booksSearchGET (req, res, next) {
       utils.writeJson(res, response);
     })
     .catch(function (response) {
-      utils.writeJson(res, response);
+        res.writeHead(response.code);
+        res.end();
     });
 };
 
@@ -100,6 +104,7 @@ module.exports.genresGET = function genresGET (req, res, next) {
       utils.writeJson(res, response);
     })
     .catch(function (response) {
-      utils.writeJson(res, response);
+        res.writeHead(response.code);
+        res.end();
     });
 };

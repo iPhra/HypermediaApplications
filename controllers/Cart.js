@@ -16,7 +16,8 @@ module.exports.accountCartCheckoutPOST = function accountCartCheckoutPOST (req, 
 
 module.exports.accountCartDELETE = function accountCartDELETE (req, res, next) {
   const item = req.swagger.params['item'].value;
-  Cart.accountCartDELETE(item)
+    const token = req.headers.authorization;
+  Cart.accountCartDELETE(item,token)
     .then(function (response) {
       utils.writeJson(res, response);
     })

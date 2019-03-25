@@ -9,7 +9,7 @@ const {database} = require("./Database");
  * author_id Long The id of the desired author.
  * no response value expected for this operation
  **/
-exports.authorsAuthorIdDELETE = async (author_id) => {
+exports.authorsAuthorIdDELETE = async (author_id, token) => {
     //check admin permission
     const user_id = await checkToken(token);
     const admin = await database.select('admin').table('account').where({ user_id: user_id});
@@ -49,7 +49,7 @@ exports.authorsAuthorIdGET = async (author_id) => {
  * author Author The fields to update.
  * no response value expected for this operation
  **/
-exports.authorsAuthorIdPUT = async (author_id,author) => {
+exports.authorsAuthorIdPUT = async (author_id, author, token) => {
     //check admin permission
     const user_id = await checkToken(token);
     const admin = await database.select('admin').table('account').where({ user_id: user_id});

@@ -83,7 +83,7 @@ exports.accountCartCheckoutPOST = async (token) => {
  * item Item Item to be removed and its quantity
  * returns Cart
  **/
-exports.accountCartDELETE = async (item) => {
+exports.accountCartDELETE = async (item, token) => {
     const user_id = checkToken(token);
     const qnt = await database("cart").select("quantity").where({
         "user_id" : user_id,

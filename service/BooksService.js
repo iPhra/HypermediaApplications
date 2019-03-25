@@ -9,8 +9,7 @@ const checkToken = require("../utils/authenticator").checkToken;
  * book_id Long The id of the desired book.
  * no response value expected for this operation
  **/
-exports.booksBookIdDELETE = async (book_id) => {
-
+exports.booksBookIdDELETE = async (book_id, token) => {
   //check admin permission
   const user_id = await checkToken(token);
   const admin = await database.select('admin').table('account').where({ user_id: user_id});
@@ -61,7 +60,7 @@ exports.booksBookIdGET = async (book_id) => {
  * book Book The new fields to update.
  * no response value expected for this operation
  **/
-exports.booksBookIdPUT = async (book_id,book) => {
+exports.booksBookIdPUT = async (book_id,book,token) => {
 
   //check admin permission
   const user_id = await checkToken(token);
@@ -254,7 +253,6 @@ exports.booksPOST = async (book_container, token) => {
     return res[0];
   });
 };
-
 
 
 /**

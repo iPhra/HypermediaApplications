@@ -6,19 +6,16 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const checkToken = require("../utils/authenticator").checkToken;
 const hashPassword = require("../utils/authenticator").hashPassword;
-const respondWithCode = require("../utils/writer").respondWithCode;
 
 /**
  * Delete an existing acccount.
  *
  * no response value expected for this operation
  **/
-exports.accountInfoDELETE = async () => {
-
+exports.accountInfoDELETE = async (token) => {
     const user_id = await checkToken(token);
-    const user = await database.select('user_id').table('account').where({ user_id: user_id});
 
-    if(!user_id) throw {code: 401}
+    if(!user_id) throw {code: 401};
 
     await database("account").where("account_id", user_id).del();
     return "Account deleted.";

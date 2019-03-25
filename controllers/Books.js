@@ -5,7 +5,8 @@ const Books = require('../service/BooksService');
 
 module.exports.booksBookIdDELETE = function booksBookIdDELETE (req, res, next) {
   const book_id = req.swagger.params['book_id'].value;
-  Books.booksBookIdDELETE(book_id)
+    const token = req.headers.authorization;
+  Books.booksBookIdDELETE(book_id,token)
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -29,7 +30,8 @@ module.exports.booksBookIdGET = function booksBookIdGET (req, res, next) {
 module.exports.booksBookIdPUT = function booksBookIdPUT (req, res, next) {
   const book_id = req.swagger.params['book_id'].value;
   const book = req.swagger.params['book'].value;
-  Books.booksBookIdPUT(book_id,book)
+    const token = req.headers.authorization;
+  Books.booksBookIdPUT(book_id,book,token)
     .then(function (response) {
       utils.writeJson(res, response);
     })

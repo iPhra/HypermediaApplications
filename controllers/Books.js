@@ -74,7 +74,8 @@ module.exports.booksPOST = function booksPOST (req, res, next) {
       utils.writeJson(res, response);
     })
     .catch(function (response) {
-      utils.writeJson(res, response);
+        res.writeHead(response.code);
+        res.end();
     });
 };
 

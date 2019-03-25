@@ -60,6 +60,7 @@ module.exports.authorsPOST = function authorsPOST (req, res, next) {
         utils.writeJson(res, response);
       })
       .catch(function (response) {
-        utils.writeJson(res, response);
+          res.writeHead(response.code);
+          res.end();
       });
 };

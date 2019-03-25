@@ -210,7 +210,7 @@ exports.booksPOST = async (book_container, token) => {
 
   //check if the user is an admin
   const admin = await database.select('admin').table('account').where({ user_id: user_id});
-  if(!admin[0]["admin"]) throw new Error('Forbidden operation.');
+  if(!admin[0]["admin"]) throw {code : 403};
 
   let data;
   data = {

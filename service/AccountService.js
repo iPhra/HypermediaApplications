@@ -51,8 +51,7 @@ exports.accountInfoPOST = async (account, token) => {
     if(account["password"]) account["password"] = await hashPassword(account["password"]);
 
     //update existing account
-    const result = await database.update(account, ['email', 'password', 'name', 'surname', 'admin']).table("account").where({ 'user_id': user_id });
-    return result[0];
+    return (await database.update(account, ['email', 'name', 'surname', 'admin']).table("account").where({ 'user_id': user_id })[0]);
 };
 
 
@@ -95,12 +94,12 @@ exports.accountRegisterPOST = async (user) => {
 
     //check if some user already exists
     if (account.length > 0)
-        throw new Error('User already existing');
+        throw {code: 409};
 
     //encrypt the password
     user["password"] = await hashPassword(user["password"]);
 
     //create new Account
-    return await database.table("account").insert(user, ['email', 'password', 'name', 'surname']);
+    return (await database.table("account").insert(user, ['user_id']))[0];
 };
 

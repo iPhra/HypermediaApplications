@@ -15,7 +15,7 @@ accountSetup = (database) => {
             console.log("It doesn't so we create it");
             return database.schema.createTable("account", table => {
                 table.increments("user_id");
-                table.string("email").notNullable();
+                table.string("email").unique().notNullable();
                 table.string("password").notNullable();
                 table.string("name");
                 table.string("surname");
@@ -67,8 +67,8 @@ bookSetup = (database) => {
             console.log("It doesn't so we create it");
             return database.schema.createTable("book", table => {
                 table.increments("book_id");
-                table.string("isbn10", 10).notNullable();
-                table.string("isbn13", 13).notNullable();
+                table.string("isbn10", 10).unique().notNullable();
+                table.string("isbn13", 13).unique().notNullable();
                 table.string("title").notNullable();
                 table.text("description");
                 table.float("current_price").defaultTo(0).notNullable();

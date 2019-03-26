@@ -102,6 +102,6 @@ exports.authorsPOST = async (author, token) => {
   if(!admin[0]["admin"]) throw {code : 403};
 
   //insert a new author into author table
-  return (await database.table("author").insert(author, ['author_id'])[0]);
+  return (await database.table("author").insert(author, ['author_id']))[0];
 };
 

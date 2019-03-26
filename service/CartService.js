@@ -132,24 +132,24 @@ exports.accountCartGET = async (token) => {
  * returns Cart
  **/
 exports.accountCartPOST = async (book, token) => {
-  //check if the user is logged in, if so retrieve his user_id
-  const user_id = await checkToken(token);
-  book["user_id"] = user_id;
+    //check if the user is logged in, if so retrieve his user_id
+    const user_id = await checkToken(token);
+    book["user_id"] = user_id;
 
-  //check if the same book is already present in the user's cart
-  const rows = await database.table("cart").select().where({ user_id: user_id, book_id: book.book_id });
+    //check if the same book is already present in the user's cart
+    const rows = await database.table("cart").select().where({ user_id: user_id, book_id: book.book_id });
 
-  if (rows.length > 0) {
-      //update cart item quantity
-      await database.table("cart").where({ user_id: user_id, book_id: book.book_id }).update({
-              quantity: (book.quantity + rows[0].quantity)
-      });
-  } else {
-      //insert the new book into the cart
-      await database.table("cart").insert(book);
-  }
+    if (rows.length > 0) {
+        //update cart item quantity
+        await database.table("cart").where({ user_id: user_id, book_id: book.book_id }).update({
+            quantity: (book.quantity + rows[0].quantity)
+        });
+    } else {
+        //insert the new book into the cart
+        await database.table("cart").insert(book);
+    }
 
-  return retrieveCart(user_id);
+    return retrieveCart(user_id);
 };
 
 

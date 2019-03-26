@@ -223,10 +223,21 @@ exports.booksPOST = async (book_container, token) => {
         'num_of_pages': book_container.book.num_of_pages,
         'availability': book_container.book.availability,
         'cover_type' : book_container.book.cover_type,
-        'imgpath': book_container.book.imgpath
+        'imgpath': book_container.book.imgpath,
+        'available_quantity': book_container.book.available_quantity
     };
 
     return database.transaction(async trx => {
+
+        //check if book already exists
+        const rows = await trx.select().table('book').where({isbn10: data.isbn10, isbn13: data.isbn13});
+
+        if (rows.length > 0) {
+            //update book available copies
+            return (await database.table("book").where({isbn10: data.isbn10, isbn13: data.isbn13}).update({
+                available_quantity: rows[0].available_quantity + data.available_quantity
+            }, ['book_id']))[0];
+        }
 
         //insert book into book table
         const res = await trx.insert(data, ['book_id'])
@@ -235,19 +246,19 @@ exports.booksPOST = async (book_container, token) => {
 
         //insert genres into genre table
         data = book_container.book.genres.map(genre => {
-            return { 'book_id': id, 'genre' : genre };
+            return {'book_id': id, 'genre': genre};
         });
         await trx.insert(data, 'genre').into('genre');
 
         //insert authors into table authorship
         data = book_container.book.authors.author_ids.map(author_id => {
-            return { 'book_id': id, 'author_id' : author_id };
+            return {'book_id': id, 'author_id': author_id};
         });
         await trx.insert(data, 'author_id').into('authorship');
 
         //insert similars into table similarity
         data = book_container.similars.map(book_id => {
-            return { 'book_id1': id, 'book_id2' : book_id };
+            return {'book_id1': id, 'book_id2': book_id};
         });
         await trx.insert(data).into('similarity');
 

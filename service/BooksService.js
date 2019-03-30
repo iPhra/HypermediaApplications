@@ -307,6 +307,10 @@ exports.booksSearchGET = async (title,genre,author, offset, limit) => {
         .limit(limit)
         .offset(offset);
   }
+  //if nothing specified
+  else {
+    return [];
+  }
 
   //for each book found, get its authors and its genres
   for (let i = 0; i < books.length; i++) {

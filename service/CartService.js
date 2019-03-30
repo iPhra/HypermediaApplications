@@ -72,7 +72,7 @@ exports.accountCartCheckoutPOST = async (token) => {
     //delete books from cart
     await trx.table('cart').where({ user_id: user_id }).del();
 
-    return "Purchase successful";
+    return;
   });
 };
 

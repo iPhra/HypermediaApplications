@@ -47,11 +47,13 @@ exports.accountInfoPOST = async (account, token) => {
     //check if the user is logged in, if so retrieve his user_id
     const user_id = await checkToken(token);
 
+    console.log("i'm here", user_id);
+
     //encrypt the password
     if(account["password"]) account["password"] = await hashPassword(account["password"]);
 
     //update existing account
-    return (await database.update(account, ['email', 'name', 'surname', 'admin']).table("account").where({ 'user_id': user_id })[0]);
+    return (await database.update(account, ['email', 'name', 'surname', 'admin']).table("account").where({ 'user_id': user_id }))[0];
 };
 
 

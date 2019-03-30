@@ -40,8 +40,7 @@ paths:
         format: "int64"
       responses:
         200:
-          description: "A list of titles, authors, prices, ids and images of all the\
-            \ books in the database."
+          description: "A brief preview of all the books in the database."
           schema:
             type: "array"
             items:
@@ -123,8 +122,8 @@ paths:
         format: "int64"
       responses:
         200:
-          description: "A list of titles, authors, prices, ids and images of all the\
-            \ books matching the search parameters."
+          description: "A brief preview of all the books in the database matching\
+            \ the search parameters."
           schema:
             type: "array"
             items:
@@ -172,11 +171,11 @@ paths:
         type: "integer"
         format: "int64"
       - in: "body"
-        name: "book"
-        description: "The new fields to update."
+        name: "book_container"
+        description: "The book object to insert and its similars."
         required: true
         schema:
-          $ref: "#/definitions/Book"
+          $ref: "#/definitions/book_container_1"
       responses:
         200:
           description: "Book updated."
@@ -188,9 +187,9 @@ paths:
           description: "Book not found."
       security:
       - Bearer: []
+      x-swagger-router-controller: "Books"
       x-security-scopes:
       - "admin"
-      x-swagger-router-controller: "Books"
     delete:
       tags:
       - "Books"
@@ -252,7 +251,7 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/Book"
+              $ref: "#/definitions/BookSnippet"
         400:
           description: "Bad request."
         404:
@@ -594,7 +593,7 @@ paths:
         description: "Account details."
         required: false
         schema:
-          $ref: "#/definitions/User"
+          $ref: "#/definitions/account"
       responses:
         200:
           description: "Account updated."
@@ -697,9 +696,15 @@ definitions:
     required:
     - "authors"
     - "availability"
+    - "available_quantity"
+    - "cover_type"
     - "current_price"
+    - "description"
+    - "genres"
+    - "imgpath"
     - "isbn10"
     - "isbn13"
+    - "num_of_pages"
     - "title"
     properties:
       title:
@@ -708,7 +713,9 @@ definitions:
         type: "number"
         format: "float"
       authors:
-        $ref: "#/definitions/Book_authors"
+        type: "array"
+        items:
+          $ref: "#/definitions/AuthorSnippet"
       isbn10:
         type: "integer"
       isbn13:
@@ -727,37 +734,47 @@ definitions:
         type: "array"
         uniqueItems: true
         items:
-          type: "string"
+          $ref: "#/definitions/Genre"
       availability:
         type: "string"
         enum:
         - "unreleased"
         - "available"
         - "out_of_stock"
+      available_quantity:
+        type: "integer"
+        format: "int64"
       imgpath:
         type: "string"
     example:
+      available_quantity: 5
       num_of_pages: 5
       genres:
-      - "genres"
-      - "genres"
+      - {}
+      - {}
       imgpath: "imgpath"
-      isbn13: 5
+      isbn13: 1
       description: "description"
-      isbn10: 1
+      isbn10: 6
       current_price: 0.8008282
       availability: "unreleased"
       title: "title"
       cover_type: "hard cover"
       authors:
-        author_ids:
-        - 6
-        - 6
+      - surname: "surname"
+        imgpath: "imgpath"
+        name: "name"
+        author_id: 1
+      - surname: "surname"
+        imgpath: "imgpath"
+        name: "name"
+        author_id: 1
   BookSnippet:
     required:
     - "authors"
     - "book_id"
     - "current_price"
+    - "genres"
     - "imgpath"
     - "title"
     properties:
@@ -771,27 +788,31 @@ definitions:
       authors:
         type: "array"
         items:
-          $ref: "#/definitions/Author"
+          $ref: "#/definitions/AuthorSnippet"
       imgpath:
         type: "string"
+      genres:
+        type: "array"
+        uniqueItems: true
+        items:
+          $ref: "#/definitions/Genre"
     example:
       imgpath: "imgpath"
+      genres:
+      - {}
+      - {}
       book_id: 0
       current_price: 6.0274563
       title: "title"
       authors:
-      - birthdate: "birthdate"
-        birthplace: "birthplace"
-        surname: "surname"
+      - surname: "surname"
         imgpath: "imgpath"
         name: "name"
-        description: "description"
-      - birthdate: "birthdate"
-        birthplace: "birthplace"
-        surname: "surname"
+        author_id: 1
+      - surname: "surname"
         imgpath: "imgpath"
         name: "name"
-        description: "description"
+        author_id: 1
   Author:
     required:
     - "name"
@@ -835,28 +856,7 @@ definitions:
       surname: "surname"
       imgpath: "imgpath"
       name: "name"
-      author_id: 0
-  User:
-    required:
-    - "email"
-    - "password"
-    properties:
-      email:
-        type: "string"
-      password:
-        type: "string"
-      name:
-        type: "string"
-      surname:
-        type: "string"
-      admin:
-        type: "boolean"
-    example:
-      password: "password"
-      surname: "surname"
-      name: "name"
-      admin: true
-      email: "email"
+      author_id: 1
   Cart:
     properties:
       book_list:
@@ -867,16 +867,38 @@ definitions:
         type: "number"
         format: "float"
     example:
-      total_price: 5.962134
+      total_price: 5.637377
       book_list:
-      - price: 1.4658129
+      - quantity: 5
+        price: 1.4658129
         book_id: 0
         current_price: 6.0274563
         title: "title"
-      - price: 1.4658129
+      - quantity: 5
+        price: 1.4658129
         book_id: 0
         current_price: 6.0274563
         title: "title"
+  User:
+    required:
+    - "admin"
+    - "email"
+    - "name"
+    - "surname"
+    properties:
+      email:
+        type: "string"
+      name:
+        type: "string"
+      surname:
+        type: "string"
+      admin:
+        type: "boolean"
+    example:
+      surname: "surname"
+      name: "name"
+      admin: true
+      email: "email"
   Genre:
     type: "string"
     enum:
@@ -906,6 +928,18 @@ definitions:
         format: "int64"
     example:
       book_id: 0
+  book_container_1:
+    type: "object"
+    required:
+    - "book"
+    properties:
+      book:
+        $ref: "#/definitions/Book"
+      similars:
+        type: "array"
+        items:
+          type: "integer"
+          format: "int64"
   inline_response_200_1:
     properties:
       author_id:
@@ -937,6 +971,18 @@ definitions:
       quantity:
         type: "integer"
         format: "int64"
+  account:
+    properties:
+      password:
+        type: "string"
+      email:
+        type: "string"
+      name:
+        type: "string"
+      surname:
+        type: "string"
+      admin:
+        type: "boolean"
   user:
     type: "object"
     required:
@@ -975,22 +1021,12 @@ definitions:
         type: "string"
     example:
       token: "token"
-  Book_authors:
-    properties:
-      author_ids:
-        type: "array"
-        uniqueItems: true
-        items:
-          type: "integer"
-    example:
-      author_ids:
-      - 6
-      - 6
   Cart_book_list:
     required:
     - "book_id"
     - "current_price"
     - "price"
+    - "quantity"
     - "title"
     properties:
       book_id:
@@ -1003,7 +1039,11 @@ definitions:
       price:
         type: "number"
         format: "float"
+      quantity:
+        type: "integer"
+        format: "int64"
     example:
+      quantity: 5
       price: 1.4658129
       book_id: 0
       current_price: 6.0274563

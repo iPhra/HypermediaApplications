@@ -10,18 +10,18 @@ const {database} = require("./Database");
  * no response value expected for this operation
  **/
 exports.authorsAuthorIdDELETE = async (author_id, token) => {
-    //check admin permission
-    const user_id = await checkToken(token);
-    const admin = await database.select('admin').table('account').where({ user_id: user_id});
-    if(!admin[0]) throw {code : 403};
+  //check admin permission
+  const user_id = await checkToken(token);
+  const admin = await database.select('admin').table('account').where({ user_id: user_id});
+  if(!admin[0]) throw {code : 403};
 
-    //check if the author doesn't exists
-    const author = (await database.select().table("author").where("author_id",author_id))[0];
-    if(!author) throw {code: 404};
+  //check if the author doesn't exists
+  const author = (await database.select().table("author").where("author_id",author_id))[0];
+  if(!author) throw {code: 404};
 
-    //from here, checklist OK, delete the author
-    await database("author").where("author_id", author_id).del();
-    return "Author deleted."
+  //from here, checklist OK, delete the author
+  await database("author").where("author_id", author_id).del();
+  return "Author deleted."
 };
 
 
@@ -50,27 +50,27 @@ exports.authorsAuthorIdGET = async (author_id) => {
  * no response value expected for this operation
  **/
 exports.authorsAuthorIdPUT = async (author_id, author, token) => {
-    //check admin permission
-    const user_id = await checkToken(token);
-    const admin = await database.select('admin').table('account').where({ user_id: user_id});
-    if(!admin[0]) throw {code : 403};
+  //check admin permission
+  const user_id = await checkToken(token);
+  const admin = await database.select('admin').table('account').where({ user_id: user_id});
+  if(!admin[0]) throw {code : 403};
 
-    //check if the author doesn't exists
-    const old_author = (await database.select().table("author").where("author_id",author_id))[0];
-    if(!old_author[0]) throw {code: 404};
+  //check if the author doesn't exists
+  const old_author = (await database.select().table("author").where("author_id",author_id))[0];
+  if(!old_author[0]) throw {code: 404};
 
-    //book updating
-    await database("author").where("author", author_id).update({
-          name        : author.name,
-          surname     : author.surname,
-          birthdate   : author.birthdate,
-          birthplace  : author.birthplace,
-          description : author.description,
-          img_path    : author.img_path
-        }
-    );
+  //book updating
+  await database("author").where("author", author_id).update({
+        name        : author.name,
+        surname     : author.surname,
+        birthdate   : author.birthdate,
+        birthplace  : author.birthplace,
+        description : author.description,
+        img_path    : author.img_path
+      }
+  );
 
-    return "Author updated!"
+  return "Author updated!"
 };
 
 

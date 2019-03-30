@@ -250,8 +250,9 @@ exports.booksPOST = async (book_container, token) => {
     await trx.insert(data, 'genre').into('genre');
 
     //insert authors into table authorship
-    data = book_container.book.authors.author_ids.map(author_id => {
-      return {'book_id': id, 'author_id': author_id};
+    data = book_container.book.authors.map(author => {
+      author["book_id"] = id;
+      return author;
     });
     await trx.insert(data, 'author_id').into('authorship');
 

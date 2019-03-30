@@ -761,14 +761,8 @@ definitions:
       title: "title"
       cover_type: "hard cover"
       authors:
-      - surname: "surname"
-        imgpath: "imgpath"
-        name: "name"
-        author_id: 1
-      - surname: "surname"
-        imgpath: "imgpath"
-        name: "name"
-        author_id: 1
+      - author_id: 1
+      - author_id: 1
   BookSnippet:
     required:
     - "authors"
@@ -840,9 +834,6 @@ definitions:
   AuthorSnippet:
     required:
     - "author_id"
-    - "imgpath"
-    - "name"
-    - "surname"
     properties:
       author_id:
         type: "integer"

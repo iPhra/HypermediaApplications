@@ -13,7 +13,7 @@ tags:
 - name: "Account"
 - name: "Cart"
 schemes:
-- "http"
+- "https"
 paths:
   /books:
     get:

@@ -14,6 +14,7 @@ module.exports.checkToken = async function checkToken(token) {
         const decoded = await jwt.verify(token, config.get('jwtPrivateKey'));
         return decoded.user_id;
     } catch(err) {
+        console.log(err);
         throw {code: 401};
     }
 };

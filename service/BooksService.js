@@ -12,7 +12,7 @@ const checkToken = require("../utils/authenticator").checkToken;
 exports.booksBookIdDELETE = async (book_id, token) => {
     //check admin permission
     const user_id = await checkToken(token);
-    const admin = await database.select('admin').table('account').where({ user_id: user_id});
+    const admin = await database.select('admin').table('account').where("user_id", user_id);
     if(!admin[0]) throw {code : 403};
 
     //check if the book doesn't exists
@@ -20,7 +20,7 @@ exports.booksBookIdDELETE = async (book_id, token) => {
     if(!book) throw {code: 404};
 
     //from here, checklist OK, delete the book
-    await database("book").where("book_id", book_id).del();
+    await database("book").del().where({book_id: book_id});
     return "Book deleted.";
 };
 
@@ -95,6 +95,7 @@ exports.booksBookIdPUT = async (book_id,book,token) => {
             return { 'book_id': book_id, 'genre' : genre };
         });
 
+        //await trx.from("genre").where("book_id", book_id).del();
         await trx.insert(data, 'genre').into('genre');
 
         data = book.authors.author_ids.map(author_id => {

@@ -136,8 +136,8 @@ purchaseSessionSetup = (database) => {
         if (!exists) {
             console.log("It doesn't so we create it");
             return database.schema.createTable("purchase_session", table => {
-                table.integer("purchase_id").references("purchase.purchase_id").onUpdate("CASCADE").onDelete("SET NULL");
-                table.integer("book_id").references("book.book_id").onUpdate("CASCADE").onDelete("SET NULL");
+                table.integer("purchase_id").references("purchase.purchase_id").onUpdate("CASCADE").onDelete("NO ACTION");
+                table.integer("book_id").references("book.book_id").onUpdate("CASCADE").onDelete("NO ACTION");
                 table.float("price").notNullable();
                 table.integer("quantity").defaultTo(1);
                 table.primary(["purchase_id","book_id"]);

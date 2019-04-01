@@ -23,6 +23,7 @@ const options = {
 const spec = fs.readFileSync(path.join(__dirname, 'api/swagger.yaml'), 'utf8');
 const swaggerDoc = jsyaml.safeLoad(spec);
 
+
 // Initialize the Swagger middleware
 swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
 

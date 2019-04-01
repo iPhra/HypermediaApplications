@@ -4,7 +4,8 @@ const utils = require('../utils/writer.js');
 const Authors = require('../service/AuthorsService');
 
 module.exports.authorsAuthorIdDELETE = function authorsAuthorIdDELETE (req, res, next) {
-  const author_id = req.swagger.params['author_id'].value;
+
+    const author_id = req.swagger.params['author_id'].value;
     const token = req.headers.authorization;
   Authors.authorsAuthorIdDELETE(author_id, token)
     .then(function (response) {

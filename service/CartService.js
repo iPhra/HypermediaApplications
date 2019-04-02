@@ -9,71 +9,71 @@ const checkToken = require("../utils/authenticator").checkToken;
  * no response value expected for this operation
  **/
 exports.accountCartCheckoutPOST = async (token) => {
-    //check if the user is logged in, if so retrieve his user_id
-    const user_id = await checkToken(token);
+  //check if the user is logged in, if so retrieve his user_id
+  const user_id = await checkToken(token);
 
-    //moving books to purchases and reservations is done with triggers
-    return database.transaction(async trx => {
+  //moving books to purchases and reservations is done with triggers
+  return database.transaction(async trx => {
 
-      //retrieve all the book_ids in the cart
-      const book_ids = await trx.table("cart")
-          .select("book_id","quantity")
-          .where("user_id","=",user_id);
-      const ids = book_ids.map(a => a.book_id);
+    //retrieve all the book_ids in the cart
+    const book_ids = await trx.table("cart")
+        .select("book_id","quantity")
+        .where("user_id","=",user_id);
+    const ids = book_ids.map(a => a.book_id);
 
-      //retrieve all the books associated to those ids
-      const books = await trx.table("book")
-          .select("book_id","title","current_price", "availability")
-          .whereIn("book_id",ids);
+    //retrieve all the books associated to those ids
+    const books = await trx.table("book")
+        .select("book_id","title","current_price", "availability")
+        .whereIn("book_id",ids);
 
-      //add books to purchases or reservation
-      let total_price = 0;
-      let purchases = [];
-      let reservations = [];
+    //add books to purchases or reservation
+    let total_price = 0;
+    let purchases = [];
+    let reservations = [];
 
-      for(let i=0; i<books.length; i++) {
-          total_price += books[i].current_price * book_ids[i].quantity;
-          if (books[i].availability === 'available') {
-              //add book to purchases
-              purchases.push({
-                  book_id: books[i].book_id,
-                  price: books[i].current_price,
-                  quantity: book_ids[i].quantity
-              });
-          }
-          else {
-            //add book to reservations
-            reservations.push({
-                user_id: user_id,
-                book_id: books[i].book_id,
-                //timestamp: Date.now(),
-                price: books[i].current_price,
-                quantity: book_ids[i].quantity
-            });
-          }
+    for(let i=0; i<books.length; i++) {
+      total_price += books[i].current_price * book_ids[i].quantity;
+      if (books[i].availability === 'available') {
+        //add book to purchases
+        purchases.push({
+          book_id: books[i].book_id,
+          price: books[i].current_price,
+          quantity: book_ids[i].quantity
+        });
       }
+      else {
+        //add book to reservations
+        reservations.push({
+          user_id: user_id,
+          book_id: books[i].book_id,
+          //timestamp: Date.now(),
+          price: books[i].current_price,
+          quantity: book_ids[i].quantity
+        });
+      }
+    }
 
-      let data = {
-        user_id: user_id,
-        total_price: total_price
-      };
+    let data = {
+      user_id: user_id,
+      total_price: total_price
+    };
 
-      // insert total purchases into purchase table
-      let purchase_id = await trx.insert(data, 'purchase_id').into('purchase');
-      purchase_id = purchase_id[0];
+    // insert total purchases into purchase table
+    let purchase_id = await trx.insert(data, 'purchase_id').into('purchase');
+    purchase_id = purchase_id[0];
 
-      //insert purchases into purchase_session table
-      purchases = purchases.map(p => { p.purchase_id = purchase_id; return p });
-      await trx.insert(purchases).into('purchase_session');
+    //insert purchases into purchase_session table
+    purchases = purchases.map(p => { p.purchase_id = purchase_id; return p });
+    await trx.insert(purchases).into('purchase_session');
 
-      //insert reservations into reservation table
-      await trx.insert(reservations).into('reservation');
+    //insert reservations into reservation table
+    await trx.insert(reservations).into('reservation');
 
-      //delete books from cart
-      await trx.table('cart').where({ user_id: user_id }).del();
+    //delete books from cart
+    await trx.table('cart').where({ user_id: user_id }).del();
 
-      return "Purchase successful";
-    });
+    return;
+  });
 };
 
 
@@ -84,30 +84,29 @@ exports.accountCartCheckoutPOST = async (token) => {
  * returns Cart
  **/
 exports.accountCartDELETE = async (item, token) => {
-    const user_id = checkToken(token);
-    const qnt = await database("cart").select("quantity").where({
-        "user_id" : user_id,
-        "book_id" : item.book_id})
-        .andWhere("quantity", ">=", item.quantity);
+  const user_id = await checkToken(token);
+  const qnt = await database("cart").select("quantity").where({
+    "user_id" : user_id,
+    "book_id" : item.book_id})
+      .andWhere("quantity", ">=", item.quantity);
+  if(!qnt[0]) throw {code: 401};
 
-    if(!qnt[0]) throw {code: 401};
+  let count = qnt[0].quantity - item.quantity;
+  console.log(count);
+  if(count > 0) {
+    await database("cart").where({
+      "user_id" : user_id,
+      "book_id" : item.book_id
+    }).update("quantity", count)
+  }
+  else {
+    await database("cart").where({
+      "user_id" : user_id,
+      "book_id" : item.book_id
+    }).del()
+  }
 
-    let count = qnt[0] - item.quantity;
-
-    if(count > 0) {
-        await database("cart").where({
-            "user_id" : user_id,
-            "book_id" : item.book_id
-        }).update("quantity", count)
-    }
-    else {
-        await database("cart").where({
-            "user_id" : user_id,
-            "book_id" : item.book_id
-        }).del()
-    }
-
-    return "Item removed from cart!"
+  return "Item removed from cart!"
 };
 
 
@@ -132,24 +131,24 @@ exports.accountCartGET = async (token) => {
  * returns Cart
  **/
 exports.accountCartPOST = async (book, token) => {
-    //check if the user is logged in, if so retrieve his user_id
-    const user_id = await checkToken(token);
-    book["user_id"] = user_id;
+  //check if the user is logged in, if so retrieve his user_id
+  const user_id = await checkToken(token);
+  book["user_id"] = user_id;
 
-    //check if the same book is already present in the user's cart
-    const rows = await database.table("cart").select().where({ user_id: user_id, book_id: book.book_id });
+  //check if the same book is already present in the user's cart
+  const rows = await database.table("cart").select().where({ user_id: user_id, book_id: book.book_id });
 
-    if (rows.length > 0) {
-        //update cart item quantity
-        await database.table("cart").where({ user_id: user_id, book_id: book.book_id }).update({
-            quantity: (book.quantity + rows[0].quantity)
-        });
-    } else {
-        //insert the new book into the cart
-        await database.table("cart").insert(book);
-    }
+  if (rows.length > 0) {
+    //update cart item quantity
+    await database.table("cart").where({ user_id: user_id, book_id: book.book_id }).update({
+      quantity: (book.quantity + rows[0].quantity)
+    });
+  } else {
+    //insert the new book into the cart
+    await database.table("cart").insert(book);
+  }
 
-    return retrieveCart(user_id);
+  return retrieveCart(user_id);
 };
 
 

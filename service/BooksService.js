@@ -57,11 +57,10 @@ exports.booksBookIdGET = async (book_id) => {
  * Updates an existing Book.
  *
  * book_id Long The id of the desired book.
- * book Book The new fields to update.
+ * book_container Book_container_1 The book object to insert and its similars.
  * no response value expected for this operation
  **/
-exports.booksBookIdPUT = async (book_id,book,token) => {
-
+exports.booksBookIdPUT = async(book_id,book_container,token) => {
     //check admin permission
     const user_id = await checkToken(token);
     const admin = await database.select('admin').table('account').where({ user_id: user_id});
@@ -71,8 +70,7 @@ exports.booksBookIdPUT = async (book_id,book,token) => {
     //check if the book doesn't exists
     const oldBook = (await database.select("*").from("book").where("book_id", book_id))[0];
     if(!oldBook) throw {code: 404};
-
-
+    let book = book_container.book;
     await database("book").where("book_id", book_id).update({
             title               : book.title,
             current_price       : book.current_price,
@@ -88,40 +86,29 @@ exports.booksBookIdPUT = async (book_id,book,token) => {
 
     );
 
+    //cleaning past data
+    await database("genre").where("book_id", book_id).del();
+    await database("authorship").where("book_id" , book_id).del();
+    await database("similarity").where("book_id1", book_id)
+        .orWhere("book_id2", book_id).del();
 
-    await database.transaction(async trx => {
-
-        let data = book.genres.map(genre => {
-            return { 'book_id': book_id, 'genre' : genre };
-        });
-
-        //await trx.from("genre").where("book_id", book_id).del();
-        await trx.insert(data, 'genre').into('genre');
-
-        data = book.authors.author_ids.map(author_id => {
-            return { 'book_id': book_id, 'author_id' : author_id };
-        });
-
-        await trx.insert(data, 'author_id').into('authorship');
-
-        data = book.similars.map(similar_book_id => {
-            return { 'book_id1': book_id, 'book_id2' : similar_book_id };
-        });
-
-        await trx.insert(data).into('similarity')
-            .whereNotExists(
-                database("similarity").where({
-                    book_id1    : data.book_id1,
-                    book_id2    : data.book_id2
-                }).union(
-                    database("similarity").where({
-                        book_id1    : data.book_id1,
-                        book_id2    : data.book_id2
-                    })));
+    //inserting new one
+    let data = book.genres.map(genre => {
+        return {'book_id': book_id, 'genre': genre};
     });
+    await database("genre").insert(data);
 
+    data = book.authors.map(author => {
+        author["book_id"] = book_id;
+        return author;
+    });
+    await database("authorship").insert(data);
+
+    data = book_container.similars.map(similar_book_id => {
+        return { 'book_id1': book_id, 'book_id2' : similar_book_id };
+    });
+    await database("similarity").insert(data);
     return "Book updated!"
-
 };
 
 
@@ -252,8 +239,9 @@ exports.booksPOST = async (book_container, token) => {
         await trx.insert(data, 'genre').into('genre');
 
         //insert authors into table authorship
-        data = book_container.book.authors.author_ids.map(author_id => {
-            return {'book_id': id, 'author_id': author_id};
+        data = book_container.book.authors.map(author => {
+            author["book_id"] = id;
+            return author;
         });
         await trx.insert(data, 'author_id').into('authorship');
 
@@ -294,7 +282,7 @@ exports.booksSearchGET = async (title,genre,author, offset, limit) => {
     //else if the genre is specified, retrieve all books of that genre
     else if (genre) {
         //find all the books matching the offset and limit
-         books = await database("book")
+        books = await database("book")
             .select('book_id', 'title', 'current_price', 'imgpath')
             .whereRaw("exists(select * from book B join genre on genre.book_id = B.book_id where genre = ? and B.book_id = book.book_id)", [genre])
             .limit(limit)
@@ -308,6 +296,10 @@ exports.booksSearchGET = async (title,genre,author, offset, limit) => {
             .whereRaw("exists(select * from authorship join author on authorship.author_id = author.author_id where authorship.book_id = book.book_id and author.name = ? and author.surname = ?)", author.split(" "))
             .limit(limit)
             .offset(offset);
+    }
+    //if nothing specified
+    else {
+        return [];
     }
 
     //for each book found, get its authors and its genres
@@ -337,4 +329,5 @@ exports.genresGET = async (offset,limit) => {
     //retrieve all the genres associated to at least one book
     return (await database.distinct().select('genre').table("genre").limit(limit).offset(offset)).map(a => a.genre);
 };
+
 

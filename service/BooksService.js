@@ -252,7 +252,8 @@ exports.booksPOST = async (book_container, token) => {
         await trx.insert(data).into('similarity');
 
         return res[0];
-    });
+    }).catch( () => { throw { code: 400 }; }
+    );
 };
 
 

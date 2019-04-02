@@ -101,7 +101,9 @@ exports.authorsPOST = async (author, token) => {
   const admin = await database.select('admin').table('account').where({ user_id: user_id});
   if(!admin[0]["admin"]) throw {code : 403};
 
-  //insert a new author into author table
-  return (await database.table("author").insert(author, ['author_id']))[0];
+  return database.transaction(async trx => {
+      //insert a new author into author table
+      return (await trx.table("author").insert(author, ['author_id']))[0];
+  }).catch(() => { throw { code: 400 } });
 };
 

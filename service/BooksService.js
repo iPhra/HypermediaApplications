@@ -71,44 +71,48 @@ exports.booksBookIdPUT = async(book_id,book_container,token) => {
     const oldBook = (await database.select("*").from("book").where("book_id", book_id))[0];
     if(!oldBook) throw {code: 404};
     let book = book_container.book;
-    await database("book").where("book_id", book_id).update({
-            title               : book.title,
-            current_price       : book.current_price,
-            isbn10              : book.isbn10,
-            isbn13              : book.isbn13,
-            num_of_pages        : book.num_of_pages,
-            cover_type          : book.cover_type,
-            description         : book.description,
-            availability        : book.availability,
-            available_quantity  : book.available_quantity,
-            img_path            : book.img_path
-        }
 
-    );
+    return database.transaction(async trx => {
+        await trx("book").where("book_id", book_id).update({
+                title               : book.title,
+                current_price       : book.current_price,
+                isbn10              : book.isbn10,
+                isbn13              : book.isbn13,
+                num_of_pages        : book.num_of_pages,
+                cover_type          : book.cover_type,
+                description         : book.description,
+                availability        : book.availability,
+                available_quantity  : book.available_quantity,
+                img_path            : book.img_path
+            }
 
-    //cleaning past data
-    await database("genre").where("book_id", book_id).del();
-    await database("authorship").where("book_id" , book_id).del();
-    await database("similarity").where("book_id1", book_id)
-        .orWhere("book_id2", book_id).del();
+        );
 
-    //inserting new one
-    let data = book.genres.map(genre => {
-        return {'book_id': book_id, 'genre': genre};
-    });
-    await database("genre").insert(data);
+        //cleaning past data
+        await trx("genre").where("book_id", book_id).del();
+        await trx("authorship").where("book_id" , book_id).del();
+        await trx("similarity").where("book_id1", book_id)
+            .orWhere("book_id2", book_id).del();
 
-    data = book.authors.map(author => {
-        author["book_id"] = book_id;
-        return author;
-    });
-    await database("authorship").insert(data);
+        //inserting new one
+        let data = book.genres.map(genre => {
+            return {'book_id': book_id, 'genre': genre};
+        });
+        await trx("genre").insert(data);
 
-    data = book_container.similars.map(similar_book_id => {
-        return { 'book_id1': book_id, 'book_id2' : similar_book_id };
-    });
-    await database("similarity").insert(data);
-    return "Book updated!"
+        data = book.authors.map(author => {
+            author["book_id"] = book_id;
+            return author;
+        });
+        await trx("authorship").insert(data);
+
+        data = book_container.similars.map(similar_book_id => {
+            return { 'book_id1': book_id, 'book_id2' : similar_book_id };
+        });
+        await trx("similarity").insert(data);
+        return "Book updated!";
+
+    }).catch( () => { throw { code: 400 }});
 };
 
 

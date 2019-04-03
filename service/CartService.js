@@ -91,7 +91,6 @@ exports.accountCartDELETE = async (item, token) => {
   if(!qnt[0]) throw {code: 401};
 
   let count = qnt[0].quantity - item.quantity;
-  console.log(count);
   if(count > 0) {
     await database("cart").where({
       "user_id" : user_id,

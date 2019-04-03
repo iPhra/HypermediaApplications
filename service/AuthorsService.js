@@ -62,7 +62,8 @@ exports.authorsAuthorIdPUT = async (author_id, author, token) => {
 
 
   //book updating
-  return await database("author").where("author_id", author_id).update({
+
+    await database("author").where("author_id", author_id).update({
         name        : author.name,
         surname     : author.surname,
         birthdate   : author.birthdate,
@@ -70,7 +71,8 @@ exports.authorsAuthorIdPUT = async (author_id, author, token) => {
         description : author.description,
         img_path    : author.img_path
       }
-  ).catch(() => {throw {code : 400}});
+  );
+  return "Author updated!";
 };
 
 

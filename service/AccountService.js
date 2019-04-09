@@ -66,15 +66,15 @@ exports.accountInfoPOST = async (account, token) => {
  **/
 exports.accountLoginPOST = async (login) => {
     //query the database to find an existing account with the provided credentials
-    const account = await database.table("account").select().where("account.email", "=", login["email"]);
+    const account = await database.table("account").select().where("email", "=", login["email"]);
 
     //if there is no email associated
     if (account.length === 0)
-        throw new Error("Email provided does not exist");
+        throw {code: 401};
 
     //if the password is wrong
     if (!(await bcrypt.compare(login["password"], account[0]["password"])))
-        throw new Error("Wrong password");
+        throw {code: 401};
 
     //generate jwt token containing user_id
     const token =  jwt.sign({

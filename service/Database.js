@@ -17,8 +17,8 @@ accountSetup = (database) => {
                 table.increments("user_id");
                 table.string("email").unique().notNullable();
                 table.string("password").notNullable();
-                table.string("name");
-                table.string("surname");
+                table.string("name").notNullable();
+                table.string("surname").notNullable();
                 table.boolean("admin").defaultTo(false);
             })
         }
@@ -35,9 +35,9 @@ authorSetup = (database) => {
                 table.increments("author_id");
                 table.string("name").notNullable();
                 table.string("surname").notNullable();
-                table.date("birthdate");
+                table.date("birthdate").notNullable();
                 table.string("birthplace");
-                table.text("imgpath");
+                table.text("imgpath").notNullable();
                 table.text("description");
             })
         }
@@ -72,11 +72,11 @@ bookSetup = (database) => {
                 table.string("title").notNullable();
                 table.text("description");
                 table.float("current_price").defaultTo(0).notNullable();
-                table.integer("num_of_pages");
-                table.enu("cover_type",["hard cover","soft cover","e-book"]);
+                table.integer("num_of_pages").notNullable();
+                table.enu("cover_type",["hard cover","soft cover","e-book"]).notNullable();
                 table.enu("availability",["available","unreleased","out_of_stock"]).notNullable();
                 table.integer("available_quantity").defaultTo(0);
-                table.text("imgpath");
+                table.text("imgpath").notNullable();
             });
         }
     });

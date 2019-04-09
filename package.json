@@ -20,6 +20,7 @@
     "js-yaml": "^3.13.0",
     "jsonwebtoken": "^8.5.1",
     "knex": "latest",
+    "mustache": "^3.0.1",
     "pg": "^7.9.0",
     "serve-static": "latest",
     "swagger-tools": "^0.10.4"

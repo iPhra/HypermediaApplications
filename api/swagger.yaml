@@ -5,13 +5,14 @@ info:
     \ application course project a.y. 2018/2019.\n"
   version: "1.0.0"
   title: "Hypermedia course API"
-host: "polimi-hyp-2019-team-10489796.herokuapp.com"
-basePath: "/v2"
+host: polimi-hyp-2019-team-10489796.herokuapp.com
+basePath: /v2
 tags:
 - name: "Books"
 - name: "Authors"
 - name: "Account"
 - name: "Cart"
+- name: "Event"
 schemes:
 - "https"
 paths:
@@ -19,81 +20,14 @@ paths:
     get:
       tags:
       - "Books"
-      summary: "Returns a preview of all the books."
+      summary: "Returns a preview of all the books filtered by keyword."
       operationId: "booksGET"
       produces:
       - "application/json"
       parameters:
-      - name: "offset"
+      - name: "keyword"
         in: "query"
-        description: "Offset with regards to the current page."
-        required: false
-        type: "integer"
-        default: 0
-        format: "int64"
-      - name: "limit"
-        in: "query"
-        description: "Items per page."
-        required: false
-        type: "integer"
-        default: 20
-        format: "int64"
-      responses:
-        200:
-          description: "A brief preview of all the books in the database."
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/BookSnippet"
-        400:
-          description: "Bad request."
-      x-swagger-router-controller: "Books"
-    post:
-      tags:
-      - "Books"
-      summary: "Inserts a new book."
-      operationId: "booksPOST"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "book_container"
-        description: "The book object to insert and its similars."
-        required: true
-        schema:
-          $ref: "#/definitions/book_container"
-      responses:
-        200:
-          description: "Book inserted."
-          schema:
-            type: "object"
-            properties:
-              book_id:
-                type: "integer"
-                format: "int64"
-        400:
-          description: "Bad request."
-        403:
-          description: "Forbidden operation."
-      security:
-      - Bearer: []
-      x-security-scopes:
-      - "admin"
-      x-swagger-router-controller: "Books"
-  /books/search:
-    get:
-      tags:
-      - "Books"
-      summary: "Returns a preview of all the books filtered by keyword."
-      operationId: "booksSearchGET"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "title"
-        in: "query"
-        description: "The desired title of the book."
+        description: "A keyword to match the book to."
         required: false
         type: "string"
       - name: "genre"
@@ -101,9 +35,9 @@ paths:
         description: "The genre to filter the book by."
         required: false
         type: "string"
-      - name: "author"
+      - name: "theme"
         in: "query"
-        description: "The author to search the book by."
+        description: "The theme to search the book by."
         required: false
         type: "string"
       - name: "offset"
@@ -127,9 +61,43 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/BookSnippet"
+              $ref: "#/definitions/Book"
         400:
           description: "Bad request."
+      x-swagger-router-controller: "Books"
+    post:
+      tags:
+      - "Books"
+      summary: "Inserts a new book."
+      operationId: "booksPOST"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "book"
+        description: "The book object to insert."
+        required: true
+        schema:
+          $ref: "#/definitions/Book"
+      responses:
+        200:
+          description: "Book inserted."
+          schema:
+            type: "object"
+            properties:
+              book_id:
+                type: "integer"
+                format: "int64"
+        400:
+          description: "Bad request."
+        403:
+          description: "Forbidden operation."
+      security:
+      - Bearer: []
+      x-security-scopes:
+      - "admin"
       x-swagger-router-controller: "Books"
   /books/{book_id}:
     get:
@@ -171,11 +139,11 @@ paths:
         type: "integer"
         format: "int64"
       - in: "body"
-        name: "book_container"
-        description: "The book object to insert and its similars."
+        name: "book"
+        description: "The book object to insert."
         required: true
         schema:
-          $ref: "#/definitions/book_container_1"
+          $ref: "#/definitions/Book"
       responses:
         200:
           description: "Book updated."
@@ -251,7 +219,142 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/BookSnippet"
+              type: "object"
+              properties:
+                book_id:
+                  type: "integer"
+                  format: "int64"
+                book:
+                  $ref: "#/definitions/Book"
+        400:
+          description: "Bad request."
+        404:
+          description: "Book not found."
+      x-swagger-router-controller: "Books"
+    put:
+      tags:
+      - "Books"
+      summary: "Adds similars."
+      operationId: "booksBookIdSimiliarsPUT"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "book_id"
+        in: "path"
+        description: "The id of the reference book."
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "similars"
+        description: "The books to be inserted."
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/Book"
+      responses:
+        200:
+          description: "Similars inserted."
+        400:
+          description: "Bad request."
+        403:
+          description: "Forbidden operation."
+      security:
+      - Bearer: []
+      x-security-scopes:
+      - "admin"
+      x-swagger-router-controller: "Books"
+  /books/{book_id}/authors:
+    get:
+      tags:
+      - "Books"
+      summary: "Returns the lists of authors of a specific book."
+      operationId: "booksBookIdAuthorsGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "book_id"
+        in: "path"
+        description: "The id of the reference book."
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "A list of authors."
+          schema:
+            type: "array"
+            items:
+              type: "object"
+              properties:
+                author_id:
+                  type: "integer"
+                  format: "int64"
+                author:
+                  $ref: "#/definitions/Author"
+        400:
+          description: "Bad request."
+        404:
+          description: "Book not found."
+      x-swagger-router-controller: "Books"
+  /books/{book_id}/reviews:
+    get:
+      tags:
+      - "Books"
+      summary: "Returns the lists of reviews of a specific book."
+      operationId: "booksBookIdReviewsGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "book_id"
+        in: "path"
+        description: "The id of the reference book."
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "A list of reviews."
+          schema:
+            type: "array"
+            items:
+              type: "object"
+              properties:
+                review:
+                  $ref: "#/definitions/Review"
+        400:
+          description: "Bad request."
+        404:
+          description: "Book not found."
+      x-swagger-router-controller: "Books"
+  /books/{book_id}/events:
+    get:
+      tags:
+      - "Books"
+      summary: "Returns the lists of presentation events of a specific book."
+      operationId: "booksBookIdEventsGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "book_id"
+        in: "path"
+        description: "The id of the reference book."
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "A list of events."
+          schema:
+            type: "array"
+            items:
+              type: "object"
+              properties:
+                event:
+                  $ref: "#/definitions/Event"
         400:
           description: "Bad request."
         404:
@@ -265,21 +368,7 @@ paths:
       operationId: "genresGET"
       produces:
       - "application/json"
-      parameters:
-      - name: "offset"
-        in: "query"
-        description: "Offset with regards to the current page."
-        required: false
-        type: "integer"
-        default: 0
-        format: "int64"
-      - name: "limit"
-        in: "query"
-        description: "Items per page."
-        required: false
-        type: "integer"
-        default: 20
-        format: "int64"
+      parameters: []
       responses:
         200:
           description: "A list of genres."
@@ -290,40 +379,26 @@ paths:
         400:
           description: "Bad request."
       x-swagger-router-controller: "Books"
-  /authors:
+  /themes:
     get:
       tags:
-      - "Authors"
-      summary: "Returns a preview of all the authors."
-      operationId: "authorsGET"
+      - "Books"
+      summary: "Returns the lists of all available themes."
+      operationId: "themesGET"
       produces:
       - "application/json"
-      parameters:
-      - name: "offset"
-        in: "query"
-        description: "Offset with regards to the current page."
-        required: false
-        type: "integer"
-        default: 0
-        format: "int64"
-      - name: "limit"
-        in: "query"
-        description: "Items per page."
-        required: false
-        type: "integer"
-        default: 20
-        format: "int64"
+      parameters: []
       responses:
         200:
-          description: "A list of names, surnames, ids and images of all authors in\
-            \ the database."
+          description: "A list of themes."
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/AuthorSnippet"
+              $ref: "#/definitions/Theme"
         400:
           description: "Bad request."
-      x-swagger-router-controller: "Authors"
+      x-swagger-router-controller: "Books"
+  /authors:
     post:
       tags:
       - "Authors"
@@ -445,12 +520,12 @@ paths:
       x-security-scopes:
       - "admin"
       x-swagger-router-controller: "Authors"
-  /account/cart:
+  /events:
     get:
       tags:
-      - "Cart"
-      summary: "Returns list of items present in the cart of the specified user."
-      operationId: "accountCartGET"
+      - "Events"
+      summary: "Returns a list of all the events."
+      operationId: "eventsGET"
       produces:
       - "application/json"
       parameters:
@@ -468,6 +543,151 @@ paths:
         type: "integer"
         default: 20
         format: "int64"
+      responses:
+        200:
+          description: "A list of location, dates, descriptions, ids, and books of\
+            \ all the Events in the database"
+          schema:
+            type: "array"
+            items:
+              type: "object"
+              properties:
+                event_id:
+                  type: "integer"
+                  format: "int64"
+                event:
+                  $ref: "#/definitions/Event"
+        400:
+          description: "Bad request."
+      x-swagger-router-controller: "Events"
+    post:
+      tags:
+      - "Events"
+      summary: "Inserts a new Event."
+      operationId: "eventsPOST"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "event"
+        description: "The event to be inserted."
+        required: true
+        schema:
+          $ref: "#/definitions/Event"
+      responses:
+        200:
+          description: "Event inserted."
+          schema:
+            type: "object"
+            properties:
+              author_id:
+                type: "integer"
+                format: "int64"
+        400:
+          description: "Bad request."
+        403:
+          description: "Forbidden operation."
+      security:
+      - Bearer: []
+      x-security-scopes:
+      - "admin"
+      x-swagger-router-controller: "Events"
+  /events/{event_id}:
+    get:
+      tags:
+      - "Events"
+      summary: "Returns the full description of an Event."
+      operationId: "eventsEventIdGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "event_id"
+        in: "path"
+        description: "The id of the desired event."
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "The full description of the specified event."
+          schema:
+            $ref: "#/definitions/Event"
+        400:
+          description: "Bad request."
+        404:
+          description: "Event not found."
+      x-swagger-router-controller: "Events"
+    put:
+      tags:
+      - "Events"
+      summary: "Update an existing event information."
+      operationId: "eventsEventIdPUT"
+      consumes:
+      - "application/json"
+      parameters:
+      - name: "event_id"
+        in: "path"
+        description: "The id of the desired event."
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "event"
+        description: "The fields to update."
+        required: true
+        schema:
+          $ref: "#/definitions/Event"
+      responses:
+        200:
+          description: "Event updated."
+        400:
+          description: "Bad request."
+        403:
+          description: "Forbidden operation."
+        404:
+          description: "Event not found."
+      security:
+      - Bearer: []
+      x-security-scopes:
+      - "admin"
+      x-swagger-router-controller: "Events"
+    delete:
+      tags:
+      - "Events"
+      summary: "Delete an existing event."
+      operationId: "eventsEventIdDELETE"
+      parameters:
+      - name: "event_id"
+        in: "path"
+        description: "The id of the desired event."
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "Event deleted."
+        400:
+          description: "Bad request."
+        403:
+          description: "Forbidden operation."
+        404:
+          description: "Event not found."
+      security:
+      - Bearer: []
+      x-security-scopes:
+      - "admin"
+      x-swagger-router-controller: "Events"
+  /account/cart:
+    get:
+      tags:
+      - "Cart"
+      summary: "Returns list of items present in the cart of the specified user."
+      operationId: "accountCartGET"
+      produces:
+      - "application/json"
+      parameters: []
       responses:
         200:
           description: "The list of items present in the cart."
@@ -593,7 +813,7 @@ paths:
         description: "Account details."
         required: false
         schema:
-          $ref: "#/definitions/account"
+          $ref: "#/definitions/User"
       responses:
         200:
           description: "Account updated."
@@ -642,7 +862,7 @@ paths:
         description: "User who wants to sign up."
         required: false
         schema:
-          $ref: "#/definitions/user"
+          $ref: "#/definitions/User"
       responses:
         200:
           description: "Registration successful."
@@ -694,32 +914,25 @@ securityDefinitions:
 definitions:
   Book:
     required:
-    - "authors"
-    - "availability"
-    - "available_quantity"
-    - "cover_type"
+    - "abstract"
     - "current_price"
-    - "description"
-    - "genres"
     - "imgpath"
-    - "isbn10"
     - "isbn13"
-    - "num_of_pages"
     - "title"
     properties:
+      abstract:
+        type: "string"
+      interview:
+        type: "string"
+      imgpath:
+        type: "string"
+      isbn13:
+        type: "integer"
       title:
         type: "string"
       current_price:
         type: "number"
         format: "float"
-      authors:
-        type: "array"
-        items:
-          $ref: "#/definitions/AuthorSnippet"
-      isbn10:
-        type: "integer"
-      isbn13:
-        type: "integer"
       num_of_pages:
         type: "integer"
       cover_type:
@@ -728,13 +941,6 @@ definitions:
         - "hard cover"
         - "e-book"
         - "soft cover"
-      description:
-        type: "string"
-      genres:
-        type: "array"
-        uniqueItems: true
-        items:
-          $ref: "#/definitions/Genre"
       availability:
         type: "string"
         enum:
@@ -744,71 +950,37 @@ definitions:
       available_quantity:
         type: "integer"
         format: "int64"
-      imgpath:
-        type: "string"
-    example:
-      available_quantity: 5
-      num_of_pages: 5
-      genres:
-      - {}
-      - {}
-      imgpath: "imgpath"
-      isbn13: 1
-      description: "description"
-      isbn10: 6
-      current_price: 0.8008282
-      availability: "unreleased"
-      title: "title"
-      cover_type: "hard cover"
-      authors:
-      - author_id: 1
-      - author_id: 1
-  BookSnippet:
-    required:
-    - "authors"
-    - "book_id"
-    - "current_price"
-    - "genres"
-    - "imgpath"
-    - "title"
-    properties:
-      book_id:
-        type: "integer"
-      title:
-        type: "string"
-      current_price:
-        type: "number"
-        format: "float"
-      authors:
-        type: "array"
-        items:
-          $ref: "#/definitions/AuthorSnippet"
-      imgpath:
-        type: "string"
       genres:
         type: "array"
         uniqueItems: true
         items:
           $ref: "#/definitions/Genre"
+      themes:
+        type: "array"
+        uniqueItems: true
+        items:
+          $ref: "#/definitions/Theme"
     example:
+      available_quantity: 5
+      themes:
+      - {}
+      - {}
+      num_of_pages: 1
       imgpath: "imgpath"
       genres:
       - {}
       - {}
-      book_id: 0
+      isbn13: 0
+      abstract: "abstract"
       current_price: 6.0274563
+      availability: "unreleased"
       title: "title"
-      authors:
-      - surname: "surname"
-        imgpath: "imgpath"
-        name: "name"
-        author_id: 1
-      - surname: "surname"
-        imgpath: "imgpath"
-        name: "name"
-        author_id: 1
+      interview: "interview"
+      cover_type: "hard cover"
   Author:
     required:
+    - "biography"
+    - "imgpath"
     - "name"
     - "surname"
     properties:
@@ -820,7 +992,7 @@ definitions:
         type: "string"
       birthplace:
         type: "string"
-      description:
+      biography:
         type: "string"
       imgpath:
         type: "string"
@@ -830,24 +1002,62 @@ definitions:
       surname: "surname"
       imgpath: "imgpath"
       name: "name"
-      description: "description"
-  AuthorSnippet:
+      biography: "biography"
+  Event:
     required:
-    - "author_id"
+    - "book_id"
+    - "date"
+    - "description"
+    - "location"
+    - "organizer_email"
     properties:
-      author_id:
-        type: "integer"
-      name:
+      book_id:
         type: "string"
-      surname:
+      book:
+        $ref: "#/definitions/Book"
+      location:
         type: "string"
-      imgpath:
+      date:
+        type: "string"
+      description:
+        type: "string"
+      organizer_email:
         type: "string"
     example:
-      surname: "surname"
-      imgpath: "imgpath"
-      name: "name"
-      author_id: 1
+      date: "date"
+      book:
+        available_quantity: 5
+        themes:
+        - {}
+        - {}
+        num_of_pages: 1
+        imgpath: "imgpath"
+        genres:
+        - {}
+        - {}
+        isbn13: 0
+        abstract: "abstract"
+        current_price: 6.0274563
+        availability: "unreleased"
+        title: "title"
+        interview: "interview"
+        cover_type: "hard cover"
+      organizer_email: "organizer_email"
+      description: "description"
+      location: "location"
+      book_id: "book_id"
+  Review:
+    required:
+    - "rating"
+    - "text"
+    - "user_name"
+    properties:
+      user_name:
+        type: "string"
+      text:
+        type: "string"
+      rating:
+        type: "integer"
   Cart:
     properties:
       book_list:
@@ -872,12 +1082,15 @@ definitions:
         title: "title"
   User:
     required:
-    - "admin"
     - "email"
     - "name"
     - "surname"
     properties:
+      user_id:
+        type: "integer"
       email:
+        type: "string"
+      password:
         type: "string"
       name:
         type: "string"
@@ -886,6 +1099,8 @@ definitions:
       admin:
         type: "boolean"
     example:
+      password: "password"
+      user_id: 0
       surname: "surname"
       name: "name"
       admin: true
@@ -900,18 +1115,14 @@ definitions:
     - "fantasy"
     - "action"
     - "crime"
-  book_container:
-    type: "object"
-    required:
-    - "book"
-    properties:
-      book:
-        $ref: "#/definitions/Book"
-      similars:
-        type: "array"
-        items:
-          type: "integer"
-          format: "int64"
+  Theme:
+    type: "string"
+    enum:
+    - "love"
+    - "friendship"
+    - "war"
+    - "travel"
+    - "growth"
   inline_response_200:
     properties:
       book_id:
@@ -919,25 +1130,42 @@ definitions:
         format: "int64"
     example:
       book_id: 0
-  book_container_1:
-    type: "object"
-    required:
-    - "book"
+  inline_response_200_1:
     properties:
+      book_id:
+        type: "integer"
+        format: "int64"
       book:
         $ref: "#/definitions/Book"
-      similars:
-        type: "array"
-        items:
-          type: "integer"
-          format: "int64"
-  inline_response_200_1:
+  inline_response_200_2:
+    properties:
+      author_id:
+        type: "integer"
+        format: "int64"
+      author:
+        $ref: "#/definitions/Author"
+  inline_response_200_3:
+    properties:
+      review:
+        $ref: "#/definitions/Review"
+  inline_response_200_4:
+    properties:
+      event:
+        $ref: "#/definitions/Event"
+  inline_response_200_5:
     properties:
       author_id:
         type: "integer"
         format: "int64"
     example:
       author_id: 0
+  inline_response_200_6:
+    properties:
+      event_id:
+        type: "integer"
+        format: "int64"
+      event:
+        $ref: "#/definitions/Event"
   book:
     type: "object"
     required:
@@ -962,35 +1190,7 @@ definitions:
       quantity:
         type: "integer"
         format: "int64"
-  account:
-    properties:
-      password:
-        type: "string"
-      email:
-        type: "string"
-      name:
-        type: "string"
-      surname:
-        type: "string"
-      admin:
-        type: "boolean"
-  user:
-    type: "object"
-    required:
-    - "email"
-    - "name"
-    - "password"
-    - "surname"
-    properties:
-      email:
-        type: "string"
-      password:
-        type: "string"
-      name:
-        type: "string"
-      surname:
-        type: "string"
-  inline_response_200_2:
+  inline_response_200_7:
     properties:
       user_id:
         type: "string"
@@ -1006,7 +1206,7 @@ definitions:
         type: "string"
       password:
         type: "string"
-  inline_response_200_3:
+  inline_response_200_8:
     properties:
       token:
         type: "string"

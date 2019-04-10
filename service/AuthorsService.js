@@ -63,7 +63,7 @@ exports.authorsAuthorIdPUT = async (author_id, author, token) => {
 
   //book updating
 
-    await database("author").where("author_id", author_id).update({
+  await database("author").where("author_id", author_id).update({
         name        : author.name,
         surname     : author.surname,
         birthdate   : author.birthdate,
@@ -73,19 +73,6 @@ exports.authorsAuthorIdPUT = async (author_id, author, token) => {
       }
   );
   return "Author updated!";
-};
-
-
-/**
- * Returns a preview of all the authors.
- *
- * offset Long Offset with regards to the current page. (optional)
- * limit Long Items per page. (optional)
- * returns List
- **/
-exports.authorsGET = async (offset,limit) => {
-  //find all the authors matching the offset and limit
-  return await database.select('author_id','name', 'surname',"imgpath").table("author").limit(limit).offset(offset);
 };
 
 
@@ -104,8 +91,8 @@ exports.authorsPOST = async (author, token) => {
   if(!admin[0]["admin"]) throw {code : 403};
 
   return database.transaction(async trx => {
-      //insert a new author into author table
-      return (await trx.table("author").insert(author, ['author_id']))[0];
+    //insert a new author into author table
+    return (await trx.table("author").insert(author, ['author_id']))[0];
   }).catch(() => { throw { code: 400 } });
 };
 

@@ -1,26 +1,26 @@
-function appendGenres() {
-    fetch(`/v2/genres`)
+function appendThemes() {
+    fetch(`/v2/themes`)
     .then(function(response) {
         return response.json();
     })
-    .then(function(genres) {
-        for(let i=0; i<genres.length; i++) {
-            genre = genres[i].charAt(0).toUpperCase() + genres[i].slice(1)
-            $('.list-group').append('<a href="#" id="'+genres[i]+'"class="list-group-item list-group-item-action">'+genre+'</a>');
+    .then(function(themes) {
+        for(let i=0; i<themes.length; i++) {
+            theme = theme[i].charAt(0).toUpperCase() + themes[i].slice(1)
+            $('.list-group').append('<a href="#" id="'+themes[i]+'"class="list-group-item list-group-item-action">'+theme+'</a>');
         }
     })
 }
 
-function appendBooks(genre) {
+function appendBooks(theme) {
     var promise;
-    if (genre=="All") {
-        promise = fetch(`/v2/books?limit=10`)
+    if (theme=="All") {
+        promise = fetch(`/v2/themes?limit=10`)
         .then(function(response) {
             return response.json();
         })
     }
     else {
-        promise = fetch(`/v2/books/search?genre=`+genre+`&limit=10`)
+        promise = fetch(`/v2/themes/search?genre=`+theme+`&limit=10`)
         .then(function(response) {
             return response.json();
         })
@@ -47,7 +47,7 @@ function fillTemplate(book) {
 }
 
 $(function() {
-    appendGenres();
+    appendThemes();
     appendBooks("All");
 });
 

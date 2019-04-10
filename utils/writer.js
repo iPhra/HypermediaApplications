@@ -1,17 +1,17 @@
-const ResponsePayload = function(code, payload) {
+var ResponsePayload = function(code, payload) {
   this.code = code;
   this.payload = payload;
-};
+}
 
 exports.respondWithCode = function(code, payload) {
   return new ResponsePayload(code, payload);
-};
+}
 
-const writeJson = exports.writeJson = function(response, arg1, arg2) {
-    let code;
-    let payload;
+var writeJson = exports.writeJson = function(response, arg1, arg2) {
+  var code;
+  var payload;
 
-    if(arg1 && arg1 instanceof ResponsePayload) {
+  if(arg1 && arg1 instanceof ResponsePayload) {
     writeJson(response, arg1.payload, arg1.code);
     return;
   }
@@ -40,4 +40,4 @@ const writeJson = exports.writeJson = function(response, arg1, arg2) {
   }
   response.writeHead(code, {'Content-Type': 'application/json'});
   response.end(payload);
-};
+}

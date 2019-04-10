@@ -21,9 +21,10 @@ function fillTemplate(book) {
         title: book.title,
         price: book.current_price,
         authors_name: book.authors[0]? book.authors[0].name : "",
-        authors_surname: book.authors[0]? book.authors[0].surname : ""
+        authors_surname: book.authors[0]? book.authors[0].surname : "",
+        abstract: book.abstract ? book.abstract : ""
     };
-    var template = $('#cardTpl').html();
+    var template = $('#ListItem').html();
     var html = Mustache.to_html(template, book);
     $('#content').append(html);
 }

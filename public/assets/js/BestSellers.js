@@ -9,9 +9,11 @@ function appendTop10() {
     promise.then(function(books) {
         for(let i=0; i<books.length; i++) {
             console.log(books);
+            books[i]["rank"] = i+1;
+            console.log(books);
             fillTemplate(books[i]);
         }
-    })
+    }).catch( (e) => console.log(e))
 }
 
 function fillTemplate(book) {
@@ -20,20 +22,21 @@ function fillTemplate(book) {
         img: book.imgpath,
         title: book.title,
         price: book.current_price,
-        authors_name: book.authors[0]? book.authors[0].name : "",
-        authors_surname: book.authors[0]? book.authors[0].surname : "",
-        abstract: book.abstract ? book.abstract : ""
+        authors_name: "Maria",
+        authors_surname: "Callas",
+        abstract: book.abstract ? book.abstract : "Lorem ipsum dolor",
+        rank: book.rank
     };
     var template = $('#ListItem').html();
     var html = Mustache.to_html(template, book);
-    $('#content').append(html);
+    console.log(html);
+    console.log($('#Top10'));
+    $('#Top10').append(html);
 }
 
 $(function() {
     console.log("Page loaded");
     appendTop10();
-    //appendGenres();
-    //appendBooks("All");
 });
 
 

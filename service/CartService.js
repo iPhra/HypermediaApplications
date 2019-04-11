@@ -3,6 +3,7 @@
 const {database} = require("./Database");
 const checkToken = require("../utils/authenticator").checkToken;
 
+
 /**
  * Buy the items in the cart.
  *
@@ -118,6 +119,7 @@ exports.accountCartDELETE = async (item, token) => {
 exports.accountCartGET = async (token) => {
     //check if the user is logged in, if so retrieve his user_id
     const user_id = await checkToken(token);
+
     return retrieveCart(user_id);
 };
 

@@ -7,6 +7,7 @@ const config = require('config');
 const checkToken = require("../utils/authenticator").checkToken;
 const hashPassword = require("../utils/authenticator").hashPassword;
 
+
 /**
  * Delete an existing acccount.
  *
@@ -28,9 +29,8 @@ exports.accountInfoDELETE = async (token) => {
  * returns User
  **/
 exports.accountInfoGET = async (token) => {
-    let user_id;
     //check if the user is logged in, if so retrieve his user_id
-    user_id = await checkToken(token);
+    const user_id = await checkToken(token);
 
     //retrieve the info about the account
     return (await database.select("email","name","surname","admin").table("account").where("user_id","=",user_id))[0];

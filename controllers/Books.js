@@ -1,19 +1,7 @@
 'use strict';
 
-var utils = require('../utils/writer.js');
-var Books = require('../service/BooksService');
-
-module.exports.booksBookIdAuthorsGET = function booksBookIdAuthorsGET (req, res, next) {
-    const book_id = req.swagger.params['book_id'].value;
-    Books.booksBookIdAuthorsGET(book_id)
-        .then(function (response) {
-            utils.writeJson(res, response);
-        })
-        .catch(function (response) {
-            res.writeHead(response.code);
-            res.end();
-        });
-};
+const utils = require('../utils/writer.js');
+const Books = require('../service/BooksService');
 
 module.exports.booksBookIdEventsGET = function booksBookIdEventsGET (req, res, next) {
     const book_id = req.swagger.params['book_id'].value;

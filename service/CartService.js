@@ -24,51 +24,25 @@ exports.accountCartCheckoutPOST = async (token) => {
 
         //retrieve all the books associated to those ids
         const books = await trx.table("book")
-            .select("book_id","title","current_price", "availability")
+            .select("book_id","title","current_price")
             .whereIn("book_id",ids);
 
         //add books to purchases or reservation
-        let total_price = 0;
         let purchases = [];
-        let reservations = [];
-
+        var date = new Date();
         for(let i=0; i<books.length; i++) {
-            total_price += books[i].current_price * book_ids[i].quantity;
-            if (books[i].availability === 'available') {
-                //add book to purchases
-                purchases.push({
-                    book_id: books[i].book_id,
-                    price: books[i].current_price,
-                    quantity: book_ids[i].quantity
-                });
-            }
-            else {
-                //add book to reservations
-                reservations.push({
-                    user_id: user_id,
-                    book_id: books[i].book_id,
-                    //timestamp: Date.now(),
-                    price: books[i].current_price,
-                    quantity: book_ids[i].quantity
-                });
-            }
+            //add book to purchases
+            purchases.push({
+                user_id: user_id,
+                book_id: books[i].book_id,
+                timestamp: date.toDateString(),
+                price: books[i].current_price,
+                quantity: book_ids[i].quantity
+            });
         }
 
-        let data = {
-            user_id: user_id,
-            total_price: total_price
-        };
-
-        // insert total purchases into purchase table
-        let purchase_id = await trx.insert(data, 'purchase_id').into('purchase');
-        purchase_id = purchase_id[0];
-
-        //insert purchases into purchase_session table
-        purchases = purchases.map(p => { p.purchase_id = purchase_id; return p });
-        await trx.insert(purchases).into('purchase_session');
-
-        //insert reservations into reservation table
-        await trx.insert(reservations).into('reservation');
+        //add purchases to purchase table
+        await trx.insert(purchases).into('purchase');
 
         //delete books from cart
         await trx.table('cart').where({ user_id: user_id }).del();
@@ -85,27 +59,11 @@ exports.accountCartCheckoutPOST = async (token) => {
  **/
 exports.accountCartDELETE = async (item, token) => {
     const user_id = await checkToken(token);
-    const qnt = await database("cart").select("quantity").where({
+
+    await database("cart").where({
         "user_id" : user_id,
-        "book_id" : item.book_id})
-        .andWhere("quantity", ">=", item.quantity);
-    if(!qnt[0]) throw {code: 401};
-
-    let count = qnt[0].quantity - item.quantity;
-    if(count > 0) {
-        await database("cart").where({
-            "user_id" : user_id,
-            "book_id" : item.book_id
-        }).update("quantity", count)
-    }
-    else {
-        await database("cart").where({
-            "user_id" : user_id,
-            "book_id" : item.book_id
-        }).del()
-    }
-
-    return "Item removed from cart!"
+        "book_id" : item.book_id
+    }).del();
 };
 
 

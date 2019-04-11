@@ -177,7 +177,6 @@ reviewSetup = (database) => {
     })
 };
 
-
 themeSetup = (database) => {
     sqlDb = database;
     console.log("Checking if theme table exists");

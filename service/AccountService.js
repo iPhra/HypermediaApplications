@@ -1,11 +1,5 @@
 'use strict';
 
-const {database} = require("./Database");
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const config = require('config');
-const checkToken = require("../utils/authenticator").checkToken;
-const hashPassword = require("../utils/authenticator").hashPassword;
 
 /**
  * Delete an existing acccount.

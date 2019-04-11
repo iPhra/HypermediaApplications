@@ -1,7 +1,6 @@
 'use strict';
 
 const {database} = require("./Database");
-const checkToken = require("../utils/authenticator").checkToken;
 const _ = require("lodash");
 
 /**

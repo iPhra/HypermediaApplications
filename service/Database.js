@@ -181,7 +181,7 @@ similaritySetup = (database) => {
 
 function setupDatabase() {
     console.log("Setting up the database");
-    accountSetup(sqlDb);
+    /*accountSetup(sqlDb);
     authorSetup(sqlDb);
     bookSetup(sqlDb);
     authorshipSetup(sqlDb);
@@ -190,7 +190,7 @@ function setupDatabase() {
     purchaseSetup(sqlDb);
     purchaseSessionSetup(sqlDb);
     reservationSetup(sqlDb);
-    similaritySetup(sqlDb);
+    similaritySetup(sqlDb);*/
 }
 
 module.exports = { database: sqlDb, setupDatabase };

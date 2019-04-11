@@ -1,5 +1,7 @@
 'use strict';
 
+const {database} = require("./Database");
+const checkToken = require("../utils/authenticator").checkToken;
 
 /**
  * Buy the items in the cart.

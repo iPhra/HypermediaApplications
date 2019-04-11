@@ -35,25 +35,8 @@ authorSetup = (database) => {
                 table.increments("author_id");
                 table.string("name").notNullable();
                 table.string("surname").notNullable();
-                table.date("birthdate").notNullable();
-                table.string("birthplace");
                 table.text("imgpath").notNullable();
-                table.text("description");
-            })
-        }
-    });
-};
-
-authorshipSetup = (database) => {
-    sqlDb = database;
-    console.log("Checking if authorship table exists");
-    return database.schema.hasTable("authorship").then(exists => {
-        if (!exists) {
-            console.log("It doesn't so we create it");
-            return database.schema.createTable("authorship", table => {
-                table.integer("author_id").references("author.author_id").onUpdate("CASCADE").onDelete("CASCADE");
-                table.integer("book_id").references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
-                table.primary(["author_id", "book_id"]);
+                table.text("biography");
             })
         }
     });
@@ -67,16 +50,14 @@ bookSetup = (database) => {
             console.log("It doesn't so we create it");
             return database.schema.createTable("book", table => {
                 table.increments("book_id");
-                table.string("isbn10", 10).unique().notNullable();
-                table.string("isbn13", 13).unique().notNullable();
                 table.string("title").notNullable();
-                table.text("description");
+                table.text("abstract");
                 table.float("current_price").defaultTo(0).notNullable();
                 table.integer("num_of_pages").notNullable();
                 table.enu("cover_type",["hard cover","soft cover","e-book"]).notNullable();
-                table.enu("availability",["available","unreleased","out_of_stock"]).notNullable();
-                table.integer("available_quantity").defaultTo(0);
                 table.text("imgpath").notNullable();
+                table.text("interview");
+                table.integer("author_id").references("author.author_id").onUpdate("CASCADE").onDelete("CASCADE");;
             });
         }
     });
@@ -120,45 +101,12 @@ purchaseSetup = (database) => {
         if (!exists) {
             console.log("It doesn't so we create it");
             return database.schema.createTable("purchase", table => {
-                table.increments("purchase_id");
+                table.integer("book_id").notNullable().references("book.book_id").onUpdate("CASCADE").onDelete("SET NULL");
                 table.integer("user_id").notNullable().references("account.user_id").onUpdate("CASCADE").onDelete("SET NULL");
                 table.timestamp("timestamp").notNullable().defaultTo(database.fn.now());
-                table.float("total_price").notNullable();
-            });
-        }
-    });
-};
-
-purchaseSessionSetup = (database) => {
-    sqlDb = database;
-    console.log("Checking if purchaseSession table exists");
-    return database.schema.hasTable("purchase_session").then(exists => {
-        if (!exists) {
-            console.log("It doesn't so we create it");
-            return database.schema.createTable("purchase_session", table => {
-                table.integer("purchase_id").references("purchase.purchase_id").onUpdate("CASCADE").onDelete("NO ACTION");
-                table.integer("book_id").references("book.book_id").onUpdate("CASCADE").onDelete("NO ACTION");
                 table.float("price").notNullable();
-                table.integer("quantity").defaultTo(1);
-                table.primary(["purchase_id","book_id"]);
-            });
-        }
-    });
-};
-
-reservationSetup = (database) => {
-    sqlDb = database;
-    console.log("Checking if reservation table exists");
-    return database.schema.hasTable("reservation").then(exists => {
-        if (!exists) {
-            console.log("It doesn't so we create it");
-            return database.schema.createTable("reservation", table => {
-                table.increments("reservation_id");
-                table.integer("user_id").notNullable().references("account.user_id").onUpdate("CASCADE").onDelete("NO ACTION");
-                table.integer("book_id").notNullable().references("book.book_id").onUpdate("CASCADE").onDelete("NO ACTION");
-                table.timestamp("timestamp").notNullable().defaultTo(database.fn.now());
-                table.float("price").notNullable();
-                table.integer("quantity").defaultTo(1);
+                table.integer("quantity").notNullable();
+                table.primary(["book_id", "user_id", "timestamp"]);
             });
         }
     });
@@ -179,18 +127,100 @@ similaritySetup = (database) => {
     });
 };
 
+eventSetup = (database) => {
+    sqlDb = database;
+    console.log("Checking if event table exists");
+    return database.schema.hasTable("event").then(exists => {
+        if (!exists) {
+            console.log("It doesn't so we create it");
+            return database.schema.createTable("event", table => {
+                table.increments("event_id");
+                table.integer("book_id").references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
+                table.timestamp("date").notNullable().defaultTo(database.fn.now());;
+                table.text("description");
+                table.string("location");
+                table.string("organiser_email");
+                table.text("imgpath").notNullable();
+            })
+        }
+    })
+};
+
+favouriteSetup = (database) => {
+    sqlDb = database;
+    console.log("Checking if favourite table exists");
+    return database.schema.hasTable("favourite").then(exists => {
+        if (!exists) {
+            console.log("It doesn't so we create it");
+            return database.schema.createTable("favourite", table => {
+                table.integer("book_id").references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
+                table.primary(["book_id"]);
+            })
+        }
+    })
+};
+
+reviewSetup = (database) => {
+    sqlDb = database;
+    console.log("Checking if review table exists");
+    return database.schema.hasTable("review").then(exists => {
+        if (!exists) {
+            console.log("It doesn't so we create it");
+            database.schema.createTable("review", table => {
+                table.integer("user_id").references("account.user_id").onUpdate("CASCADE").onDelete("CASCADE");
+                table.integer("book_id").references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
+                table.text("text").notNullable();
+                table.integer("rating").notNullable();
+                table.primary(["user_id", "book_id"]);
+            })
+        }
+    })
+};
+
+
+themeSetup = (database) => {
+    sqlDb = database;
+    console.log("Checking if theme table exists");
+    return database.schema.hasTable("theme").then(exists => {
+        if (!exists) {
+            console.log("It doesn't so we create it");
+            return database.schema.createTable("theme", table => {
+                table.integer("book_id").references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
+                table.enu("theme", ["War", "Love", "Magic", "Fantasy", "Italy"]).notNullable();
+                table.primary(["book_id", "theme"]);
+            })
+        }
+    })
+};
+
+top10Setup = (database) => {
+    sqlDb = database;
+    console.log("Checking if top10 table exists");
+    return database.schema.hasTable("top10").then(exists => {
+        if (!exists) {
+            console.log("It doesn't so we create it");
+            return database.schema.createTable("top10", table => {
+                table.integer("book_id").references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
+                table.primary(["book_id"]);
+            })
+        }
+    })
+};
+
 function setupDatabase() {
     console.log("Setting up the database");
-    /*accountSetup(sqlDb);
+    accountSetup(sqlDb);
     authorSetup(sqlDb);
     bookSetup(sqlDb);
-    authorshipSetup(sqlDb);
     cartSetup(sqlDb);
     genreSetup(sqlDb);
     purchaseSetup(sqlDb);
-    purchaseSessionSetup(sqlDb);
-    reservationSetup(sqlDb);
-    similaritySetup(sqlDb);*/
+    similaritySetup(sqlDb);
+    eventSetup(sqlDb);
+    favouriteSetup(sqlDb);
+    reviewSetup(sqlDb);
+    themeSetup(sqlDb);
+    top10Setup(sqlDb);
 }
 
 module.exports = { database: sqlDb, setupDatabase };

@@ -63,3 +63,5 @@ typings/
 #.idea
 /.idea/
 .idea/workspace.xml
+
+/prova_design/*

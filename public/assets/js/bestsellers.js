@@ -1,6 +1,5 @@
 function appendTop10() {
 
-    console.log("1");
     var promise = fetch(`/v2/books?limit=10`)
         .then(function(response) {
             console.log(response);
@@ -20,11 +19,11 @@ function fillTemplate(book) {
     console.log(book);
     var book = {
         img: book.imgpath,
-        title: book.title,
-        price: book.current_price,
+        title: book.book.title,
+        price: book.book.current_price,
         authors_name: "Maria",
         authors_surname: "Callas",
-        abstract: book.abstract ? book.abstract : "Lorem ipsum dolor",
+        abstract: book.bookabstract ? book.book.abstract : "Lorem ipsum dolor",
         rank: book.rank
     };
     var template = $('#ListItem').html();

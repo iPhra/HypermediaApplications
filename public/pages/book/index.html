@@ -52,60 +52,67 @@
   </nav>
 
   <!-- Page Content -->
-  <div class="container">
-
+  <div class="container margin-top-10">
     <div class="row">
-
-      <div class="col-lg-5">
-        <h2 class="text-lg-center">{{book_title}}</h2>
+      <div class="col-lg-9">
         <div class="row">
           <div class="col-lg-5">
-            <h3>{{author}}</h3>
+            <img class="img-fluid align-content-center" src="../../assets/images/cover.jpg">
           </div>
-          <div class="col-lg-4">
-                <h4>$ {{price}}</h4>
-          </div>
-          <div class="col-lg-3">
-            <button class="btn btn-dark"><i class="fa fa-shopping-cart"></i> Buy</button>
-          </div>
-        </div>
-        <div class="text-center">
-          <img class="img-fluid align-content-center" src="../../assets/images/cover.jpg">
-        </div>
-      </div>
-      <!-- /.col-lg-3 -->
+          <div class="col-lg-7 ">
+            <span class="h4">{{title}}</span> <br>
+            <span class="h6">{{author}}</span> <hr>
+            <p> {{abstract}} </p>
+            Details:
+            <ul>
+              <li>Genre: {{genre}}</li>
+              <li>Theme: {{theme}}</li>
+              <li>Number of pages: {{num_of_pages}}</li>
+              <li>Cover type: {{cover_type}}</li>
+            </ul>
 
-      <div class="col-lg-7">
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-          <li class="nav-item">
-            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Book</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Author's interview</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Reviews</a>
-          </li>
-        </ul>
-        <div class="tab-content" id="myTabContent">
-          <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-            devo sistemare campi x BE
+
+
           </div>
-          <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">{{author_interview}}</div>
-          <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-            <div class="container-fluid">
-              <div class="review">
+        </div>
+        <hr>
+        <div class="row">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Book</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Author's interview</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Reviews</a>
+              </li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="tab-content" id="myTabContent">
+              <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                 devo sistemare campi x BE
               </div>
+              <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">{{author_interview}}</div>
+              <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                <div class="container-fluid">
+                  <div class="review">
+                    devo sistemare campi x BE
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+        </div>
+        <!-- /.row -->
+      </div>
+      <div class="col-lg-3 text-center">
+        <div class="floating-price">
+          <h2>{{price}}€ </h2>
+          <button class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Add to cart</button>
         </div>
       </div>
-      <!-- /.col-lg-9 -->
-
     </div>
-    <!-- /.row -->
-
   </div>
   <!-- /.container -->
 
@@ -120,6 +127,7 @@
   <!-- Bootstrap core JavaScript -->
   <script src="../../vendor/jquery/jquery.min.js"></script>
   <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../../assets/js/custom.js"></script>
 </body>
 
 </html>

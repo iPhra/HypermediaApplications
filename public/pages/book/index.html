@@ -79,38 +79,90 @@
         <div class="row">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
               <li class="nav-item">
-                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Book</a>
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Reviews</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Author's interview</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Reviews</a>
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Related books</a>
               </li>
             </ul>
         </div>
         <div class="row">
-            <div class="tab-content" id="myTabContent">
+            <div class="tab-content fill-parent" id="myTabContent">
               <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                devo sistemare campi x BE
-              </div>
-              <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">{{author_interview}}</div>
-              <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                <div class="container-fluid">
-                  <div class="review">
-                    devo sistemare campi x BE
+                  <div class="card review">
+                      <div class="card-body">
+                          <h5 class="card-title">{{review_title}}</h5>
+                          <h6 class="card-subtitle mb-2 text-muted">{{review_author}}</h6>
+                          <p class="card-text">{{review_text}} io non so leggere ciao recenzione piu liunga gangua
+                          molto molto lunga ho tanto da dire su questo lbrp</p>
+                      </div>
                   </div>
-                </div>
+                  <div class="card review">
+                      <div class="card-body">
+                          <h5 class="card-title">Seconda recensione</h5>
+                          <h6 class="card-subtitle mb-2 text-muted">Federico Piccinini</h6>
+                          <p class="card-text">M¥SS KETA è una cantante, rapper, popstar, life coach, diva definitiva: arrivata, ma non si sa esattamente dove.
+                              La sua identità non è nota e sia nei video ufficiali, che nelle esibizioni live indossa una maschera e degli occhiali che le coprono il volto.</p>
+                      </div>
+                  </div>
+              </div>
+              <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                  <div class="card review">
+                      <div class="card-body">
+                          <h5 class="card-title">{{interview_title}}</h5>
+                          <h6 class="card-subtitle mb-2 text-muted">{{author}}</h6>
+                          <p class="card-text">{{interview_text}}</p>
+                      </div>
+                  </div>
+                  <div class="card review">
+                      <div class="card-body">
+                          <h5 class="card-title">Seconda intervista da cancellare</h5>
+                          <h6 class="card-subtitle mb-2 text-muted">Federico Piccinini</h6>
+                          <p class="card-text">M¥SS KETA è una cantante, rapper, popstar, life coach, diva definitiva: arrivata, ma non si sa esattamente dove.
+                              La sua identità non è nota e sia nei video ufficiali, che nelle esibizioni live indossa una maschera e degli occhiali che le coprono il volto.</p>
+                      </div>
+                  </div>
+
+
+              </div>
+              <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                  <div class="row margin-top-10">
+                      <div class="col-sm-6">
+                          <div class="card">
+                              <img class="card-img-top similar-book-cover" src="../../assets/images/kittens.jpg" alt="Card image cap">
+                              <div class="card-body">
+                                  <h5 class="card-title">{{similar_title}}</h5>
+                                  <p class="card-text">{{similar_abstract}}</p>
+                                  <a href="#" class="btn btn-primary">Read more</a>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-sm-6">
+                          <div class="card">
+                              <img class="card-img-top similar-book-cover" src="../../assets/images/kittens.jpg" alt="Card image cap">
+                              <div class="card-body">
+                                  <h5 class="card-title">{{similar_title}}</h5>
+                                  <p class="card-text">{{similar_abstract}}</p>
+                                  <a href="#" class="btn btn-primary">Read more</a>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
               </div>
             </div>
         </div>
         <!-- /.row -->
       </div>
       <div class="col-lg-3 text-center">
-        <div class="floating-price">
-          <h2>{{price}}€ </h2>
-          <button class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Add to cart</button>
-        </div>
+          <div class="card floating-price">
+              <div class="card-body">
+                  <h2 class="card-title">{{price}}€</h2>
+                  <button class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Add to cart</button>
+              </div>
+          </div>
       </div>
     </div>
   </div>

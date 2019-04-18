@@ -47,5 +47,24 @@
 }
 
 
+.floating-price{
+    position: relative;
+}
 
+.margin-top-10{
+    margin-top: 10px;
+}
+
+.review{
+    margin-top: 20px;
+}
+
+.fill-parent{
+    width: auto;
+}
+
+.similar-book-cover{
+    width: 286px;
+    height: 180px;
+}
 

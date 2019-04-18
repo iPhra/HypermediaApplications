@@ -50,7 +50,6 @@ $(async function() {
 $(function() {
     $(document).on("click", ".list-group-item", async function(){
         $('#content').empty();
-        console.log(this.id);
         appendBooks(this.id);
     });
 })

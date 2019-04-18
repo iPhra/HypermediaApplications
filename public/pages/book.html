@@ -59,7 +59,7 @@
             <script id="bookTpl" type="text/template">
                 <div class="row">
                     <div class="col-lg-5">
-                        <img class="img-fluid align-content-center" src="{img}">
+                        <img class="img-fluid align-content-center" src="{{img}}">
                     </div>
                     <div class="col-lg-7">
                         <span class="h4">{{title}}</span> <br>
@@ -93,22 +93,18 @@
         <div class="row">
             <div class="tab-content fill-parent" id="myTabContent">
               <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                  <div class="card review">
-                      <div class="card-body">
-                          <h5 class="card-title">{{review_title}}</h5>
-                          <h6 class="card-subtitle mb-2 text-muted">{{review_author}}</h6>
-                          <p class="card-text">{{review_text}} io non so leggere ciao recenzione piu liunga gangua
-                          molto molto lunga ho tanto da dire su questo lbrp</p>
+                  
+                  <div id="review-content">
+                      <script id="reviewTpl" type="text/template">
+                        <div class="card review">
+                          <div class="card-body">
+                              <h5 class="card-title">{{review_author}}</h5>
+                              <p class="card-text">{{review_text}}</p>
+                          </div>
                       </div>
-                  </div>
-                  <div class="card review">
-                      <div class="card-body">
-                          <h5 class="card-title">Seconda recensione</h5>
-                          <h6 class="card-subtitle mb-2 text-muted">Federico Piccinini</h6>
-                          <p class="card-text">M¥SS KETA è una cantante, rapper, popstar, life coach, diva definitiva: arrivata, ma non si sa esattamente dove.
-                              La sua identità non è nota e sia nei video ufficiali, che nelle esibizioni live indossa una maschera e degli occhiali che le coprono il volto.</p>
-                      </div>
-                  </div>
+                    </script>
+                </div>
+                  
               </div>
               <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                   <div class="card review">
@@ -120,27 +116,21 @@
 
               </div>
               <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                  <div class="row margin-top-10">
+                  <div id="similar-content" class="row margin-top-10">
+                      
+                    <script id="similarTpl" type="text/template">
                       <div class="col-sm-6">
                           <div class="card">
-                              <img class="card-img-top similar-book-cover" src="../assets/images/kittens.jpg" alt="Card image cap">
+                              <img class="card-img-top similar-book-cover" src="{{img}}" alt="Card image cap">
                               <div class="card-body">
                                   <h5 class="card-title">{{similar_title}}</h5>
                                   <p class="card-text">{{similar_abstract}}</p>
-                                  <a href="#" class="btn btn-primary">Read more</a>
+                                  <a href="{{link}}" class="btn btn-primary">Read more</a>
                               </div>
                           </div>
                       </div>
-                      <div class="col-sm-6">
-                          <div class="card">
-                              <img class="card-img-top similar-book-cover" src="../assets/images/kittens.jpg" alt="Card image cap">
-                              <div class="card-body">
-                                  <h5 class="card-title">{{similar_title}}</h5>
-                                  <p class="card-text">{{similar_abstract}}</p>
-                                  <a href="#" class="btn btn-primary">Read more</a>
-                              </div>
-                          </div>
-                      </div>
+                    </script>
+                      
                   </div>
               </div>
             </div>

@@ -11,9 +11,17 @@ async function retrieveBook(book_id) {
     return (await fetch('/v2/books/'+book_id)).json()
 }
 
+async function retrieveReviews(book_id) {
+    return (await fetch('/v2/books/'+book_id+'/reviews')).json()
+}
+
+async function retrieveSimilars(book_id) {
+    return (await fetch('/v2/books/'+book_id+'/similars')).json()
+}
+
 function fillBook(book, author) {
-    var tpl = {
-        img: book.imgpath,
+    const tpl = {
+        img: "../assets/images/"+book.imgpath,
         title: book.title,
         author_name: author.name,
         author_surname: author.surname,
@@ -23,8 +31,8 @@ function fillBook(book, author) {
         num_of_pages: book.num_of_pages,
         cover_type: book.cover_type
     };
-    var template = $('#bookTpl').html();
-    var html = Mustache.to_html(template, tpl);
+    const template = $('#bookTpl').html();
+    const html = Mustache.to_html(template, tpl);
     $('#book-content').prepend(html);
 }
 
@@ -37,13 +45,52 @@ function fillInterview(book, author) {
     $('#interview').text(book.interview);
 }
 
+function fillReview(review) {
+    const tpl = {
+        review_author: review.user_name,
+        review_text: review.text,
+        review_rating: review.rating
+    }
+    const template = $('#reviewTpl').html();
+    const html = Mustache.to_html(template, tpl);
+    $('#review-content').prepend(html);
+}
+
+function fillSimilar(book) {
+    const tpl = {
+        img: "../assets/images/"+book.imgpath,
+        similar_title: book.title,
+        similar_abstract: book.abstract,
+        link: "/pages/book.html?id="+book.book_id
+    }
+    const template = $('#similarTpl').html();
+    const html = Mustache.to_html(template, tpl);
+    $('#similar-content').prepend(html);
+}
+
+function appendReviews(reviews) {
+    for(let i=0; i<reviews.length; i++) {
+        fillReview(reviews[i]);
+    }
+}
+
+function appendSimilars(similars) {
+    for(let i=0; i<similars.length; i++) {
+        fillSimilar(similars[i]);
+    }
+}
+
 async function initialise() {
     const book_id = $.urlParam("id"); 
     const book = await retrieveBook(book_id);
     const author = await retrieveAuthor(book.author_id);
+    const reviews = await retrieveReviews(book_id);
+    const similars = await retrieveSimilars(book_id)
     fillBook(book, author);
     fillPrice(book);
     fillInterview(book, author);
+    appendReviews(reviews);
+    appendSimilars(similars);
 }
 
 

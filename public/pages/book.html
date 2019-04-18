@@ -54,28 +54,29 @@
   <!-- Page Content -->
   <div class="container margin-top-10">
     <div class="row">
-      <div class="col-lg-9">
-        <div class="row">
-          <div class="col-lg-5">
-            <img class="img-fluid align-content-center" src="../assets/images/cover.jpg">
-          </div>
-          <div class="col-lg-7 ">
-            <span class="h4">{{title}}</span> <br>
-            <span class="h6">{{author}}</span> <hr>
-            <p> {{abstract}} </p>
-            Details:
-            <ul>
-              <li>Genre: {{genre}}</li>
-              <li>Theme: {{theme}}</li>
-              <li>Number of pages: {{num_of_pages}}</li>
-              <li>Cover type: {{cover_type}}</li>
-            </ul>
-
-
-
-          </div>
-        </div>
-        <hr>
+      <div id="book-content" class="col-lg-9">
+        
+            <script id="bookTpl" type="text/template">
+                <div class="row">
+                    <div class="col-lg-5">
+                        <img class="img-fluid align-content-center" src="{img}">
+                    </div>
+                    <div class="col-lg-7">
+                        <span class="h4">{{title}}</span> <br>
+                        <span class="h6">{{author_name}} {{author_surname}}</span> <hr>
+                        <p> {{abstract}} </p>
+                        Details:
+                        <ul>
+                          <li>Genres: {{genres}}</li>
+                          <li>Themes: {{themes}}</li>
+                          <li>Number of pages: {{num_of_pages}}</li>
+                          <li>Cover type: {{cover_type}}</li>
+                        </ul>
+                    </div>
+                </div>
+                <hr>
+            </script>
+        
         <div class="row">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
               <li class="nav-item">
@@ -112,20 +113,10 @@
               <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                   <div class="card review">
                       <div class="card-body">
-                          <h5 class="card-title">{{interview_title}}</h5>
-                          <h6 class="card-subtitle mb-2 text-muted">{{author}}</h6>
-                          <p class="card-text">{{interview_text}}</p>
+                          <h5 id="author" class="card-title"></h5>
+                          <p id="interview" class="card-text"></p>
                       </div>
                   </div>
-                  <div class="card review">
-                      <div class="card-body">
-                          <h5 class="card-title">Seconda intervista da cancellare</h5>
-                          <h6 class="card-subtitle mb-2 text-muted">Federico Piccinini</h6>
-                          <p class="card-text">M¥SS KETA è una cantante, rapper, popstar, life coach, diva definitiva: arrivata, ma non si sa esattamente dove.
-                              La sua identità non è nota e sia nei video ufficiali, che nelle esibizioni live indossa una maschera e degli occhiali che le coprono il volto.</p>
-                      </div>
-                  </div>
-
 
               </div>
               <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
@@ -159,7 +150,7 @@
       <div class="col-lg-3 text-center">
           <div class="card floating-price">
               <div class="card-body">
-                  <h2 class="card-title">{{price}}€</h2>
+                  <h2 id="price" class="card-title"></h2>
                   <button class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Add to cart</button>
               </div>
           </div>
@@ -179,7 +170,8 @@
   <!-- Bootstrap core JavaScript -->
   <script src="../vendor/jquery/jquery.min.js"></script>
   <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../assets/js/custom.js"></script>
+  <script src="../assets/js/book.js"></script>
+    <script src="../vendor/mustache/mustache.min.js"></script>
 </body>
 
 </html>

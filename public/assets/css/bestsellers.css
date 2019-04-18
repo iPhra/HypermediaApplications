@@ -1,0 +1,84 @@
+body {
+    padding-top: 56px;
+}
+
+.container {
+
+}
+
+#first_row {
+    padding-top: 30px;
+}
+
+.img-fluid {
+    width: 100%;
+    height: 18vw !important;
+    object-fit: cover;
+    border-bottom-right-radius: 5%;
+    border-top-right-radius: 5%;
+}
+
+.card {
+    width: 100%;
+    object-fit: cover;
+    height: 18vw !important;
+    border-bottom-right-radius: 0%;
+    border-top-right-radius: 0%;
+}
+
+.jumbotron {
+    background-color: #10707f;
+    color: white;
+    height: 10pt !important;
+    width: 10pt !important;
+    text-align: left;
+}
+
+.row-no-padding {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.col-no-padding-left {
+    padding-left: 0 !important;
+}
+
+.col-no-padding-right {
+    padding-right: 0 !important;
+}
+
+.row {
+    display: flex; /* equal height of the children */
+}
+
+.square-box{
+    position: relative;
+    width: 50%;
+    overflow: hidden;
+    background: #4679BD;
+    border-radius: 5%;
+}
+.square-box:before{
+    content: "";
+    display: block;
+    padding-top: 100%;
+}
+.square-content{
+    position:  absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    color: white;
+}
+.square-content div {
+    display: table;
+    width: 100%;
+    height: 100%;
+}
+.square-content span {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    color: white
+}

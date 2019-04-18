@@ -1,60 +1,55 @@
-function appendThemes() {
-    fetch(`/v2/themes`)
-    .then(function(response) {
-        return response.json();
-    })
-    .then(function(themes) {
-        for(let i=0; i<themes.length; i++) {
-            theme = theme[i].charAt(0).toUpperCase() + themes[i].slice(1)
-            $('.list-group').append('<a href="#" id="'+themes[i]+'"class="list-group-item list-group-item-action">'+theme+'</a>');
-        }
-    })
+async function appendThemes() {
+    const themes = await (await fetch(`/v2/themes`)).json();
+
+    for(let i=0; i<themes.length; i++) {
+        theme = themes[i].charAt(0).toUpperCase() + themes[i].slice(1)
+        $('.list-group').append('<a href="#" id="'+themes[i]+'"class="list-group-item list-group-item-action">'+theme+'</a>');
+    }
 }
 
-function appendBooks(theme) {
-    var promise;
+async function appendBooks(theme) {
+    var books;
     if (theme=="All") {
-        promise = fetch(`/v2/themes?limit=10`)
-        .then(function(response) {
-            return response.json();
-        })
+        books = await (await fetch(`/v2/books?limit=10`)).json();
     }
     else {
-        promise = fetch(`/v2/themes/search?genre=`+theme+`&limit=10`)
-        .then(function(response) {
-            return response.json();
-        })
+        books = await (await fetch(`/v2/books?theme=`+theme+`&limit=10`)).json()
     }
     
-    promise.then(function(books) {
-        for(let i=0; i<books.length; i++) {
-            fillTemplate(books[i]);
-        } 
-    })
+    var author;
+    for(let i=0; i<books.length; i++) {
+        author = await retrieveAuthor(books[i].book.author_id);
+        fillTemplate(books[i],author);
+    } 
 }
 
-function fillTemplate(book) {
+async function retrieveAuthor(author_id) {
+    return (await fetch('/v2/authors/'+author_id)).json()
+}
+
+function fillTemplate(book, author) {
     var book = {
         img: book.imgpath,
-        title: book.title,
-        price: book.current_price,
-        authors_name: book.authors[0]? book.authors[0].name : "",
-        authors_surname: book.authors[0]? book.authors[0].surname : ""
+        title: book.book.title,
+        price: book.book.current_price,
+        authors_name: author.name,
+        authors_surname: author.surname,
+        abstract: book.bookabstract ? book.book.abstract : "Lorem ipsum dolor",
+        rank: book.rank
     };
     var template = $('#cardTpl').html();
     var html = Mustache.to_html(template, book);
     $('#content').append(html);
 }
 
-$(function() {
+$(async function() {
     appendThemes();
     appendBooks("All");
 });
 
 $(function() {
-    $(document).on("click", ".list-group-item", function(){
+    $(document).on("click", ".list-group-item", async function(){
         $('#content').empty();
-        console.log(this.id);
         appendBooks(this.id);
     });
 })

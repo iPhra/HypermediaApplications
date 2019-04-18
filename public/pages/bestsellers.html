@@ -14,10 +14,10 @@
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="../assets/css/BestSellers.css" rel="stylesheet">
+    <link href="../assets/css/bestsellers.css" rel="stylesheet">
 
     <script src="../vendor/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="../assets/js/BestSellers.js"></script>
+    <script type="text/javascript" src="../assets/js/bestsellers.js"></script>
     <script src="../vendor/mustache/mustache.min.js"></script>
 
 </head>
@@ -56,21 +56,21 @@
 <!-- Page Content -->
 <div class="container">
 
-    <div id="first_row" class="row">
+    <div id="first_row" class="row row-no-padding">
 
         <ul id="Top10" class="list-group">
             <script id="ListItem" type="text/template">
             <li class="list-group-item">
                 <div class="row">
 
-                    <div  class="col-lg-3">
-                        <div class="jumbotron">
-                            <h1>{{rank}}</h1>
+                    <div  class="col-lg-2">
+                        <div class='square-box'>
+                            <div class='square-content'><div><span><h3>{{rank}}</h3></span></div></div>
                         </div>
                     </div>
 
-                    <div class="col-lg-6">
-                        <div class="card h-100">
+                    <div class="col-lg-7 col-no-padding-right">
+                        <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title">
                                     <a href="#">{{title}}</a>
@@ -87,7 +87,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-3 col-no-padding-left">
                         <a href="#"><img class="img-fluid" src="http://placehold.it/700x400" alt=""></a>
                     </div>
                 </div>
@@ -98,13 +98,13 @@
             <li class="list-group-item">
                 <div class="row">
 
-                    <div  class="col-lg-3">
-                        <div class="jumbotron">
-                            <h1>1</h1>
+                    <div  class="col-lg-2">
+                        <div class='square-box'>
+                            <div class='square-content'><div><span><h3>1</h3></span></div></div>
                         </div>
                     </div>
 
-                    <div class="col-lg-6">
+                    <div class="col-lg-7 col-no-padding-right">
                         <div class="card h-100">
                             <div class="card-body">
                                 <h4 class="card-title">
@@ -122,7 +122,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-3 col-no-padding-left">
                         <a href="#"><img class="img-fluid" src="http://placehold.it/700x400" alt=""></a>
                     </div>
                 </div>

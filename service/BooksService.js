@@ -115,7 +115,7 @@ exports.booksBookIdSimiliarsGET = async (book_id,offset,limit) => {
     let books = await database("book")
         .join("similarity","similarity.book_id1","book.book_id")
         .where("similarity.book_id2","=",book_id)
-        .select("book.book_id","book.title","book.current_price","book.imgpath")
+        .select("book.book_id","book.title","book.abstract","book.imgpath")
         .offset(offset)
         .limit(limit);
 
@@ -123,22 +123,10 @@ exports.booksBookIdSimiliarsGET = async (book_id,offset,limit) => {
     books = books.concat(await database("book")
         .join("similarity","similarity.book_id2","book.book_id")
         .where("similarity.book_id1","=",book_id)
-        .select("book.book_id","book.title","book.current_price","book.imgpath")
+        .select("book.book_id","book.title","book.abstract","book.imgpath")
         .offset(offset)
         .limit(limit));
 
-    //for each book, find its themes and its genres
-    for(let i=0; i<books.length; i++) {
-        books[i]["themes"] = (await database("theme")
-            .join("book","book.book_id","theme.book_id")
-            .where("theme.book_id","=",books[i].book_id)
-            .select("theme")).map(a => a.theme);
-
-        books[i]["genres"] = (await database("genre")
-            .join("book","book.book_id","genre.book_id")
-            .where("genre.book_id","=",books[i].book_id)
-            .select("genre")).map(a => a.genre);
-    }
     return books;
 };
 

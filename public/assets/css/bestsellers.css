@@ -2,83 +2,64 @@ body {
     padding-top: 56px;
 }
 
-.container {
-
-}
-
-#first_row {
-    padding-top: 30px;
-}
-
 .img-fluid {
-    width: 100%;
-    height: 18vw !important;
-    object-fit: cover;
-    border-bottom-right-radius: 5%;
+    margin-bottom: 20%;
+    margin-top: 20%;
+}
+
+.card{
+    margin-left: 5px !important;
+    margin-right: 5px !important;
+    border: transparent;
+}
+
+.card-body {
+    background-color: #eceff1;
+}
+
+.card-deck {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.card-header {
+    padding: 0 !important;
+    background: transparent;
+    border-right-color: transparent !important;
+    border-bottom: 0;
+}
+
+.card-img-top {
+    padding: 5px;
+    background-color: #eceff1;
+    border: transparent;
+    border-top-left-radius: 0;
     border-top-right-radius: 5%;
 }
 
-.card {
-    width: 100%;
-    object-fit: cover;
-    height: 18vw !important;
-    border-bottom-right-radius: 0%;
-    border-top-right-radius: 0%;
-}
-
-.jumbotron {
-    background-color: #10707f;
-    color: white;
-    height: 10pt !important;
-    width: 10pt !important;
-    text-align: left;
-}
-
-.row-no-padding {
-    margin-left: 0;
-    margin-right: 0;
-}
-
-.col-no-padding-left {
-    padding-left: 0 !important;
-}
-
-.col-no-padding-right {
-    padding-right: 0 !important;
-}
-
-.row {
-    display: flex; /* equal height of the children */
-}
-
-.square-box{
-    position: relative;
-    width: 50%;
-    overflow: hidden;
-    background: #4679BD;
-    border-radius: 5%;
-}
-.square-box:before{
-    content: "";
-    display: block;
-    padding-top: 100%;
-}
-.square-content{
-    position:  absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    color: white;
-}
-.square-content div {
-    display: table;
-    width: 100%;
-    height: 100%;
-}
-.square-content span {
-    display: table-cell;
+.rank {
+    background-color: #eceff1;
+    width: 5vw !important;
+    height: 5vw !important;
+    border-top-left-radius: 10%;
+    border-top-right-radius: 10%;
     text-align: center;
-    vertical-align: middle;
-    color: white
+    vertical-align: middle !important;
+    display: table-cell;
+
 }
+
+.card-footer {
+    padding: 10px;
+    border: transparent;
+}
+
+.btn {
+    height: 100%;
+    width: 100%;
+}
+
+.padding-10px {
+    padding: 2px 10px;
+}
+

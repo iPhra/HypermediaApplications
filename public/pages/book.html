@@ -64,7 +64,12 @@
                     <div class="col-lg-7">
                         <span class="h4">{{title}}</span> <br>
                         <span class="h6">{{author_name}} {{author_surname}}</span> <hr>
-                        <p> {{abstract}} </p>
+                        <div>
+                            <span class="abstract">
+                                {{abstract}}
+                            </span>
+                            <a href="#myTabContent"> Read more</a>
+                        </div>
                         Details:
                         <ul>
                           <li>Genres: {{genres}}</li>
@@ -80,60 +85,96 @@
         <div class="row">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
               <li class="nav-item">
-                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Reviews</a>
+                <a class="nav-link active" id="book-tab" data-toggle="tab" href="#book-tab-content" role="tab" aria-controls="book" aria-selected="true">Author's interview</a>
               </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="review-tab" data-toggle="tab" href="#review-tab-content" role="tab" aria-controls="home" aria-selected="false">Reviews</a>
+                </li>
               <li class="nav-item">
-                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Author's interview</a>
+                <a class="nav-link" id="similar-tab" data-toggle="tab" href="#similar-tab-content" role="tab" aria-controls="contact" aria-selected="false">Related books</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Related books</a>
-              </li>
+            <li class="nav-item">
+                <a class="nav-link" id="event-tab" data-toggle="tab" href="#event-tab-content" role="tab" aria-controls="event" aria-selected="false">Events</a>
+            </li>
             </ul>
         </div>
         <div class="row">
             <div class="tab-content fill-parent" id="myTabContent">
-              <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                  
+                    <div class="tab-pane fade show active" id="book-tab-content" role="tabpanel" aria-labelledby="home-tab">                         <p>
+                        <div class="h5">Abstract</div>
+                                {{abstract}}
+                            </p> <hr>
+                            <p>
+                                <div class="h5">Interview with the author</div>
+                                {{interview}}
+                            </p>
+
+                    </div>
+
+              <div class="tab-pane fade" id="review-tab-content" role="tabpanel" aria-labelledby="profile-tab">
                   <div id="review-content">
                       <script id="reviewTpl" type="text/template">
-                        <div class="card review">
-                          <div class="card-body">
-                              <h5 class="card-title">{{review_author}}</h5>
-                              <p class="card-text">{{review_text}}</p>
+                          <div class="card review">
+                              <div class="card-body">
+                                  <h5 class="card-title">{{review_author}}</h5>
+                                  <p class="card-text">{{review_text}}</p>
+                              </div>
                           </div>
-                      </div>
-                    </script>
-                </div>
-                  
-              </div>
-              <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                  <div class="card review">
-                      <div class="card-body">
-                          <h5 id="author" class="card-title"></h5>
-                          <p id="interview" class="card-text"></p>
-                      </div>
+                      </script>
                   </div>
-
               </div>
-              <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+              <div class="tab-pane fade" id="similar-tab-content" role="tabpanel" aria-labelledby="contact-tab">
                   <div id="similar-content" class="row margin-top-10">
                       
                     <script id="similarTpl" type="text/template">
-                      <div class="col-sm-6">
-                          <div class="card">
-                              <img class="card-img-top similar-book-cover" src="{{img}}" alt="Card image cap">
-                              <div class="card-body">
-                                  <h5 class="card-title">{{similar_title}}</h5>
-                                  <p class="card-text">{{similar_abstract}}</p>
-                                  <a href="{{link}}" class="btn btn-primary">Read more</a>
-                              </div>
-                          </div>
-                      </div>
+                    <div class="col-md-6">
+                        <div class="card similar-book-card">
+                            <img class="card-img-top" src="{{img}}" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title">{{similar_title}}</h5>
+                                <small>  Author:
+                                    <a href="#">{{authors_name}} {{authors_surname}}</a>
+                                </small>
+                            </div>
+                            <div class="card-footer">
+                                <div class="row ">
+                                    <div class="col padding-10px">
+                                        <a href="{{link}}" class="btn btn-outline-primary btn-sm">
+                                            <i class="fa fa-book"></i>
+                                            View Book</a>
+                                    </div>
+                                    <div class="col padding-10px">
+                                        <a href="{{link_add_to_cart}}" class="btn btn-outline-primary btn-sm">
+                                            <i class="fa fa-shopping-cart"></i> Add to cart</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     </script>
                       
                   </div>
               </div>
-            </div>
+
+                <div class="tab-pane fade" id="event-tab-content" role="tabpanel" aria-labelledby="event-tab">
+                    <div class="event-container margin-top-10">
+                                <div class="card">
+                                    <div class="card-body">
+                                            <h5 class="card-title">
+                                                {{event_name}}
+                                            </h5>
+                                            <div class="card-subtitle">
+                                                {{event_location}} | {{event_date}}
+                                            </div>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <a href="{{link_event}}" class="btn btn-outline-primary btn-sm">
+                                            <i class="fa fa-calendar"></i> View more </a>
+                                    </div>
+                                </div>
+                    </div>
+                </div>
+        </div>
         </div>
         <!-- /.row -->
       </div>

@@ -68,3 +68,28 @@
     height: 180px;
 }
 
+#similar-content{
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.similar-book-card{
+    margin-bottom: 15px;
+}
+
+.text {
+    position: relative;
+    font-size: 14px;
+    color: black;
+    width: 250px; /* Could be anything you like. */
+}
+
+.abstract {
+    position: relative;
+    display: inline-block;
+    word-wrap: break-word;
+    overflow: hidden;
+    max-height: 18em; /* (Number of lines you want visible) * (line-height) */
+    line-height: 1.2em;
+    text-align:justify;
+}

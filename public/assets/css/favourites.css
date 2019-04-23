@@ -63,5 +63,5 @@ body {
 }
 
 .white-card {
-    visibility: hidden !important;
+    visibility: hidden;
 }

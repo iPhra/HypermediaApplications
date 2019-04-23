@@ -1,21 +1,19 @@
-counter = 0;
+let counter = 0;
 
-async function appendTop10() {
-    let books = await (await fetch(`/v2/books?limit=10`)).json();
+async function appendFavourites() {
+    let books = await (await fetch(`/v2/books/favourites`)).json();
     let author;
-    for(let i=0; i<books.length; i++) {
-        books[i]["rank"] = i+1;
-        author = await retrieveAuthor(books[i].book.author_id);
-        card_deck = i<5 ? "0-5" : "6-10";
-        fillTemplate(books[i],author, card_deck);
 
+    for(let i=0; i<books.length; i++) {
+        author = await retrieveAuthor(books[i].book.author_id);
+        fillTemplate(books[i],author);
     }
 
     //keep the page responsive
     add_padding();
 }
 
-function fillTemplate(book, author, card_deck) {
+function fillTemplate(book, author) {
     var book = {
         img: book.imgpath,
         title: book.book.title,
@@ -63,7 +61,6 @@ async function retrieveAuthor(author_id) {
 }
 
 $(function() {
-    appendTop10();
+    appendFavourites();
 });
-
 

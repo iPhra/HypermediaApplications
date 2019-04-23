@@ -8,16 +8,16 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Shop Homepage</title>
+    <title>Shop Homepage - Start Bootstrap Template</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="../assets/css/bestsellers.css" rel="stylesheet">
+    <link href="../assets/css/favourites.css" rel="stylesheet">
 
     <script src="../vendor/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="../assets/js/bestsellers.js"></script>
+    <script type="text/javascript" src="../assets/js/favourites.js"></script>
     <script src="../vendor/mustache/mustache.min.js"></script>
 
 </head>
@@ -52,13 +52,20 @@
     </div>
 </nav>
 
+<script id="white_card" type="text/template">
+    <div class="card white-card">
+        <div class="card-header">
+        </div>
+        <div class="card-body">
+
+        </div>
+        <div class="card-footer">
+        </div>
+    </div>
+</script>
+
 <script id="ListItem" type="text/template">
     <div class="card">
-        <div class="card-header">
-            <div class="rank">
-                <h4>{{rank}}</h4>
-            </div>
-        </div>
         <img class="card-img-top" src="../assets/images/eragon.jpg" alt="Card image cap">
         <div class="card-body">
             <h5 class="card-title">{{title}}</h5>
@@ -81,22 +88,12 @@
     </div>
 </script>
 
-<script id="white_card" type="text/template">
-    <div class="card white-card">
-        <div class="card-header">
-        </div>
-        <div class="card-body">
-
-        </div>
-        <div class="card-footer">
-        </div>
-    </div>
-</script>
-
 <!-- Page Content -->
 <div class="container">
 
     <div class="card-deck" id="card-deck">
+
+    </div>
 
     </div>
 
@@ -111,10 +108,5 @@
     <!-- /.container -->
 </footer>
 
-<!-- Bootstrap core JavaScript -->
-<script src="../vendor/jquery/jquery.min.js"></script>
-<script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
 </body>
 
-</html>

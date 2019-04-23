@@ -19,6 +19,10 @@ async function retrieveSimilars(book_id) {
     return (await fetch('/v2/books/'+book_id+'/similars')).json()
 }
 
+async function retrieveEvents(book_id) {
+    return (await fetch('/v2/books/'+book_id+'/events')).json()
+}
+
 function fillBook(book, author) {
     const tpl = {
         img: "../assets/images/"+book.imgpath,
@@ -26,8 +30,8 @@ function fillBook(book, author) {
         author_name: author.name,
         author_surname: author.surname,
         abstract: book.abstract,
-        genres: book.genres,
-        themes: book.themes,
+        genres: (book.genres).join(', '),
+        themes: (book.themes).join(', '),
         num_of_pages: book.num_of_pages,
         cover_type: book.cover_type
     };
@@ -41,8 +45,11 @@ function fillPrice(book) {
 }
 
 function fillInterview(book, author) {
-    $('#author').text(author.name+" "+author.surname);
     $('#interview').text(book.interview);
+}
+
+function fillAbstract(book) {
+    $('#abstract').text(book.abstract);
 }
 
 function fillReview(review) {
@@ -56,16 +63,30 @@ function fillReview(review) {
     $('#review-content').prepend(html);
 }
 
-function fillSimilar(book) {
+function fillSimilar(book, author) {
     const tpl = {
         img: "../assets/images/"+book.imgpath,
         similar_title: book.title,
-        similar_abstract: book.abstract,
-        link: "/pages/book.html?id="+book.book_id
+        author_name: author.name,
+        author_surname: author.surname,
+        author_link: "/pages/author.html?id=0",
+        book_link: "/pages/book.html?id="+book.book_id
     }
     const template = $('#similarTpl').html();
     const html = Mustache.to_html(template, tpl);
     $('#similar-content').prepend(html);
+}
+
+function fillEvent(event) {
+    const tpl = {
+        img: "../assets/images/"+event.event.imgpath,
+        event_location: event.event.location,
+        event_date: event.event.date,
+        event_link: "/pages/event.html?id="+event.event_id
+    }
+    const template = $('#eventTpl').html();
+    const html = Mustache.to_html(template, tpl);
+    $('#event-content').prepend(html);
 }
 
 function appendReviews(reviews) {
@@ -74,9 +95,17 @@ function appendReviews(reviews) {
     }
 }
 
-function appendSimilars(similars) {
+async function appendSimilars(similars) {
+    let author;
     for(let i=0; i<similars.length; i++) {
-        fillSimilar(similars[i]);
+        author = await retrieveAuthor(similars[i].author_id);
+        fillSimilar(similars[i], author);
+    }
+}
+
+function appendEvents(events) {
+    for(let i=0; i<events.length; i++) {
+        fillEvent(events[i]);
     }
 }
 
@@ -85,12 +114,15 @@ async function initialise() {
     const book = await retrieveBook(book_id);
     const author = await retrieveAuthor(book.author_id);
     const reviews = await retrieveReviews(book_id);
-    const similars = await retrieveSimilars(book_id)
+    const similars = await retrieveSimilars(book_id);
+    const events = await retrieveEvents(book_id);
     fillBook(book, author);
     fillPrice(book);
     fillInterview(book, author);
+    fillAbstract(book);
     appendReviews(reviews);
-    appendSimilars(similars);
+    await appendSimilars(similars);
+    appendEvents(events);
 }
 
 

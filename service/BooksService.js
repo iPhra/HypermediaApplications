@@ -115,7 +115,7 @@ exports.booksBookIdSimiliarsGET = async (book_id,offset,limit) => {
     let books = await database("book")
         .join("similarity","similarity.book_id1","book.book_id")
         .where("similarity.book_id2","=",book_id)
-        .select("book.book_id","book.title","book.abstract","book.imgpath")
+        .select("book.book_id","book.title","book.abstract","book.imgpath","book.author_id")
         .offset(offset)
         .limit(limit);
 
@@ -123,7 +123,7 @@ exports.booksBookIdSimiliarsGET = async (book_id,offset,limit) => {
     books = books.concat(await database("book")
         .join("similarity","similarity.book_id2","book.book_id")
         .where("similarity.book_id1","=",book_id)
-        .select("book.book_id","book.title","book.abstract","book.imgpath")
+        .select("book.book_id","book.title","book.abstract","book.imgpath","book.author_id")
         .offset(offset)
         .limit(limit));
 

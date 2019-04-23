@@ -249,7 +249,7 @@ paths:
                 event_id:
                   type: "integer"
                   format: "int64"
-                book:
+                event:
                   $ref: "#/definitions/Event"
         400:
           description: "Bad request."

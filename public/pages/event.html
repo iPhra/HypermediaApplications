@@ -54,15 +54,14 @@
 <div class="container margin-top-10">
     <div class="row">
         <div class="col-md-6">
-            <img src="../assets/images/event_demo.jpg" alt="event picture" class="image-no-overflow">
+            <img id="img" src="" alt="event picture" class="image-no-overflow">
         </div>
         <div class="col-md-6">
-            <span class="h3">{{event_name}}</span> <hr>
-            <span><a href="{{book_link}}"><i class="fas fa-book"></i> {{book_title}}</a></span> <br>
-            <span> <i class="fas fa-map-marker-alt"></i> {{location}}</span> |
-            <span> <i class="fas fa-calendar-day"></i> {{date}}</span> <br>
-            <span> <i class="fas fa-id-badge"></i> {{email}}</span> <hr>
-            <span> {{description}} </span>
+            <span><a id="book_img" href=""><i class="fas fa-book"></i><span id="book_title"></span></a></span> <br>
+            <span> <i class="fas fa-map-marker-alt"></i><span id="location"></span ></span> |
+            <span> <i class="fas fa-calendar-day"></i> <span id="date"></span></span> <br>
+            <span> <i class="fas fa-id-badge"></i><span id="email"></span></span> <hr>
+            <span id="description"></span>
 
         </div>
     </div>
@@ -81,6 +80,7 @@
 <script src="../vendor/jquery/jquery.min.js"></script>
 <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="../vendor/mustache/mustache.min.js"></script>
+<script src="../assets/js/event.js"></script>
 </body>
 
 </html>

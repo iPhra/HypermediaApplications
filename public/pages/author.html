@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Shop Homepage - Start Bootstrap Template</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/shop-homepage.css" rel="stylesheet">
+    <link href="../assets/css/style.css" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">Start Bootstrap</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Page Content -->
+<div class="container margin-top-10">
+    <div class="row">
+        <div class="col-md-4 text-right">
+            <img src="../assets/images/linus.jpg" alt="author picture">
+        </div>
+        <div class="col-md-8 text-left overflow-auto author-biography">
+            <span class="h3">{{author_name}} {{author_surname}}</span> <hr>
+            <p> {{biography}} </p>
+        </div>
+    </div> <hr>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <span class="h3">Books</span>
+        </div>
+    </div>
+    <hr>
+    <div class="row author-books-container">
+        <!-- SCRIPT TEMPLATE HERE -->
+        <div class="col-md-4 margin-top-10">
+            <div class="card author-book-card">
+                <img class="card-img-top" src="{{book_img_path}}" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{book_title}}</h5>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col padding-10px">
+                            <a href="{{book_link}}" class="btn btn-outline-primary btn-sm">
+                                <i class="fa fa-book"></i>
+                                View Book</a>
+                        </div>
+                        <div class="col padding-10px">
+                            <a href="{{link_add_to_cart}}" class="btn btn-outline-primary btn-sm">
+                                <i class="fa fa-shopping-cart"></i> Add to cart </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- SCRIPT TEMPLATE END HERE -->
+    </div>
+</div>
+<!-- /.container -->
+
+<!-- Footer -->
+<footer class="py-5 bg-dark custom-footer">
+    <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2019</p>
+    </div>
+    <!-- /.container -->
+</footer>
+
+<!-- Bootstrap core JavaScript -->
+<script src="../vendor/jquery/jquery.min.js"></script>
+<script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../vendor/mustache/mustache.min.js"></script>
+</body>
+
+</html>

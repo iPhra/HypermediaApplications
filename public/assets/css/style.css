@@ -93,3 +93,21 @@
     line-height: 1.2em;
     text-align:justify;
 }
+
+.author-biography{
+    max-height: 400px;
+}
+
+.author-book-card{
+    width: 90%;
+    margin: auto;
+}
+
+.author-books-container{
+    overflow-y: auto;
+    max-height: 500px;
+}
+
+.image-no-overflow{
+    max-width: 100%;
+}

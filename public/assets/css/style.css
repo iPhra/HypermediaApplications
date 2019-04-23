@@ -107,3 +107,7 @@
     overflow-y: auto;
     max-height: 500px;
 }
+
+.image-no-overflow{
+    max-width: 100%;
+}

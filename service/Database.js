@@ -54,7 +54,7 @@ bookSetup = (database) => {
                 table.text("abstract");
                 table.float("current_price").defaultTo(0).notNullable();
                 table.integer("num_of_pages").notNullable();
-                table.enu("cover_type",["hard cover","soft cover","e-book"]).notNullable();
+                table.enu("cover_type",["Hard cover","Soft cover","E-book"]).notNullable();
                 table.text("imgpath").notNullable();
                 table.text("interview");
                 table.integer("author_id").references("author.author_id").onUpdate("CASCADE").onDelete("CASCADE");;
@@ -87,7 +87,7 @@ genreSetup = (database) => {
             console.log("It doesn't so we create it");
             return database.schema.createTable("genre", table => {
                 table.integer("book_id").references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
-                table.enu("genre",["thriller","fantasy","novel","horror","crime","romance","action","sci-fi"]);
+                table.enu("genre",["Thriller","Fantasy","Novel","Horror","Crime","Romance","Action","Scifi"]);
                 table.primary(["book_id", "genre"]);
             });
         }
@@ -200,6 +200,7 @@ top10Setup = (database) => {
             console.log("It doesn't so we create it");
             return database.schema.createTable("top10", table => {
                 table.integer("book_id").references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
+                table.integer("rank").unique();
                 table.primary(["book_id"]);
             })
         }

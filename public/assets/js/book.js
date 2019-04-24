@@ -27,6 +27,7 @@ function fillBook(book, author) {
     const tpl = {
         img: "../assets/images/"+book.imgpath,
         title: book.title,
+        author_link: "/pages/author.html?id="+book.author_id,
         author_name: author.name,
         author_surname: author.surname,
         abstract: book.abstract,
@@ -38,17 +39,8 @@ function fillBook(book, author) {
     const template = $('#bookTpl').html();
     const html = Mustache.to_html(template, tpl);
     $('#book-content').prepend(html);
-}
-
-function fillPrice(book) {
     $('#price').text(book.current_price+"€");
-}
-
-function fillInterview(book, author) {
     $('#interview').text(book.interview);
-}
-
-function fillAbstract(book) {
     $('#abstract').text(book.abstract);
 }
 
@@ -117,9 +109,6 @@ async function initialise() {
     const similars = await retrieveSimilars(book_id);
     const events = await retrieveEvents(book_id);
     fillBook(book, author);
-    fillPrice(book);
-    fillInterview(book, author);
-    fillAbstract(book);
     appendReviews(reviews);
     await appendSimilars(similars);
     appendEvents(events);

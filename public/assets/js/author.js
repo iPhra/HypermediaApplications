@@ -4,7 +4,7 @@ $.urlParam = function(name){
 }
 
 async function retrieveAuthor(author_id) {
-    return (await fetch('/v2/authors/'+author_id)).json()
+    const author =  (await fetch('/v2/authors/'+author_id)).json()
 }
 
 async function retrieveBooks(book_id) {
@@ -45,19 +45,13 @@ async function initialise() {
     const author_id = $.urlParam("id"); 
     const author = await retrieveAuthor(author_id);
     const books = await retrieveBooks(author_id);
-    fillBook(book, author);
-    fillPrice(book);
-    fillInterview(book, author);
-    fillAbstract(book);
-    appendReviews(reviews);
-    await appendSimilars(similars);
-    appendEvents(events);
+    fillAuthor(author);
+    appendBooks(books);
 }
 
 
 
    
 $(document).ready(async function() {
-    console.log($.urlParam("id"));
     await initialise();
 });

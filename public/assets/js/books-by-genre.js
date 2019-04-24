@@ -30,6 +30,7 @@ async function retrieveAuthor(author_id) {
 function fillTemplate(book, author) {
     var book = {
         img: book.imgpath,
+        book_link: "/pages/book.html?id="+book.book_id,
         title: book.book.title,
         price: book.book.current_price,
         authors_name: author.name,

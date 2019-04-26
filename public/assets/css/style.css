@@ -111,3 +111,13 @@
 .image-no-overflow{
     max-width: 100%;
 }
+
+.card-event{
+    width: 90%;
+    margin: 10px auto auto;
+}
+
+.events-container{
+    max-height: 600px;
+    overflow-y: auto;
+}

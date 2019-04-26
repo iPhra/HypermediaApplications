@@ -53,17 +53,27 @@
 <!-- Page Content -->
 <div class="container margin-top-10">
     <div class="row">
-        <div class="col-md-6">
-            <img id="img" src="" alt="event picture" class="image-no-overflow">
+        <div class="h2 col-md-12 text-center">All events</div>
+    </div>
+    <hr>
+    <div class="row card-deck events-container">
+        <!-- SCRIPT FRA BEGIN HERE -->
+        <div class="col-md-4">
+            <div class="card card-event">
+                <img class="card-img-top" src="{{img}}" alt="Card image cap">
+                <div class="card-body">
+                    <div class="card-subtitle">
+                        {{event_location}} | {{event_date}}
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{{event_link}}" class="btn btn-outline-primary btn-sm">
+                        <i class="fa fa-calendar"></i> View more </a>
+                </div>
+            </div>
         </div>
-        <div class="col-md-6">
-            <span><a id="book_img" href=""><i class="fas fa-book"></i><span id="book_title"></span></a></span> <br>
-            <span> <i class="fas fa-map-marker-alt"></i><span id="location"></span ></span> |
-            <span> <i class="fas fa-calendar-day"></i> <span id="date"></span></span> <br>
-            <span> <i class="fas fa-id-badge"></i><span id="email"></span></span> <hr>
-            <span id="description"></span>
-
-        </div>
+        <!-- SCRIPT FRA END HERE -->
+    </div>
     </div>
 </div>
 <!-- /.container -->

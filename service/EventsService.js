@@ -30,7 +30,11 @@ exports.eventsEventIdGET = async (event_id) => {
  **/
 exports.eventsGET = async (offset,limit) => {
   //retrieve a preview of all the events of the month
-  const events = await database("event").select("event_id","book_id","location","date","imgpath").limit(limit).offset(offset);
+  const events = await database("event")
+      .select("event_id","book_id","location","date","imgpath")
+      .whereRaw("to_char(date, 'MM-YYYY') = ?", getDate())
+      .limit(limit)
+      .offset(offset);
 
   //format the response
   const result = [];
@@ -44,3 +48,16 @@ exports.eventsGET = async (offset,limit) => {
   return result;
 };
 
+
+function getDate() {
+  let today = new Date();
+  let mm = today.getMonth() + 1; //January is 0!
+  const yyyy = today.getFullYear();
+
+  if (mm < 10) {
+    mm = '0' + mm;
+  }
+
+  today = mm + '-' + yyyy;
+  return today;
+}

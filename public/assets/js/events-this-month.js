@@ -3,9 +3,11 @@ async function retrieveEvents() {
 }
 
 function appendEvents(events) {
+    let html = "";
     for(let i=0; i<events.length; i++) {
-        fillTemplate(events[i])
+        html = html + fillTemplate(events[i])
     }
+    $('#event-content').append(html);
 }
 
 function fillTemplate(event) {
@@ -16,8 +18,7 @@ function fillTemplate(event) {
         event_link: "/pages/event.html?id="+event.event_id
     }
     var template = $('#eventTpl').html();
-    var html = Mustache.to_html(template, tpl);
-    $('#event-content').append(html);
+    return Mustache.to_html(template, tpl);
 }
 
 $(document).ready(async function() {

@@ -17,10 +17,12 @@ async function appendBooks(theme) {
     }
     
     var author;
+    let html = "";
     for(let i=0; i<books.length; i++) {
         author = await retrieveAuthor(books[i].book.author_id);
-        fillTemplate(books[i],author);
+        html = html + fillTemplate(books[i],author);
     } 
+    $('#content').append(html);
 }
 
 async function retrieveAuthor(author_id) {
@@ -39,8 +41,7 @@ function fillTemplate(book, author) {
         rank: book.rank
     };
     var template = $('#cardTpl').html();
-    var html = Mustache.to_html(template, book);
-    $('#content').append(html);
+    return Mustache.to_html(template, book);
 }
 
 $(async function() {

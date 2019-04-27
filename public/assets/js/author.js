@@ -30,14 +30,15 @@ function fillBook(book) {
         book_link: "/pages/book.html?id="+book.book_id
     };
     const template = $('#bookTpl').html();
-    const html = Mustache.to_html(template, tpl);
-    $('#book-content').append(html);
+    return Mustache.to_html(template, tpl);
 }
 
 async function appendBooks(books) {
+    let html = "";
     for(let i=0; i<books.length; i++) {
-        fillBook(books[i]);
+        html = html + fillBook(books[i]);
     }
+    $('#book-content').append(html);
 }
 
 

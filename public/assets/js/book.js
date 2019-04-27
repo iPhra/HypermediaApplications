@@ -51,8 +51,7 @@ function fillReview(review) {
         review_rating: review.rating
     }
     const template = $('#reviewTpl').html();
-    const html = Mustache.to_html(template, tpl);
-    $('#review-content').prepend(html);
+    return Mustache.to_html(template, tpl);
 }
 
 function fillSimilar(book, author) {
@@ -65,40 +64,44 @@ function fillSimilar(book, author) {
         book_link: "/pages/book.html?id="+book.book_id
     }
     const template = $('#similarTpl').html();
-    const html = Mustache.to_html(template, tpl);
-    $('#similar-content').prepend(html);
+    return Mustache.to_html(template, tpl);
 }
 
 function fillEvent(event) {
     const tpl = {
         img: "../assets/images/"+event.event.imgpath,
         event_location: event.event.location,
-        event_date: event.event.date,
+        event_date: (new Date(event.event.date)).toISOString().substring(0,10),
         event_link: "/pages/event.html?id="+event.event_id
     }
     const template = $('#eventTpl').html();
-    const html = Mustache.to_html(template, tpl);
-    $('#event-content').prepend(html);
+    return Mustache.to_html(template, tpl);
 }
 
 function appendReviews(reviews) {
+    let html = "";
     for(let i=0; i<reviews.length; i++) {
-        fillReview(reviews[i]);
+        html = html + fillReview(reviews[i]);
     }
+    $('#review-content').prepend(html);
 }
 
 async function appendSimilars(similars) {
     let author;
+    let html = "";
     for(let i=0; i<similars.length; i++) {
         author = await retrieveAuthor(similars[i].author_id);
-        fillSimilar(similars[i], author);
+        html = html + fillSimilar(similars[i], author);
     }
+    $('#similar-content').prepend(html);
 }
 
 function appendEvents(events) {
+    let html = "";
     for(let i=0; i<events.length; i++) {
-        fillEvent(events[i]);
+        html = html + fillEvent(events[i]);
     }
+    $('#event-content').prepend(html);
 }
 
 async function initialise() {

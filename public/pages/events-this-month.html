@@ -56,24 +56,25 @@
         <div class="h2 col-md-12 text-center">All events</div>
     </div>
     <hr>
-    <div class="row card-deck events-container">
-        <!-- SCRIPT FRA BEGIN HERE -->
-        <div class="col-md-4">
-            <div class="card card-event">
-                <img class="card-img-top" src="{{img}}" alt="Card image cap">
-                <div class="card-body">
-                    <div class="card-subtitle">
-                        {{event_location}} | {{event_date}}
+    <div id="event-content" class="row card-deck events-container">
+        
+        <script id="eventTpl" type="text/template">
+            <div class="col-md-4">
+                <div class="card card-event">
+                    <img class="card-img-top" src="{{img}}" alt="Card image cap">
+                    <div class="card-body">
+                        <div class="card-subtitle">
+                            {{event_location}} | {{event_date}}
+                        </div>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="{{event_link}}" class="btn btn-outline-primary btn-sm">
+                            <i class="fa fa-calendar"></i> View more </a>
                     </div>
                 </div>
-                <div class="card-footer text-center">
-                    <a href="{{event_link}}" class="btn btn-outline-primary btn-sm">
-                        <i class="fa fa-calendar"></i> View more </a>
-                </div>
             </div>
-        </div>
-        <!-- SCRIPT FRA END HERE -->
-    </div>
+        </script>
+        
     </div>
 </div>
 <!-- /.container -->
@@ -90,7 +91,7 @@
 <script src="../vendor/jquery/jquery.min.js"></script>
 <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="../vendor/mustache/mustache.min.js"></script>
-<script src="../assets/js/event.js"></script>
+<script src="../assets/js/events-this-month.js"></script>
 </body>
 
 </html>

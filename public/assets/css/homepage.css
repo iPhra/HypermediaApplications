@@ -6,3 +6,23 @@
 body {
   padding-top: 56px;
 }
+
+.card {
+  margin-top: 26px;
+}
+
+.jumbotron {
+  margin-top: 26px;
+  background-image: url("../images/home-background.png");
+  background-size: cover;
+  color: white;
+  align-content: center;
+}
+
+.card-img-top {
+  padding: 10px;
+}
+
+.image-parent {
+  text-align: right;
+}

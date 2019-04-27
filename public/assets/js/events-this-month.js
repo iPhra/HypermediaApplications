@@ -1,15 +1,3 @@
-async function retrieveEvents() {
-    return (await fetch('/v2/events/')).json()
-}
-
-function appendEvents(events) {
-    let html = "";
-    for(let i=0; i<events.length; i++) {
-        html = html + fillTemplate(events[i])
-    }
-    $('#event-content').append(html);
-}
-
 function fillTemplate(event) {
     const tpl = {
         img: "../assets/images/"+event.event.imgpath,
@@ -21,7 +9,16 @@ function fillTemplate(event) {
     return Mustache.to_html(template, tpl);
 }
 
-$(document).ready(async function() {
-    const events = await retrieveEvents();
-    appendEvents(events);
+async function appendEvents() {
+    const events = await (await fetch('/v2/events/')).json()
+    
+    let html = "";
+    for(let i=0; i<events.length; i++) {
+        html = html + fillTemplate(events[i])
+    }
+    $('#event-content').append(html);
+}
+
+$(async function() {
+    await appendEvents();
 });

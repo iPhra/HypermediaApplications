@@ -3,15 +3,10 @@ $.urlParam = function(name){
 	return results[1] || 0;
 }
 
-async function retrieveEvent(event_id) {
-    return (await fetch('/v2/events/'+event_id)).json()
-}
-
-async function retrieveBook(book_id) {
-    return (await fetch('/v2/books/'+book_id)).json()
-}
-
-function fillEvent(event, book) {
+async function appendEvent(event_id) {
+    const event = await (await fetch('/v2/events/'+event_id)).json();
+    const book = await (await fetch('/v2/books/'+event.book_id)).json()
+    
     $('#location').text(" " + event.location);
     $('#book_img').attr("href","/pages/book.html?id="+book.book_id);
     $('#book_title').text(" " + book.title);
@@ -22,17 +17,8 @@ function fillEvent(event, book) {
 }
 
 
-async function initialise() {
+  
+$(async function() {
     const event_id = $.urlParam("id"); 
-    const event = await retrieveEvent(event_id);
-    const book = await retrieveBook(event.book_id);
-    fillEvent(event, book);
-}
-
-
-
-   
-$(document).ready(async function() {
-    console.log($.urlParam("id"));
-    await initialise();
+    await appendEvent(event_id);
 });

@@ -192,61 +192,21 @@
           <div class="card-header">
             Top 10 Books
           </div>
-          <ul class="list-group list-group-flush">
-            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-              <div class="flex-column">
-                Don Quixote
-                <p><small>by Miguel de Cervantes</small></p>
-                <span class="badge badge-info badge-pill"> Fantasy, Novel</span>
-              </div>
-              <div class="image-parent">
-                <img src="assets/images/eragon.jpg" class="img-fluid w-50" alt="quixote">
-              </div>
-            </a>
-
-            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-              <div class="flex-column">
-                Don Quixote
-                <p><small>by Miguel de Cervantes</small></p>
-                <span class="badge badge-info badge-pill"> Fantasy, Novel</span>
-              </div>
-              <div class="image-parent">
-                <img src="assets/images/eragon.jpg" class="img-fluid w-50" alt="quixote">
-              </div>
-            </a>
-
-            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-              <div class="flex-column">
-                Don Quixote
-                <p><small>by Miguel de Cervantes</small></p>
-                <span class="badge badge-info badge-pill"> Fantasy, Novel</span>
-              </div>
-              <div class="image-parent">
-                <img src="assets/images/eragon.jpg" class="img-fluid w-50" alt="quixote">
-              </div>
-            </a>
-
-            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-              <div class="flex-column">
-                Don Quixote
-                <p><small>by Miguel de Cervantes</small></p>
-                <span class="badge badge-info badge-pill"> Fantasy, Novel</span>
-              </div>
-              <div class="image-parent">
-                <img src="assets/images/eragon.jpg" class="img-fluid w-50" alt="quixote">
-              </div>
-            </a>
-
-            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-              <div class="flex-column">
-                Don Quixote
-                <p><small>by Miguel de Cervantes</small></p>
-                <span class="badge badge-info badge-pill"> Fantasy, Novel</span>
-              </div>
-              <div class="image-parent">
-                <img src="assets/images/eragon.jpg" class="img-fluid w-50" alt="quixote">
-              </div>
-            </a>
+          <ul id="top10-content" class="list-group list-group-flush">
+              
+            <script id="top10Tpl" type="text/template">
+                <a href="{{book_link}}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                  <div class="flex-column">
+                    {{title}}
+                    <p><small>by {{author_name}} {{author_surname}}</small></p>
+                    <span class="badge badge-info badge-pill"> {{genres}}</span>
+                  </div>
+                  <div class="image-parent">
+                    <img src="{{img}}" class="img-fluid w-50" alt="cover">
+                  </div>
+                </a>
+            </script>
+              
           </ul>
         </div>
 
@@ -270,6 +230,8 @@
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../vendor/mustache/mustache.min.js"></script>
+    <script src="assets/js/index.js"></script>
 
 </body>
 

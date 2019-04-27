@@ -3,15 +3,19 @@ $.urlParam = function(name){
 	return results[1] || 0;
 }
 
-async function retrieveAuthor(author_id) {
-    const author =  (await fetch('/v2/authors/'+author_id)).json()
+function fillBook(book) {
+    const tpl = {
+        img: "../assets/images/"+book.imgpath,
+        title: book.title,
+        book_link: "/pages/book.html?id="+book.book_id
+    };
+    const template = $('#bookTpl').html();
+    return Mustache.to_html(template, tpl);
 }
 
-async function retrieveBooks(book_id) {
-    return (await fetch('/v2/books/'+book_id)).json()
-}
-
-function fillAuthor(author) {
+async function appendAuthor(author_id) {
+    const author = await (await fetch('/v2/authors/'+author_id)).json();
+    
     const tpl = {
         img: "../assets/images/"+author.imgpath,
         author_name: author.name,
@@ -23,17 +27,9 @@ function fillAuthor(author) {
     $('#author-content').prepend(html);
 }
 
-function fillBook(book) {
-    const tpl = {
-        img: "../assets/images/"+book.imgpath,
-        title: book.title,
-        book_link: "/pages/book.html?id="+book.book_id
-    };
-    const template = $('#bookTpl').html();
-    return Mustache.to_html(template, tpl);
-}
-
-async function appendBooks(books) {
+async function appendBooks(author_id) {
+    const books = await (await fetch('/v2/authors/'+author_id+'/books')).json()
+    
     let html = "";
     for(let i=0; i<books.length; i++) {
         html = html + fillBook(books[i]);
@@ -42,17 +38,9 @@ async function appendBooks(books) {
 }
 
 
-async function initialise() {
-    const author_id = $.urlParam("id"); 
-    const author = await retrieveAuthor(author_id);
-    const books = await retrieveBooks(author_id);
-    fillAuthor(author);
-    appendBooks(books);
-}
-
-
-
    
-$(document).ready(async function() {
-    await initialise();
+$(async function() {
+    const author_id = $.urlParam("id"); 
+    await appendAuthor(author_id);
+    await appendBooks(author_id);
 });

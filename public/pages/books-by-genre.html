@@ -19,6 +19,8 @@
     
     <script src="../vendor/jquery/jquery.min.js"></script>
     <script src="../vendor/mustache/mustache.min.js"></script>
+    <script src="../../assets/js/books-by-genre.js"></script>
+
 
 </head>
 
@@ -53,27 +55,6 @@
   </div>
 </nav>
 
-<!-- TO BE REMOVED, leaving here as an example for future update
-    <script id="cardTpl" type="text/template">
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100">
-              <a href="{{book_link}}"><img class="card-img-top" src="{{img}}" alt=""></a>
-              <div class="card-body">
-                <h4 class="card-title">
-                  <a href="{{book_link}}">{{title}}</a>
-                </h4>
-                <h5>${{price}}</h5>
-                <p class="card-text">{{author_name}} {{author_surname}}</p>
-              </div>
-              <div class="card-footer">
-                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-              </div>
-            </div>
-        </div>
-    </script>
-
--->
-
   <!-- Page Content -->
   <div class="container padding-top-65px">
     <div class="row">
@@ -89,9 +70,8 @@
       <!-- /.col-lg-3 -->
 
       <div class="col-lg-9">
-
-        <div class="row card-deck events-container" id="content">
-          <!-- SCRIPT FRA BEGIN HERE -->
+          
+          <script id="bookTpl" type="text/template">
           <div class="col-md-4">
             <div class="card similar-book-card">
               <img class="card-img-top" src="{{img}}" alt="Card image cap">
@@ -116,7 +96,10 @@
               </div>
             </div>
           </div>
-          <!-- SCRIPT FRA END HERE -->
+        </script>
+
+        <div class="row card-deck events-container" id="book-content">
+            
         </div>
         <!-- /.row -->
 

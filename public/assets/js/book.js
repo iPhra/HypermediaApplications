@@ -7,43 +7,6 @@ async function retrieveAuthor(author_id) {
     return (await fetch('/v2/authors/'+author_id)).json()
 }
 
-async function retrieveBook(book_id) {
-    return (await fetch('/v2/books/'+book_id)).json()
-}
-
-async function retrieveReviews(book_id) {
-    return (await fetch('/v2/books/'+book_id+'/reviews')).json()
-}
-
-async function retrieveSimilars(book_id) {
-    return (await fetch('/v2/books/'+book_id+'/similars')).json()
-}
-
-async function retrieveEvents(book_id) {
-    return (await fetch('/v2/books/'+book_id+'/events')).json()
-}
-
-function fillBook(book, author) {
-    const tpl = {
-        img: "../assets/images/"+book.imgpath,
-        title: book.title,
-        author_link: "/pages/author.html?id="+book.author_id,
-        author_name: author.name,
-        author_surname: author.surname,
-        abstract: book.abstract,
-        genres: (book.genres).join(', '),
-        themes: (book.themes).join(', '),
-        num_of_pages: book.num_of_pages,
-        cover_type: book.cover_type
-    };
-    const template = $('#bookTpl').html();
-    const html = Mustache.to_html(template, tpl);
-    $('#book-content').prepend(html);
-    $('#price').text(book.current_price+"€");
-    $('#interview').text(book.interview);
-    $('#abstract').text(book.abstract);
-}
-
 function fillReview(review) {
     const tpl = {
         review_author: review.user_name,
@@ -78,7 +41,9 @@ function fillEvent(event) {
     return Mustache.to_html(template, tpl);
 }
 
-function appendReviews(reviews) {
+async function appendReviews(book_id) {
+    const reviews =  (await fetch('/v2/books/'+book_id+'/reviews')).json()
+    
     let html = "";
     for(let i=0; i<reviews.length; i++) {
         html = html + fillReview(reviews[i]);
@@ -86,7 +51,9 @@ function appendReviews(reviews) {
     $('#review-content').prepend(html);
 }
 
-async function appendSimilars(similars) {
+async function appendSimilars(book_id) {
+    const similars = await (await fetch('/v2/books/'+book_id+'/similars')).json()
+    
     let author;
     let html = "";
     for(let i=0; i<similars.length; i++) {
@@ -96,7 +63,9 @@ async function appendSimilars(similars) {
     $('#similar-content').prepend(html);
 }
 
-function appendEvents(events) {
+async function appendEvents(book_id) {
+    const events = await (await fetch('/v2/books/'+book_id+'/events')).json()
+    
     let html = "";
     for(let i=0; i<events.length; i++) {
         html = html + fillEvent(events[i]);
@@ -104,19 +73,29 @@ function appendEvents(events) {
     $('#event-content').prepend(html);
 }
 
-async function initialise() {
-    const book_id = $.urlParam("id"); 
-    const book = await retrieveBook(book_id);
-    const author = await retrieveAuthor(book.author_id);
-    const reviews = await retrieveReviews(book_id);
-    const similars = await retrieveSimilars(book_id);
-    const events = await retrieveEvents(book_id);
-    fillBook(book, author);
-    appendReviews(reviews);
-    await appendSimilars(similars);
-    appendEvents(events);
+async function appendBook(book_id) {
+    const book = await (await fetch('/v2/books/'+book_id)).json();
+    const author = await retrieveAuthor(book.author_id)
+    
+    const tpl = {
+        img: "../assets/images/"+book.imgpath,
+        title: book.title,
+        author_link: "/pages/author.html?id="+book.author_id,
+        author_name: author.name,
+        author_surname: author.surname,
+        abstract: book.abstract,
+        genres: (book.genres).join(', '),
+        themes: (book.themes).join(', '),
+        num_of_pages: book.num_of_pages,
+        cover_type: book.cover_type
+    };
+    const template = $('#bookTpl').html();
+    const html = Mustache.to_html(template, tpl);
+    $('#book-content').prepend(html);
+    $('#price').text(book.current_price+"€");
+    $('#interview').text(book.interview);
+    $('#abstract').text(book.abstract);
 }
-
 
 
 
@@ -127,7 +106,10 @@ $(document).ready(function(){
     })
 });
    
-$(document).ready(async function() {
-    console.log($.urlParam("id"));
-    await initialise();
+$(async function() {
+    const book_id = $.urlParam("id"); 
+    await appendBook(book_id);
+    await appendReviews(book_id);
+    await appendSimilars(book_id);
+    await appendEvents(book_id);
 });

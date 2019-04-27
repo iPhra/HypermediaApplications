@@ -145,7 +145,7 @@ exports.booksFavouriteGET = async () => {
     for(let i=0; i<books.length; i++) {
         result[i] = {
             "book_id" : books[i].book_id,
-            "book" : _.pick(books[i], ["title", "current_price", "imgpath", "author_id", "abstract"])
+            "book" : _.pick(books[i], ["title", "imgpath", "author_id"])
         }
     }
 
@@ -233,12 +233,20 @@ exports.booksTop10GET = async () => {
     //retrieve the favourite books
     const books = await database("top10").join("book","book.book_id","top10.book_id");
 
+    //for each book, find its genres
+    for(let i=0; i<books.length; i++) {
+        books[i]["genres"] = (await database("genre")
+            .join("book","book.book_id","genre.book_id")
+            .where("genre.book_id","=",books[i].book_id)
+            .select("genre")).map(a => a.genre);
+    }
+
     //format the response
     const result = [];
     for(let i=0; i<books.length; i++) {
         result[i] = {
             "book_id" : books[i].book_id,
-            "book" : _.pick(books[i], ["title", "current_price", "imgpath", "author_id", "abstract"])
+            "book" : _.pick(books[i], ["title", "imgpath", "author_id", "genres"])
         }
     }
 

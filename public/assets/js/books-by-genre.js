@@ -34,7 +34,7 @@ async function appendBooks(genre) {
     let html = "";
     for(let i=0; i<books.length; i++) {
         author = await (await fetch('/v2/authors/'+books[i].book.author_id)).json();
-        html = html + fillTemplate(books[i],author);
+        html = html + fillBook(books[i],author);
     } 
     $('#book-content').append(html);
 }

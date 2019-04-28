@@ -198,19 +198,6 @@ exports.booksGET = async (keyword,genre,theme,offset,limit) => {
             .offset(offset);
     }
 
-    //for each book, find its themes and its genres
-    for(let i=0; i<books.length; i++) {
-        books[i]["themes"] = (await database("theme")
-            .join("book","book.book_id","theme.book_id")
-            .where("theme.book_id","=",books[i].book_id)
-            .select("theme")).map(a => a.theme);
-
-        books[i]["genres"] = (await database("genre")
-            .join("book","book.book_id","genre.book_id")
-            .where("genre.book_id","=",books[i].book_id)
-            .select("genre")).map(a => a.genre);
-    }
-
     //format the response
     const result = [];
     for(let i=0; i<books.length; i++) {

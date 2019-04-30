@@ -29,32 +29,55 @@ function fillTop10(book, author) {
     return Mustache.to_html(template, tpl);
 }
 
-//code to make the card-deck responsive
-function check_responsiveness() {
-    counter++;
-    if (counter%2===0) {
-        $('#card-deck').append('<div class="w-100 d-none d-sm-block d-md-none"><!-- wrap every 2 on sm--></div>');
+async function appendFavourites() {
+    let books = await( await fetch(`/v2/books/favourites`)).json();
+
+    let html = "<div class=\"carousel-item\">\n" +
+        "\n" +
+        "<div class=\"row\">";
+
+    for (let i=0; i<books.length; i++) {
+        if(i>2 && i%3===0) {
+            html = html + "</div>\n" +
+                "\n" +
+                "</div>";
+            html = html + "<div class=\"carousel-item\">\n" +
+                "\n" +
+                "<div class=\"row\">";
+        }
+        html = html + fillFavourite(books[i])
     }
-    if (counter%3===0) {
-        $('#card-deck').append('<div class="w-100 d-none d-md-block d-lg-none"><!-- wrap every 3 on md--></div>');
+    if(books.length%3!==0) {
+        html = html + add_padding(books.length);
     }
-    if (counter%4===0) {
-        $('#card-deck').append('<div class="w-100 d-none d-lg-block d-xl-none"><!-- wrap every 4 on lg--></div>');
-    }
-    if (counter%5===0) {
-        $('#card-deck').append('<div class="w-100 d-none d-xl-block"><!-- wrap every 5 on xl--></div>');
-    }
+    html = html + "</div>\n" +
+        "\n" +
+        "</div>";
+    console.log(html.toString());
+    $('#carousel').append(html);
 }
 
-function add_padding() {
-    for(let i=0; i<3; i++) {
-        let template = $('#white_card').html();
-        $("#card-deck").append(template);
-        check_responsiveness()
+function fillFavourite(book) {
+    let tpl = {
+        img: book.imgpath,
+        book_link: "/pages/book.html?id="+book.book_id
+    };
+    let template = $('#favCard').html();
+    return Mustache.to_html(template, tpl);
+}
+
+function add_padding(length) {
+    console.log("Book number ", length);
+    var html="";
+    for(let i=0; i<3-length%3; i++) {
+        let template = $('#whiteCard').html();
+        html = html + template;
     }
+    return html;
 }
 
 $(function() {
     appendTop10();
+    appendFavourites();
 });
 

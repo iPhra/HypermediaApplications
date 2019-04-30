@@ -26,3 +26,7 @@ body {
 .image-parent {
   text-align: right;
 }
+
+.whiteCard {
+  visibility: hidden;
+}

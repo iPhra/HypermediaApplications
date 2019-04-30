@@ -62,17 +62,17 @@
     <div class="col-md-4"></div>
     <div class="card col-md-4">
         <article class="card-body">
-            <a href="" class="float-right btn btn-outline-primary">Sign up</a>
+            <a href="/pages/registration.html" class="float-right btn btn-outline-primary">Sign up</a>
             <h4 class="card-title mb-4 mt-1">Sign in</h4>
             <form>
                 <div class="form-group">
                     <label>Your email</label>
-                    <input name="" class="form-control" placeholder="Email" type="email">
+                    <input name="email" class="form-control" placeholder="Email" type="email">
                 </div> <!-- form-group// -->
                 <div class="form-group">
                     <a class="float-right" href="#">Forgot?</a>
                     <label>Your password</label>
-                    <input class="form-control" placeholder="******" type="password">
+                    <input class="form-control" placeholder="******" type="password" name="password">
                 </div> <!-- form-group// -->
                 <div class="form-group">
                     <div class="checkbox">
@@ -80,7 +80,7 @@
                     </div> <!-- checkbox .// -->
                 </div> <!-- form-group// -->
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-block"> Login  </button>
+                    <a href="#" id="submit-form" class="btn btn-primary btn-block"> Login  </a>
                 </div> <!-- form-group// -->
             </form>
         </article>
@@ -101,7 +101,7 @@
 <script src="../vendor/jquery/jquery.min.js"></script>
 <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="../vendor/mustache/mustache.min.js"></script>
-<script src="../assets/js/event.js"></script>
+<script src="../assets/js/login.js"></script>
 </body>
 
 </html>

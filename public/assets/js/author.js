@@ -14,7 +14,12 @@ function fillBook(book) {
 }
 
 async function appendAuthor(author_id) {
-    const author = await (await fetch('/v2/authors/'+author_id)).json();
+    let author;
+    try {
+        author = await (await fetch('/v2/authors/' + author_id)).json();
+    } catch(error) {
+        location.replace("/404.html");
+    }
     
     $("#author-picture").attr("src", "../assets/images/"+author.imgpath);
     $("#author-name").text(author.name + " " + author.surname);

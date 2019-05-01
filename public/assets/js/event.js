@@ -1,11 +1,16 @@
 $.urlParam = function(name){
 	var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
 	return results[1] || 0;
-}
+};
 
 async function appendEvent(event_id) {
-    const event = await (await fetch('/v2/events/'+event_id)).json();
-    const book = await (await fetch('/v2/books/'+event.book_id)).json()
+    let event;
+    try {
+        event = await (await fetch('/v2/events/' + event_id)).json();
+    } catch(error) {
+        location.replace("/404.html");
+    }
+    const book = await (await fetch('/v2/books/'+event.book_id)).json();
     
     $('#location').text(" " + event.location);
     $('#book_link').attr("href","/pages/book.html?id="+event.book_id);

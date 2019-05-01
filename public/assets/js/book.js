@@ -74,8 +74,13 @@ async function appendEvents(book_id) {
 }
 
 async function appendBook(book_id) {
-    const book = await (await fetch('/v2/books/'+book_id)).json();
-    const author = await retrieveAuthor(book.author_id)
+    let book;
+    try {
+        book = await (await fetch('/v2/books/' + book_id)).json();
+    } catch(error) {
+        location.replace("/404.html");
+    }
+    const author = await retrieveAuthor(book.author_id);
     
     const tpl = {
         img: "../assets/images/"+book.imgpath,

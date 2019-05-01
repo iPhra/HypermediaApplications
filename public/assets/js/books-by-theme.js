@@ -1,6 +1,6 @@
 function fillBook(book, author) {
     var tpl = {
-        img: book.imgpath,
+        img: "../assets/images/"+book.book.imgpath,
         book_link: "/pages/book.html?id="+book.book_id,
         author_link: "/pages/author.html?id="+book.book.author_id,
         title: book.book.title,

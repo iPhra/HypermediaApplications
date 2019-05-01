@@ -74,7 +74,7 @@
                             <span class="abstract">
                                 {{abstract}}
                             </span>
-                            <a href="#myTabContent"> Read more</a>
+                            <a href="#book-tab-content"> Read more</a>
                         </div>
                         Details:
                         <ul>
@@ -105,16 +105,17 @@
             </ul>
         </div>
         <div class="row">
-            <div class="tab-content fill-parent" id="myTabContent">
-                    <div class="tab-pane fade show active" id="book-tab-content" role="tabpanel" aria-labelledby="home-tab">                         <p>
-                        <div class="h5">Abstract</div>
-                            <p id="abstract">
-                            </p> <hr>
-                                <div class="h5">Interview with the author</div>
-                            <p id="interview">
-                            </p>
 
-                    </div>
+            <div class="tab-content fill-parent">
+                <div class="tab-pane fade show active" id="book-tab-content" role="tabpanel" aria-labelledby="home-tab">                         <p>
+                    <div class="h5">Abstract</div>
+                        <p id="abstract"></p> <hr>
+                </div>
+
+                <div class="tab-pane fade" id="interview-tab-content" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="h5">Interview with the author</div>
+                    <p id="interview"></p>
+                </div>
 
               <div class="tab-pane fade" id="review-tab-content" role="tabpanel" aria-labelledby="profile-tab">
                   <div id="review-content">
@@ -128,6 +129,7 @@
                       </script>
                   </div>
               </div>
+
               <div class="tab-pane fade" id="similar-tab-content" role="tabpanel" aria-labelledby="contact-tab">
                   <div id="similar-content" class="row margin-top-10">
 

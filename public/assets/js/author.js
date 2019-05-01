@@ -16,15 +16,9 @@ function fillBook(book) {
 async function appendAuthor(author_id) {
     const author = await (await fetch('/v2/authors/'+author_id)).json();
     
-    const tpl = {
-        img: "../assets/images/"+author.imgpath,
-        author_name: author.name,
-        author_surname: author.surname,
-        biography: author.biography,
-    };
-    const template = $('#authorTpl').html();
-    const html = Mustache.to_html(template, tpl);
-    $('#author-content').prepend(html);
+    $("#author-picture").attr("src", "../assets/images/"+author.imgpath);
+    $("#author-name").text(author.name + " " + author.surname);
+    $("#biography").text(author.biography);
 }
 
 async function appendBooks(author_id) {

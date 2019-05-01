@@ -17,7 +17,7 @@ async function appendEvent(event_id) {
 }
 
 
-  
+
 $(async function() {
     const event_id = $.urlParam("id"); 
     await appendEvent(event_id);

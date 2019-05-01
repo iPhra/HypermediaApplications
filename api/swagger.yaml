@@ -3,10 +3,10 @@ swagger: "2.0"
 info:
   description: "OpenAPI specification for the RESTful API of the backend of the Hypermedia\
     \ application course project a.y. 2018/2019.\n"
-  version: "1.0.0"
+  version: "3.0.0"
   title: "Hypermedia course API"
-host: polimi-hyp-2019-team-10489796.herokuapp.com
-basePath: /v2
+host: "polimi-hyp-2019-team-10489796.herokuapp.com"
+basePath: "/v2"
 tags:
 - name: "Books"
 - name: "Authors"
@@ -161,20 +161,6 @@ paths:
         required: true
         type: "integer"
         format: "int64"
-      - name: "offset"
-        in: "query"
-        description: "Offset with regards to the current page."
-        required: false
-        type: "integer"
-        default: 0
-        format: "int64"
-      - name: "limit"
-        in: "query"
-        description: "Items per page."
-        required: false
-        type: "integer"
-        default: 20
-        format: "int64"
       responses:
         200:
           description: "A list of similar books."
@@ -214,10 +200,7 @@ paths:
           schema:
             type: "array"
             items:
-              type: "object"
-              properties:
-                review:
-                  $ref: "#/definitions/Review"
+              $ref: "#/definitions/Review"
         400:
           description: "Bad request."
         404:
@@ -314,6 +297,39 @@ paths:
           description: "The full description of the specified author."
           schema:
             $ref: "#/definitions/Author"
+        400:
+          description: "Bad request."
+        404:
+          description: "Author not found."
+      x-swagger-router-controller: "Authors"
+  /authors/{author_id}/books:
+    get:
+      tags:
+      - "Authors"
+      summary: "Returns the lists of books similar to a specific one."
+      operationId: "authorsAuthorIdBooksGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "author_id"
+        in: "path"
+        description: "The id of the reference author."
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "A list of books of the author."
+          schema:
+            type: "array"
+            items:
+              type: "object"
+              properties:
+                book_id:
+                  type: "integer"
+                  format: "int64"
+                book:
+                  $ref: "#/definitions/Book"
         400:
           description: "Bad request."
         404:
@@ -619,9 +635,7 @@ securityDefinitions:
 definitions:
   Book:
     required:
-    - "abstract"
     - "author_id"
-    - "current_price"
     - "imgpath"
     - "title"
     properties:
@@ -694,7 +708,6 @@ definitions:
       biography: "biography"
   Event:
     required:
-    - "book_id"
     - "date"
     - "imgpath"
     - "location"
@@ -730,6 +743,10 @@ definitions:
         type: "string"
       rating:
         type: "integer"
+    example:
+      user_name: "user_name"
+      rating: 0
+      text: "text"
   Cart:
     properties:
       book_list:
@@ -804,24 +821,6 @@ definitions:
         $ref: "#/definitions/Book"
   inline_response_200_1:
     properties:
-      author_id:
-        type: "integer"
-        format: "int64"
-      author:
-        $ref: "#/definitions/Author"
-  inline_response_200_2:
-    properties:
-      review:
-        $ref: "#/definitions/Review"
-  inline_response_200_3:
-    properties:
-      event_id:
-        type: "integer"
-        format: "int64"
-      book:
-        $ref: "#/definitions/Event"
-  inline_response_200_4:
-    properties:
       event_id:
         type: "integer"
         format: "int64"
@@ -847,7 +846,7 @@ definitions:
       book_id:
         type: "integer"
         format: "int64"
-  inline_response_200_5:
+  inline_response_200_2:
     properties:
       user_id:
         type: "string"
@@ -863,7 +862,7 @@ definitions:
         type: "string"
       password:
         type: "string"
-  inline_response_200_6:
+  inline_response_200_3:
     properties:
       token:
         type: "string"

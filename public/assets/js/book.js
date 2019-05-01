@@ -23,9 +23,9 @@ function fillSimilar(book, author) {
         similar_title: book.title,
         author_name: author.name,
         author_surname: author.surname,
-        author_link: "/pages/author.html?id=0",
+        author_link: "/pages/author.html?id="+book.author_id,
         book_link: "/pages/book.html?id="+book.book_id
-    }
+    };
     const template = $('#similarTpl').html();
     return Mustache.to_html(template, tpl);
 }

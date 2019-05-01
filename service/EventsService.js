@@ -49,6 +49,7 @@ exports.eventsGET = async (offset,limit) => {
 };
 
 
+//returns current month in the form mm-yyyy
 function getDate() {
   let today = new Date();
   let mm = today.getMonth() + 1; //January is 0!

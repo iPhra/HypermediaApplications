@@ -65,24 +65,25 @@
                 <h4>{{rank}}</h4>
             </div>
         </div>
-        <img class="card-img-top" src="../assets/images/eragon.jpg" alt="Card image cap">
+        <img class="card-img-top" src="{{img}}" alt="Card image cap">
         <div class="card-body">
             <h5 class="card-title">{{title}}</h5>
             <small>  Author:
-                <a href="#">{{authors_name}} {{authors_surname}}</a>
+                <a href="{{author_link}}">{{author_name}} {{author_surname}}</a>
             </small>
         </div>
         <div class="card-footer">
             <div class="row ">
                 <div class="col padding-10px">
-                    <button type="button" class="btn btn-outline-primary btn-sm">View Book</button>
+                    <a href="{{book_link}}" class="btn btn-outline-primary btn-sm">
+                        <i class="fa fa-book"></i>
+                        View Book</a>
                 </div>
                 <div class="col padding-10px">
-                    <button type="button" class="btn btn-outline-primary btn-sm">Add to cart</button>
+                    <a href="{{link_add_to_cart}}" class="btn btn-outline-primary btn-sm">
+                        <i class="fa fa-shopping-cart"></i> Add to cart</a>
                 </div>
             </div>
-
-
         </div>
     </div>
 </script>

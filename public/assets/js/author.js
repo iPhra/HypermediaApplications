@@ -5,8 +5,8 @@ $.urlParam = function(name){
 
 function fillBook(book) {
     const tpl = {
-        img: "../assets/images/"+book.imgpath,
-        title: book.title,
+        img: "../assets/images/"+book.book.imgpath,
+        title: book.book.title,
         book_link: "/pages/book.html?id="+book.book_id
     };
     const template = $('#bookTpl').html();

@@ -42,7 +42,7 @@ exports.booksBookIdEventsGET = async (book_id) => {
  **/
 exports.booksBookIdGET = async (book_id) => {
     //find the given book
-    const book = (await database.select().table("book").where("book_id","=",book_id))[0];
+    const book = (await database.select("title", "current_price", "imgpath","author_id","abstract","num_of_pages","interview","cover_type").table("book").where("book_id","=",book_id))[0];
 
     //if the book doesn't exist
     if(!book) throw {code: 404};

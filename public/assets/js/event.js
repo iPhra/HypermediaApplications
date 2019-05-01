@@ -8,7 +8,7 @@ async function appendEvent(event_id) {
     const book = await (await fetch('/v2/books/'+event.book_id)).json()
     
     $('#location').text(" " + event.location);
-    $('#book_img').attr("href","/pages/book.html?id="+book.book_id);
+    $('#book_link').attr("href","/pages/book.html?id="+event.book_id);
     $('#book_title').text(" " + book.title);
     $('#date').text(" " + (new Date(event.date)).toISOString().substring(0,10));
     $('#email').text(" " + event.organiser_email);

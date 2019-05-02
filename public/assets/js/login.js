@@ -13,7 +13,8 @@ $(function() {
             dataType: "json",
             success: function(res) {
                 alert('Login successful');
-                localStorage.setItem("token", JSON.stringify(res.token));
+                const token = JSON.stringify(res.token)
+                localStorage.setItem("token", token.substring(1,token.length-1));
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 alert("Error " + jqXHR.status +

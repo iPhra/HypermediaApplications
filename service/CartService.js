@@ -121,7 +121,7 @@ async function retrieveCart(user_id) {
 
   //retrieve all the books associated to those ids
   const books = await database.table("book")
-      .select("book_id","title","current_price")
+      .select("book_id","title","current_price","author_id")
       .whereIn("book_id",ids);
 
   let total_price = 0;

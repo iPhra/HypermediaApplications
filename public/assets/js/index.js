@@ -7,7 +7,7 @@ async function retrieveAuthor(author_id) {
 function fillFavourite(book) {
     const img = "../assets/images/"+book.book.imgpath;
     const book_link = "/pages/book.html?id="+book.book_id;
-    
+
     const tpl = `<div class="col">
       <div class="card">
         <img class="card-img-top" src="`+img+`" alt="Card image cap">
@@ -18,7 +18,7 @@ function fillFavourite(book) {
         </div>
       </div>
     </div>`
-    
+
     return tpl;
 }
 
@@ -29,7 +29,7 @@ function fillTop10(book, author) {
     const author_name = author.name;
     const author_surname = author.surname;
     const book_link = "/pages/book.html?id="+book.book_id;
-    
+
     const tpl = `<a href="`+book_link+`" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                   <div class="flex-column">
                     `+title+`
@@ -40,7 +40,7 @@ function fillTop10(book, author) {
                     <img src="`+img+`" class="img-fluid w-50" alt="cover">
                   </div>
                 </a>`
-    
+
     return tpl;
 }
 
@@ -59,7 +59,7 @@ async function appendTop10() {
 async function appendFavourites() {
     let books = await( await fetch(`/v2/books/favourites`)).json();
 
-    let html = "<div class=\"carousel-item\">\n" +
+    let html = "<div class=\"carousel-item active\">\n" +
         "\n" +
         "<div class=\"row\">";
 

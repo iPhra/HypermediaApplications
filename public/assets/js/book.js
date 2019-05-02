@@ -11,14 +11,21 @@ function fillReview(review) {
     const review_author = review.user_name;
     const review_text = review.text;
     const review_rating = review.rating;
-    
+
     const tpl = `<div class="card review">
                       <div class="card-body">
                           <h5 class="card-title">`+review_author+`</h5>
                           <p class="card-text">`+review_text+`</p>
                       </div>
+                      <div class="card-footer">
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
+                      </div>
                   </div>`
- 
+
     return tpl;
 }
 
@@ -30,7 +37,7 @@ function fillSimilar(book, author) {
     const price = book.current_price;
     const author_name = author.name;
     const author_surname = author.surname;
-    
+
     const tpl = `<div class="col-md-4">
             <div class="card similar-book-card">
               <img class="card-img-top" src="`+img+`" alt="Card image cap">
@@ -55,7 +62,7 @@ function fillSimilar(book, author) {
               </div>
             </div>
           </div>`
-    
+
     return tpl;
 }
 
@@ -64,7 +71,7 @@ function fillEvent(event) {
     const event_location = event.event.location;
     const event_date = (new Date(event.event.date)).toISOString().substring(0,10);
     const event_link = "/pages/event.html?id="+event.event_id;
-    
+
     const tpl = `<div class="card">
                     <img class="card-img-top" src="`+img+`" alt="Card image cap">
                     <div class="card-body">
@@ -77,13 +84,13 @@ function fillEvent(event) {
                             <i class="fa fa-calendar"></i> View more </a>
                     </div>
                 </div>`
-    
+
     return tpl;
 }
 
 async function appendReviews(book_id) {
     const reviews =  await (await fetch('/v2/books/'+book_id+'/reviews')).json()
-    
+
     let html = "";
     for(let i=0; i<reviews.length; i++) {
         html = html + fillReview(reviews[i]);
@@ -93,7 +100,7 @@ async function appendReviews(book_id) {
 
 async function appendSimilars(book_id) {
     const similars = await (await fetch('/v2/books/'+book_id+'/similars')).json()
-    
+
     let author;
     let html = "";
     for(let i=0; i<similars.length; i++) {
@@ -105,7 +112,7 @@ async function appendSimilars(book_id) {
 
 async function appendEvents(book_id) {
     const events = await (await fetch('/v2/books/'+book_id+'/events')).json()
-    
+
     let html = "";
     for(let i=0; i<events.length; i++) {
         html = html + fillEvent(events[i]);
@@ -121,7 +128,7 @@ async function appendBook(book_id) {
         location.replace("/404.html");
     }
     const author = await retrieveAuthor(book.author_id);
-    
+
     const img = "../assets/images/"+book.imgpath;
     const title = book.title;
     const author_link = "/pages/author.html?id="+book.author_id;
@@ -132,7 +139,7 @@ async function appendBook(book_id) {
     const themes = (book.themes).join(', ');
     const num_of_pages = book.num_of_pages;
     const cover_type = book.cover_type;
-    
+
     const tpl = `<div class="row">
                     <div class="col-lg-5">
                         <img class="img-fluid align-content-center" src="`+img+`">
@@ -156,7 +163,7 @@ async function appendBook(book_id) {
                     </div>
                 </div>
                 <hr>`
-    
+
     $('#book-content').prepend(tpl);
     $('#price').text(book.current_price+"€");
     $('#interview').text(book.interview);
@@ -171,9 +178,9 @@ $(document).ready(function(){
          $('.floating-price').css( {top:newPos});
     })
 });
-   
+
 $(async function() {
-    const book_id = $.urlParam("id"); 
+    const book_id = $.urlParam("id");
     await appendBook(book_id);
     await appendReviews(book_id);
     await appendSimilars(book_id);

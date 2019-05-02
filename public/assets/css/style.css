@@ -125,3 +125,11 @@
 .padding-top-65px{
     padding-top: 65px;
 }
+
+.fa {
+    font-size: 25px;
+}
+
+.checked {
+    color: orange;
+}

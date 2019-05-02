@@ -66,8 +66,8 @@ async function appendBooks(theme) {
 
 
 $(async function() {
-    appendThemes();
-    appendBooks("All");
+    await appendThemes();
+    await appendBooks("All");
 });
 
 $(function() {

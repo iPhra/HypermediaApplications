@@ -82,7 +82,7 @@ function fillEvent(event) {
 }
 
 async function appendReviews(book_id) {
-    const reviews =  (await fetch('/v2/books/'+book_id+'/reviews')).json()
+    const reviews =  await (await fetch('/v2/books/'+book_id+'/reviews')).json()
     
     let html = "";
     for(let i=0; i<reviews.length; i++) {

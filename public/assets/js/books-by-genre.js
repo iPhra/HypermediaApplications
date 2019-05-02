@@ -65,8 +65,8 @@ async function appendBooks(genre) {
 
 
 $(async function() {
-    appendGenres();
-    appendBooks("All");
+    await appendGenres();
+    await appendBooks("All");
 });
 
 $(function() {

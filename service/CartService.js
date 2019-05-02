@@ -27,15 +27,14 @@ exports.accountCartCheckoutPOST = async (token) => {
         .select("book_id","title","current_price")
         .whereIn("book_id",ids);
 
-    //add books to purchases or reservation
+    //add books to purchases
     let purchases = [];
     const date = new Date();
     for(let i=0; i<books.length; i++) {
-      //add book to purchases
       purchases.push({
         user_id: user_id,
         book_id: books[i].book_id,
-        timestamp: date.toDateString(),
+        timestamp: date,
         price: books[i].current_price,
         quantity: book_ids[i].quantity
       });
@@ -121,7 +120,7 @@ async function retrieveCart(user_id) {
 
   //retrieve all the books associated to those ids
   const books = await database.table("book")
-      .select("book_id","title","current_price","author_id")
+      .select("book_id","title","current_price","author_id","imgpath")
       .whereIn("book_id",ids);
 
   let total_price = 0;

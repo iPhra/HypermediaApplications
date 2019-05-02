@@ -59,7 +59,7 @@ async function appendTop10() {
 async function appendFavourites() {
     let books = await( await fetch(`/v2/books/favourites`)).json();
 
-    let html = "<div class=\"carousel-item\">\n" +
+    let html = "<div class=\"carousel-item active\">\n" +
         "\n" +
         "<div class=\"row\">";
 

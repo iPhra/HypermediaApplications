@@ -5,22 +5,45 @@ async function retrieveAuthor(author_id) {
 }
 
 function fillBook(book, author) {
-    const tpl = {
-        img: "../assets/images/"+book.book.imgpath,
-        title: book.book.title,
-        author_name: author.name,
-        author_surname: author.surname,
-        author_link: "/pages/author.html?id="+book.book.author_id,
-        book_link: "/pages/book.html?id="+book.book_id,
-        rank: book.rank
-    };
-    const template = $('#ListItem').html();
-    let html = Mustache.to_html(template, tpl);
+    const img = "../assets/images/"+book.book.imgpath;
+    const title = book.book.title;
+    const author_name = author.name;
+    const author_surname = author.surname;
+    const author_link = "/pages/author.html?id="+book.book.author_id;
+    const book_link = "/pages/book.html?id="+book.book_id;
+    const rank = book.rank;
+    
+    let tpl = `<div class="card">
+        <div class="card-header">
+            <div class="rank">
+                <h4>`+rank+`</h4>
+            </div>
+        </div>
+        <img class="card-img-top" src="`+img+`" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">`+title+`</h5>
+            <small>  Author:
+                <a href="`+author_link+`">`+author_name+` `+author_surname+`</a>
+            </small>
+        </div>
+        <div class="card-footer">
+            <div class="row ">
+                <div class="col padding-10px">
+                    <a href="`+book_link+`" class="btn btn-outline-primary btn-sm">
+                        <i class="fa fa-book"></i>
+                        View Book</a>
+                </div>
+                <div class="col padding-10px">
+                    <a href="{{link_add_to_cart}}" class="btn btn-outline-primary btn-sm">
+                        <i class="fa fa-shopping-cart"></i> Add to cart</a>
+                </div>
+            </div>
+        </div>
+    </div>` 
 
     //keep the page responsive
-    html = check_responsiveness(html);
-
-    return html;
+    tpl = check_responsiveness(tpl);
+    return tpl;
 }
 
 //code to make the card-deck responsive
@@ -44,7 +67,15 @@ function check_responsiveness(html) {
 
 function add_padding() {
     for(let i=0; i<3; i++) {
-        let template = $('#white_card').html();
+        let template = `<div class="card white-card">
+                            <div class="card-header">
+                            </div>
+                            <div class="card-body">
+
+                            </div>
+                            <div class="card-footer">
+                            </div>
+                        </div>`
         $("#card-deck").append(template);
         check_responsiveness()
     }

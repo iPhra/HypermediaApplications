@@ -18,7 +18,6 @@
 
     <script src="../vendor/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="../assets/js/bestsellers.js"></script>
-    <script src="../vendor/mustache/mustache.min.js"></script>
 
 </head>
 
@@ -58,53 +57,11 @@
     </div>
   </nav>
 
-<script id="ListItem" type="text/template">
-    <div class="card">
-        <div class="card-header">
-            <div class="rank">
-                <h4>{{rank}}</h4>
-            </div>
-        </div>
-        <img class="card-img-top" src="{{img}}" alt="Card image cap">
-        <div class="card-body">
-            <h5 class="card-title">{{title}}</h5>
-            <small>  Author:
-                <a href="{{author_link}}">{{author_name}} {{author_surname}}</a>
-            </small>
-        </div>
-        <div class="card-footer">
-            <div class="row ">
-                <div class="col padding-10px">
-                    <a href="{{book_link}}" class="btn btn-outline-primary btn-sm">
-                        <i class="fa fa-book"></i>
-                        View Book</a>
-                </div>
-                <div class="col padding-10px">
-                    <a href="{{link_add_to_cart}}" class="btn btn-outline-primary btn-sm">
-                        <i class="fa fa-shopping-cart"></i> Add to cart</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</script>
-
-<script id="white_card" type="text/template">
-    <div class="card white-card">
-        <div class="card-header">
-        </div>
-        <div class="card-body">
-
-        </div>
-        <div class="card-footer">
-        </div>
-    </div>
-</script>
-
 <!-- Page Content -->
 <div class="container">
 
     <div class="card-deck" id="card-deck">
-
+        <!-- template -->
     </div>
 
 </div>

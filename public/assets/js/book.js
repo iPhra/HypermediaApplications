@@ -8,37 +8,77 @@ async function retrieveAuthor(author_id) {
 }
 
 function fillReview(review) {
-    const tpl = {
-        review_author: review.user_name,
-        review_text: review.text,
-        review_rating: review.rating
-    }
-    const template = $('#reviewTpl').html();
-    return Mustache.to_html(template, tpl);
+    const review_author = review.user_name;
+    const review_text = review.text;
+    const review_rating = review.rating;
+    
+    const tpl = `<div class="card review">
+                      <div class="card-body">
+                          <h5 class="card-title">`+review_author+`</h5>
+                          <p class="card-text">`+review_text+`</p>
+                      </div>
+                  </div>`
+ 
+    return tpl;
 }
 
 function fillSimilar(book, author) {
-    const tpl = {
-        img: "../assets/images/"+book.imgpath,
-        similar_title: book.title,
-        author_name: author.name,
-        author_surname: author.surname,
-        author_link: "/pages/author.html?id="+book.author_id,
-        book_link: "/pages/book.html?id="+book.book_id
-    };
-    const template = $('#similarTpl').html();
-    return Mustache.to_html(template, tpl);
+    const img = "../assets/images/"+book.imgpath;
+    const book_link = "/pages/book.html?id="+book.book_id;
+    const author_link = "/pages/author.html?id="+book.author_id;
+    const title = book.title;
+    const price = book.current_price;
+    const author_name = author.name;
+    const author_surname = author.surname;
+    
+    const tpl = `<div class="col-md-4">
+            <div class="card similar-book-card">
+              <img class="card-img-top" src="`+img+`" alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title">`+title+`</h5>
+                <small>  Author:
+                  <a href="`+author_link+`">`+author_name+` `+author_surname+`</a>
+                </small>
+              </div>
+              <div class="card-footer">
+                <div class="row ">
+                  <div class="col padding-10px">
+                    <a href="`+book_link+`" class="btn btn-outline-primary btn-sm">
+                      <i class="fa fa-book"></i>
+                      View Book</a>
+                  </div>
+                  <div class="col padding-10px">
+                    <a href="{{link_add_to_cart}}" class="btn btn-outline-primary btn-sm">
+                      <i class="fa fa-shopping-cart"></i> Add to cart</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>`
+    
+    return tpl;
 }
 
 function fillEvent(event) {
-    const tpl = {
-        img: "../assets/images/"+event.event.imgpath,
-        event_location: event.event.location,
-        event_date: (new Date(event.event.date)).toISOString().substring(0,10),
-        event_link: "/pages/event.html?id="+event.event_id
-    }
-    const template = $('#eventTpl').html();
-    return Mustache.to_html(template, tpl);
+    const img = "../assets/images/"+event.event.imgpath;
+    const event_location = event.event.location;
+    const event_date = (new Date(event.event.date)).toISOString().substring(0,10);
+    const event_link = "/pages/event.html?id="+event.event_id;
+    
+    const tpl = `<div class="card">
+                    <img class="card-img-top" src="`+img+`" alt="Card image cap">
+                    <div class="card-body">
+                            <div class="card-subtitle">
+                                `+event_location+` | `+event_date+`
+                            </div>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="`+event_link+`" class="btn btn-outline-primary btn-sm">
+                            <i class="fa fa-calendar"></i> View more </a>
+                    </div>
+                </div>`
+    
+    return tpl;
 }
 
 async function appendReviews(book_id) {
@@ -82,21 +122,42 @@ async function appendBook(book_id) {
     }
     const author = await retrieveAuthor(book.author_id);
     
-    const tpl = {
-        img: "../assets/images/"+book.imgpath,
-        title: book.title,
-        author_link: "/pages/author.html?id="+book.author_id,
-        author_name: author.name,
-        author_surname: author.surname,
-        abstract: book.abstract,
-        genres: (book.genres).join(', '),
-        themes: (book.themes).join(', '),
-        num_of_pages: book.num_of_pages,
-        cover_type: book.cover_type
-    };
-    const template = $('#bookTpl').html();
-    const html = Mustache.to_html(template, tpl);
-    $('#book-content').prepend(html);
+    const img = "../assets/images/"+book.imgpath;
+    const title = book.title;
+    const author_link = "/pages/author.html?id="+book.author_id;
+    const author_name = author.name;
+    const author_surname = author.surname;
+    const abstract = book.abstract;
+    const genres = (book.genres).join(', ');
+    const themes = (book.themes).join(', ');
+    const num_of_pages = book.num_of_pages;
+    const cover_type = book.cover_type;
+    
+    const tpl = `<div class="row">
+                    <div class="col-lg-5">
+                        <img class="img-fluid align-content-center" src="`+img+`">
+                    </div>
+                    <div class="col-lg-7">
+                        <span class="h4">`+title+`</span> <br>
+                        <span class="h6"><a href="`+author_link+`">`+author_name+` `+author_surname+`</a></span> <hr>
+                        <div>
+                            <span class="abstract">
+                                `+abstract+`
+                            </span>
+                            <a href="#book-tab-content"> Read more</a>
+                        </div>
+                        Details:
+                        <ul>
+                          <li>Genres: `+genres+`</li>
+                          <li>Themes: `+themes+`</li>
+                          <li>Number of pages: `+num_of_pages+`</li>
+                          <li>Cover type: `+cover_type+`</li>
+                        </ul>
+                    </div>
+                </div>
+                <hr>`
+    
+    $('#book-content').prepend(tpl);
     $('#price').text(book.current_price+"€");
     $('#interview').text(book.interview);
     $('#abstract').text(book.abstract);

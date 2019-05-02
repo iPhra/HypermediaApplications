@@ -4,13 +4,33 @@ $.urlParam = function(name){
 }
 
 function fillBook(book) {
-    const tpl = {
-        img: "../assets/images/"+book.book.imgpath,
-        title: book.book.title,
-        book_link: "/pages/book.html?id="+book.book_id
-    };
-    const template = $('#bookTpl').html();
-    return Mustache.to_html(template, tpl);
+    const img = "../assets/images/"+book.book.imgpath;
+    const title = book.book.title;
+    const book_link = "/pages/book.html?id="+book.book_id;
+    
+    const tpl = `<div class="col-md-4 margin-top-10">
+                    <div class="card author-book-card">
+                        <img class="card-img-top" src="`+img+`" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">`+title+`</h5>
+                        </div>
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col padding-10px">
+                                    <a href="`+book_link+`" class="btn btn-outline-primary btn-sm">
+                                        <i class="fa fa-book"></i>
+                                        View Book</a>
+                                </div>
+                                <div class="col padding-10px">
+                                    <a href="{{link_add_to_cart}}" class="btn btn-outline-primary btn-sm">
+                                        <i class="fa fa-shopping-cart"></i> Add to cart </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`
+    
+    return tpl;
 }
 
 async function appendAuthor(author_id) {

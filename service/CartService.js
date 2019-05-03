@@ -49,12 +49,25 @@ exports.accountCartCheckoutPOST = async (token) => {
   }).catch( () => { throw { code: 400 } });
 };
 
+/**
+ * Remove all items in the cart.
+ *
+ * no response value expected for this operation
+ **/
+exports.accountCartEmptyPOST = async (token) => {
+  const user_id = await checkToken(token);
+
+  await database("cart").where({
+    "user_id" : user_id
+  }).del();
+};
+
 
 /**
  * Remove an item from the cart
  *
  * item Item Item to be removed and its quantity
- * returns Cart
+ * no response value expected for this operation
  **/
 exports.accountCartDELETE = async (item, token) => {
   const user_id = await checkToken(token);

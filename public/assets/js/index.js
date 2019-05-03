@@ -8,7 +8,7 @@ function fillFavourite(book) {
     const img = "../assets/images/"+book.book.imgpath;
     const book_link = "/pages/book.html?id="+book.book_id;
 
-    const tpl = `<div class="col">
+    return `<div class="col">
       <div class="card">
         <img class="card-img-top" src="`+img+`" alt="Card image cap">
         <div class="card-footer text-center">
@@ -17,9 +17,7 @@ function fillFavourite(book) {
                       View Book</a>
         </div>
       </div>
-    </div>`
-
-    return tpl;
+    </div>`;
 }
 
 function fillTop10(book, author) {
@@ -30,7 +28,7 @@ function fillTop10(book, author) {
     const author_surname = author.surname;
     const book_link = "/pages/book.html?id="+book.book_id;
 
-    const tpl = `<a href="`+book_link+`" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+    return `<a href="`+book_link+`" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                   <div class="flex-column">
                     `+title+`
                     <p><small>by `+author_name+` `+author_surname+`</small></p>
@@ -39,9 +37,7 @@ function fillTop10(book, author) {
                   <div class="image-parent">
                     <img src="`+img+`" class="img-fluid w-50" alt="cover">
                   </div>
-                </a>`
-
-    return tpl;
+                </a>`;
 }
 
 async function appendTop10() {
@@ -86,12 +82,12 @@ async function appendFavourites() {
 
 function add_padding(length) {
     console.log("Book number ", length);
-    var html="";
+    let html = "";
     for(let i=0; i<3-length%3; i++) {
            let template = `<div class="col">
                               <div class="card whiteCard">
                               </div>
-                            </div>`
+                            </div>`;
         html = html + template;
     }
     return html;
@@ -99,8 +95,8 @@ function add_padding(length) {
 
 
 
-$(function() {
-    appendTop10();
-    appendFavourites();
+$(async function() {
+    await appendTop10();
+    await appendFavourites();
 });
 

@@ -7,7 +7,7 @@ function fillCart(book, author) {
     const author_surname = author.surname;
     const id = book.book_id;
     
-    const tpl = `<div class="card-body">
+    return `<div class="card-body">
                     <div class="row">
                         <div class="col-md-3">
                             <img class="img-responsive" src="`+img+`">
@@ -28,9 +28,7 @@ function fillCart(book, author) {
                         </div>
                     </div>
                 </div>
-                <hr>`
-    
-    return tpl;
+                <hr>`;
 }
 
 async function appendCart() {
@@ -85,33 +83,30 @@ $(function() {
             }
         });
     });
-})
+});
 
 $(function() {
-    $(document).on("click", "#empty", async function(){
+    $(document).on("click", "#empty", function(){
         const token = localStorage.getItem("token");
-        
-        $(".remove").each(function() {
-            $.ajax({
-                url: '/v2/account/cart',
-                type: 'DELETE',
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader('Authorization', token);
-                },
-                data: JSON.stringify({book_id: parseInt($(this).attr("id"))}),
-                dataType: "text",
-                contentType: "application/json",
-                success: function () {
-                    location.reload();
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    alert("Error " + jqXHR.status +
-                          ": " + errorThrown);
-                }
-            });
-        })
+
+        $.ajax({
+            url: '/v2/account/cart/empty',
+            type: 'POST',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', token);
+            },
+            dataType: "text",
+            success: function () {
+                location.reload();
+                alert("Cart emptied successfully!")
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert("Error " + jqXHR.status +
+                    ": " + errorThrown);
+            }
+        });
     });
-})
+});
 
 $(function() {
     $(document).on("click", "#checkout", async function(){
@@ -134,7 +129,7 @@ $(function() {
             }
         });
     });
-})
+});
 
 $(async function() {
     await appendCart();

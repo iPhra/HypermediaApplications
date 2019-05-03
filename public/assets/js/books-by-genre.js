@@ -3,11 +3,10 @@ function fillBook(book, author) {
     const book_link = "/pages/book.html?id="+book.book_id;
     const author_link = "/pages/author.html?id="+book.book.author_id;
     const title = book.book.title;
-    const price = book.book.current_price;
     const author_name = author.name;
     const author_surname = author.surname;
     
-    const tpl = `<div class="col-md-4">
+    return `<div class="col-md-4">
             <div class="card similar-book-card">
               <img class="card-img-top" src="`+img+`" alt="Card image cap">
               <div class="card-body">
@@ -30,30 +29,29 @@ function fillBook(book, author) {
                 </div>
               </div>
             </div>
-          </div>`
-    
-    return tpl;
+          </div>`;
 }
 
 async function appendGenres() {
     const genres = await (await fetch(`/v2/genres`)).json();
 
+    let genre;
     for(let i=0; i<genres.length; i++) {
-        genre = genres[i].charAt(0).toUpperCase() + genres[i].slice(1)
+        genre = genres[i].charAt(0).toUpperCase() + genres[i].slice(1);
         $('.list-group').append('<a href="#" id="'+genres[i]+'"class="list-group-item list-group-item-action">'+genre+'</a>');
     }
 }
 
 async function appendBooks(genre) {
-    var books;
-    if (genre=="All") {
+    let books;
+    if (genre==="All") {
         books = await (await fetch(`/v2/books?limit=10`)).json();
     }
     else {
         books = await (await fetch(`/v2/books?genre=`+genre+`&limit=10`)).json()
     }
-    
-    var author;
+
+    let author;
     let html = "";
     for(let i=0; i<books.length; i++) {
         author = await (await fetch('/v2/authors/'+books[i].book.author_id)).json();
@@ -72,6 +70,6 @@ $(async function() {
 $(function() {
     $(document).on("click", ".list-group-item", async function(){
         $('#book-content').empty();
-        appendBooks(this.id);
+        await appendBooks(this.id);
     });
-})
+});

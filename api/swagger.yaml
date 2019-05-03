@@ -403,99 +403,130 @@ paths:
   /account/cart:
     get:
       tags:
-      - "Cart"
-      summary: "Returns list of items present in the cart of the specified user."
-      operationId: "accountCartGET"
+        - Cart
+      summary: Returns list of items present in the cart of the specified user.
+      operationId: accountCartGET
       produces:
-      - "application/json"
-      parameters: []
+        - application/json
       responses:
-        200:
-          description: "The list of items present in the cart."
+        200:    # status code
+          description: The list of items present in the cart.
           schema:
-            $ref: "#/definitions/Cart"
+            $ref: '#/definitions/Cart'
         401:
-          description: "Unauthorized."
+          description: Unauthorized.
       security:
-      - Bearer: []
+        - Bearer: []
       x-swagger-router-controller: "Cart"
     post:
       tags:
-      - "Cart"
-      summary: "Add item to cart."
-      operationId: "accountCartPOST"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "book"
-        description: "The book to be added to cart."
-        required: true
-        schema:
-          $ref: "#/definitions/book"
-      responses:
-        200:
-          description: "Book added to cart."
-          schema:
-            $ref: "#/definitions/Cart"
-        400:
-          description: "Bad request."
-        401:
-          description: "Unauthorized."
-      security:
-      - Bearer: []
+        - Cart
+      summary: Add item to cart.
+      operationId: accountCartPOST
       x-security-scopes:
-      - "admin"
-      - "user"
+        - admin
+        - user
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: book
+          required: true
+          description: The book to be added to cart.
+          schema:
+            type: object
+            required:
+              - book_id
+              - quantity
+            properties:
+              book_id:
+                type: integer
+                format: int64
+              quantity:
+                type: integer
+                format: int64
+      responses:
+        '200':    # status code
+          description: Book added to cart.
+          schema:
+            $ref: '#/definitions/Cart'
+        '401':
+          description: Unauthorized.
+        '400':
+          description: Bad request.
+      security:
+        - Bearer: []
       x-swagger-router-controller: "Cart"
     delete:
       tags:
-      - "Cart"
-      summary: "Remove an item from the cart"
-      operationId: "accountCartDELETE"
+        - Cart
+      summary: Remove an item from the cart
+      operationId: accountCartDELETE
+      x-security-scopes:
+        - admin
+        - user
       produces:
-      - "application/json"
+        - application/json
       parameters:
-      - in: "body"
-        name: "item"
-        description: "Item to be removed and its quantity"
-        required: true
-        schema:
-          $ref: "#/definitions/item"
+        - in: body
+          name: item
+          required: true
+          description: Item to be removed
+          schema:
+            type: object
+            properties:
+              book_id:
+                type: integer
+                format: int64
+            required:
+              - book_id
       responses:
         200:
-          description: "The new updated cart."
-          schema:
-            $ref: "#/definitions/Cart"
-        400:
-          description: "Bad request."
+          description: Item removed.
         401:
-          description: "Unauthorized."
+          description: Unauthorized.
+        400:
+          description: Bad request.
       security:
-      - Bearer: []
-      x-security-scopes:
-      - "admin"
-      - "user"
+        - Bearer: []
       x-swagger-router-controller: "Cart"
   /account/cart/checkout:
     post:
       tags:
-      - "Cart"
-      summary: "Buy the items in the cart."
-      operationId: "accountCartCheckoutPOST"
-      parameters: []
-      responses:
-        200:
-          description: "Purchase successful."
-        401:
-          description: "Unauthorized."
-      security:
-      - Bearer: []
+        - Cart
+      summary: Buy the items in the cart.
+      operationId: accountCartCheckoutPOST
       x-security-scopes:
-      - "admin"
-      - "user"
+        - admin
+        - user
+      responses:
+        '200':    # status code
+          description: Purchase successful.
+        '401':
+          description: Unauthorized.
+        '400':
+          description: Query error.
+      security:
+        - Bearer: []
+      x-swagger-router-controller: "Cart"
+  /account/cart/empty:
+    post:
+      tags:
+        - Cart
+      summary: Remove all items in the cart.
+      operationId: accountCartEmptyPOST
+      x-security-scopes:
+        - admin
+        - user
+      responses:
+        '200':    # status code
+          description: Cart emptied.
+        '401':
+          description: Unauthorized.
+      security:
+        - Bearer: []
       x-swagger-router-controller: "Cart"
   /account/info:
     get:

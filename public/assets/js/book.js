@@ -1,7 +1,7 @@
 $.urlParam = function(name){
-	var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-	return results[1] || 0;
-}
+    const results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+    return results[1] || 0;
+};
 
 async function retrieveAuthor(author_id) {
     return (await fetch('/v2/authors/'+author_id)).json()
@@ -10,23 +10,24 @@ async function retrieveAuthor(author_id) {
 function fillReview(review) {
     const review_author = review.user_name;
     const review_text = review.text;
-    const review_rating = review.rating;
 
-    const tpl = `<div class="card review">
+    let rating = "";
+    for(let i=0; i<review.rating; i++) {
+        rating = rating + `<span class=\"fa fa-star checked\"></span>`;
+    }
+    for(let i=0; i<5-review.rating; i++) {
+        rating = rating + `<span class="fa fa-star"></span>`;
+    }
+
+    return `<div class="card review">
                       <div class="card-body">
                           <h5 class="card-title">`+review_author+`</h5>
                           <p class="card-text">`+review_text+`</p>
                       </div>
                       <div class="card-footer">
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
+                        `+rating+`
                       </div>
-                  </div>`
-
-    return tpl;
+                  </div>`;
 }
 
 function fillSimilar(book, author) {
@@ -34,11 +35,10 @@ function fillSimilar(book, author) {
     const book_link = "/pages/book.html?id="+book.book_id;
     const author_link = "/pages/author.html?id="+book.author_id;
     const title = book.title;
-    const price = book.current_price;
     const author_name = author.name;
     const author_surname = author.surname;
 
-    const tpl = `<div class="col-md-4">
+    return `<div class="col-md-4">
             <div class="card similar-book-card">
               <img class="card-img-top" src="`+img+`" alt="Card image cap">
               <div class="card-body">
@@ -61,9 +61,7 @@ function fillSimilar(book, author) {
                 </div>
               </div>
             </div>
-          </div>`
-
-    return tpl;
+          </div>`;
 }
 
 function fillEvent(event) {
@@ -72,7 +70,7 @@ function fillEvent(event) {
     const event_date = (new Date(event.event.date)).toISOString().substring(0,10);
     const event_link = "/pages/event.html?id="+event.event_id;
 
-    const tpl = `<div class="card">
+    return `<div class="card">
                     <img class="card-img-top" src="`+img+`" alt="Card image cap">
                     <div class="card-body">
                             <div class="card-subtitle">
@@ -83,13 +81,11 @@ function fillEvent(event) {
                         <a href="`+event_link+`" class="btn btn-outline-primary btn-sm">
                             <i class="fa fa-calendar"></i> View more </a>
                     </div>
-                </div>`
-
-    return tpl;
+                </div>`;
 }
 
 async function appendReviews(book_id) {
-    const reviews =  await (await fetch('/v2/books/'+book_id+'/reviews')).json()
+    const reviews =  await (await fetch('/v2/books/'+book_id+'/reviews')).json();
 
     let html = "";
     for(let i=0; i<reviews.length; i++) {
@@ -99,7 +95,7 @@ async function appendReviews(book_id) {
 }
 
 async function appendSimilars(book_id) {
-    const similars = await (await fetch('/v2/books/'+book_id+'/similars')).json()
+    const similars = await (await fetch('/v2/books/'+book_id+'/similars')).json();
 
     let author;
     let html = "";
@@ -111,7 +107,7 @@ async function appendSimilars(book_id) {
 }
 
 async function appendEvents(book_id) {
-    const events = await (await fetch('/v2/books/'+book_id+'/events')).json()
+    const events = await (await fetch('/v2/books/'+book_id+'/events')).json();
 
     let html = "";
     for(let i=0; i<events.length; i++) {
@@ -151,7 +147,7 @@ async function appendBook(book_id) {
                             <span class="abstract">
                                 `+abstract+`
                             </span>
-                            <a href="#book-tab-content"> Read more</a>
+                            <a id="read-more" href="#"> Read more</a>
                         </div>
                         Details:
                         <ul>
@@ -162,7 +158,7 @@ async function appendBook(book_id) {
                         </ul>
                     </div>
                 </div>
-                <hr>`
+                <hr>`;
 
     $('#book-content').prepend(tpl);
     $('#price').text(book.current_price+"€");
@@ -172,10 +168,16 @@ async function appendBook(book_id) {
 
 
 
+$(document).on("click", "#read-more", function() {
+    $("#book-tab-content").addClass('active').addClass('show').siblings().removeClass('active').removeClass('show');
+    $("#book-tab").addClass('active').addClass('show').parent().siblings().children().removeClass('active').removeClass('show');
+    location.href = "#book-tab";
+});
+
 $(document).ready(function(){
     $(window).scroll(function(){
-         var newPos = $(document).scrollTop();
-         $('.floating-price').css( {top:newPos});
+        const newPos = $(document).scrollTop();
+        $('.floating-price').css( {top:newPos});
     })
 });
 

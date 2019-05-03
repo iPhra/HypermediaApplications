@@ -4,7 +4,7 @@ function fillTemplate(event) {
     const event_date= (new Date(event.event.date)).toISOString().substring(0,10);
     const event_link = "/pages/event.html?id="+event.event_id;
     
-    const tpl = `<div class="col-md-4">
+    return `<div class="col-md-4">
                 <div class="card card-event">
                     <img class="card-img-top" src="`+img+`" alt="Card image cap">
                     <div class="card-body">
@@ -17,13 +17,11 @@ function fillTemplate(event) {
                             <i class="fa fa-calendar"></i> View more </a>
                     </div>
                 </div>
-            </div>`
-    
-    return tpl;
+            </div>`;
 }
 
 async function appendEvents() {
-    const events = await (await fetch('/v2/events/')).json()
+    const events = await (await fetch('/v2/events/')).json();
     
     let html = "";
     for(let i=0; i<events.length; i++) {

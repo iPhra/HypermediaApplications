@@ -39,7 +39,7 @@ function fillBook(book, author) {
                 </div>
             </div>
         </div>
-    </div>` 
+    </div>`;
 
     //keep the page responsive
     tpl = check_responsiveness(tpl);
@@ -75,7 +75,7 @@ function add_padding() {
                             </div>
                             <div class="card-footer">
                             </div>
-                        </div>`
+                        </div>`;
         $("#card-deck").append(template);
         check_responsiveness()
     }

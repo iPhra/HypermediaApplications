@@ -1,14 +1,14 @@
 $.urlParam = function(name){
-	var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-	return results[1] || 0;
-}
+    const results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+    return results[1] || 0;
+};
 
 function fillBook(book) {
     const img = "../assets/images/"+book.book.imgpath;
     const title = book.book.title;
     const book_link = "/pages/book.html?id="+book.book_id;
     
-    const tpl = `<div class="col-md-4 margin-top-10">
+    return `<div class="col-md-4 margin-top-10">
                     <div class="card author-book-card">
                         <img class="card-img-top" src="`+img+`" alt="Card image cap">
                         <div class="card-body">
@@ -28,9 +28,7 @@ function fillBook(book) {
                             </div>
                         </div>
                     </div>
-                </div>`
-    
-    return tpl;
+                </div>`;
 }
 
 async function appendAuthor(author_id) {
@@ -47,7 +45,7 @@ async function appendAuthor(author_id) {
 }
 
 async function appendBooks(author_id) {
-    const books = await (await fetch('/v2/authors/'+author_id+'/books')).json()
+    const books = await (await fetch('/v2/authors/'+author_id+'/books')).json();
     
     let html = "";
     for(let i=0; i<books.length; i++) {

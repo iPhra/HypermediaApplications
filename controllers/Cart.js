@@ -28,6 +28,18 @@ module.exports.accountCartDELETE = function accountCartDELETE (req, res, next) {
       });
 };
 
+module.exports.accountCartEmptyPOST = function accountCartEmptyPOST (req, res, next) {
+    const token = req.headers.authorization;
+    Cart.accountCartEmptyPOST(token)
+        .then(function (response) {
+            utils.writeJson(res, response);
+        })
+        .catch(function (response) {
+            res.writeHead(response.code);
+            res.end();
+        });
+};
+
 module.exports.accountCartGET = function accountCartGET (req, res, next) {
   const token = req.headers.authorization;
   Cart.accountCartGET(token)

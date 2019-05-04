@@ -41,44 +41,7 @@ function fillBook(book, author) {
         </div>
     </div>`;
 
-    //keep the page responsive
-    tpl = check_responsiveness(tpl);
     return tpl;
-}
-
-//code to make the card-deck responsive
-function check_responsiveness(html) {
-    counter++;
-    if (counter%2===0) {
-        html = html + '<div class="w-100 d-none d-sm-block d-md-none"><!-- wrap every 2 on sm--></div>'
-    }
-    if (counter%3===0) {
-        html = html + '<div class="w-100 d-none d-md-block d-lg-none"><!-- wrap every 3 on md--></div>'
-    }
-    if (counter%4===0) {
-        html = html + '<div class="w-100 d-none d-lg-block d-xl-none"><!-- wrap every 4 on lg--></div>'
-    }
-    if (counter%5===0) {
-        html = html + '<div class="w-100 d-none d-xl-block"><!-- wrap every 5 on xl--></div>'
-    }
-
-    return html;
-}
-
-function add_padding() {
-    for(let i=0; i<3; i++) {
-        let template = `<div class="card white-card">
-                            <div class="card-header">
-                            </div>
-                            <div class="card-body">
-
-                            </div>
-                            <div class="card-footer">
-                            </div>
-                        </div>`;
-        $("#card-deck").append(template);
-        check_responsiveness()
-    }
 }
 
 async function retrieveAuthor(author_id) {
@@ -96,6 +59,5 @@ async function appendResults(keyword) {
     }
 
     $('#card-deck').append(html);
-    add_padding(); //keep the page responsive
 }
 

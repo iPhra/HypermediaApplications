@@ -126,10 +126,14 @@
     padding-top: 65px;
 }
 
-.fa {
-    font-size: 25px;
+.fa-shopping-cart, .fa-user {
+    font-size: 1.5em;
+    color: white;
+    margin-right: 10px;
 }
 
 .checked {
     color: orange;
 }
+
+

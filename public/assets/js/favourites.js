@@ -7,7 +7,7 @@ function fillBook(book, author) {
     const author_surname = author.surname;
     const author_link = "/pages/author.html?id="+book.book.author_id;
     const book_link = "/pages/book.html?id="+book.book_id;
-    
+
     let tpl = `<div class="card">
         <img class="card-img-top" src="`+img+`" alt="Card image cap">
         <div class="card-body">
@@ -19,12 +19,12 @@ function fillBook(book, author) {
         <div class="card-footer">
             <div class="row ">
                 <div class="col padding-10px">
-                    <a href="`+book_link+`" class="btn btn-outline-primary btn-sm">
+                    <a href="`+book_link+`" class="btn btn-big btn-outline-primary btn-sm">
                         <i class="fa fa-book"></i>
                         View Book</a>
                 </div>
                 <div class="col padding-10px">
-                    <a href="{{link_add_to_cart}}" class="btn btn-outline-primary btn-sm">
+                    <a href="{{link_add_to_cart}}" class="btn btn-big btn-outline-primary btn-sm">
                         <i class="fa fa-shopping-cart"></i> Add to cart</a>
                 </div>
             </div>

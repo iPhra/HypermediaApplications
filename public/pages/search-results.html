@@ -12,11 +12,12 @@
 
     <!-- Bootstrap core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-    <!-- Custom styles for this template -->
-    <link href="../assets/css/homepage.css" rel="stylesheet">
-    <link href="../assets/css/style.css" rel="stylesheet">
 
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/favourites.css" rel="stylesheet">
+
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../assets/js/search-results.js"></script>
 
 </head>
 
@@ -86,88 +87,37 @@
 
 </nav>
 
+<script id="white_card" type="text/template">
+    <div class="card white-card">
+        <div class="card-header">
+        </div>
+        <div class="card-body">
+
+        </div>
+        <div class="card-footer">
+        </div>
+    </div>
+</script>
+
 <!-- Page Content -->
-<div class="container margin-top-10">
-    <div class="row">
-        <div class="col-md-4"></div>
-        <div class="col-md-4">
-        <div class="card">
-            <header class="card-header">
-                <a href="/pages/login.html" class="float-right btn btn-outline-primary mt-1">Log in</a>
-                <h4 class="card-title mt-2">Sign up</h4>
-            </header>
-            <article class="card-body">
-                <form>
-                    <div class="form-row">
-                        <div class="col form-group">
-                            <label>First name </label>
-                            <input type="text" class="form-control" placeholder="" name="name">
-                        </div> <!-- form-group end.// -->
-                        <div class="col form-group">
-                            <label>Last name</label>
-                            <input type="text" class="form-control" placeholder=" " name="surname">
-                        </div> <!-- form-group end.// -->
-                    </div> <!-- form-row end.// -->
-                    <div class="form-group">
-                        <label>Email address</label>
-                        <input type="email" class="form-control" placeholder="", name="email">
-                    </div> <!-- form-group end.// -->
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input class="form-control" type="password" name="password" id="password">
-                    </div> <!-- form-group end.// -->
-                    <div class="form-group">
-                        <label>Confirm Password</label>
-                        <input class="form-control" type="password" id="confirm_password">
-                        <span id="message"></span>
-                    </div> <!-- form-group end.// -->
-                    <div class="form-group">
-                        <a href="#" id="submit-form" class="btn btn-primary btn-block"> Registration  </a>
-                </div> <!-- form-group// -->
-                </form>
-            </article> <!-- card-body end .// -->
-            <div class="border-top card-body text-center">Have an account? <a href="/pages/login.html">Log In</a></div>
-        </div> <!-- card.// -->
+<div class="container">
+
+    <div class="card-deck" id="card-deck">
+
     </div>
-    </div>
+
 </div>
+
 <!-- /.container -->
 
 <!-- Footer -->
-<footer class="py-5 bg-dark custom-footer">
+<footer class="py-5 bg-dark">
     <div class="container">
         <p class="m-0 text-center text-white">Copyright &copy; Your Website 2019</p>
     </div>
     <!-- /.container -->
 </footer>
 
-<!-- Bootstrap core JavaScript -->
-<script src="../vendor/jquery/jquery.min.js"></script>
-<script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="../assets/js/registration.js"></script>
 </body>
-
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

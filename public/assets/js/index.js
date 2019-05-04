@@ -106,6 +106,7 @@ $(document).ready(function() {
 });
 
 
+
 $(async function() {
     await appendTop10();
     await appendFavourites();

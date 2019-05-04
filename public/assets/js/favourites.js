@@ -24,7 +24,7 @@ function fillBook(book, author) {
                         View Book</a>
                 </div>
                 <div class="col padding-10px">
-                    <a href="{{link_add_to_cart}}" class="btn btn-big btn-outline-primary btn-sm">
+                    <a id="`+book.book_id+`" href="#" class="btn btn-outline-primary btn-sm cart">
                         <i class="fa fa-shopping-cart"></i> Add to cart</a>
                 </div>
             </div>
@@ -55,3 +55,57 @@ $(async function() {
     await appendFavourites();
 });
 
+$(function() {
+    if(localStorage.getItem("token")) {
+        $("#account-area").append('<a href="/pages/cart.html"> <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>\n' +
+            '      <div class="fa fa-user" aria-hidden="true">\n' +
+            '      </div>' +
+            '       <a id="logout" href="#"> <span class="navbar-text text-white">' +
+            '            \Logout' +
+            '            \      </span> </a>\'')
+    }
+    else {
+        $("#account-area").append('<a href="/pages/login.html"> <span class="navbar-text text-white">\n' +
+            '      Login\n' +
+            '      </span> </a>\n' +
+            '      <span class="text-white">|</span>\n' +
+            '      <a href="/pages/registration.html"> <span class="navbar-text text-white">\n' +
+            '      Register\n' +
+            '      </span> </a>')
+    }
+});
+
+$(function() {
+    $(document).on("click", "#logout", function(){
+        localStorage.removeItem("token");
+        location.reload();
+    });
+});
+
+$(function() {
+    $(document).on("click", ".cart", function(){
+        const token = localStorage.getItem("token");
+        if(!token) alert("You must be logged in to add items to the cart!");
+        else {
+            $.ajax({
+                url: '/v2/account/cart',
+                type: 'POST',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', token);
+                },
+                dataType: "text",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    book_id : parseInt($(this).attr('id'))
+                }),
+                success: function () {
+                    alert("Item added successfully!")
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert("Error " + jqXHR.status +
+                        ": " + errorThrown);
+                }
+            });
+        }
+    });
+});

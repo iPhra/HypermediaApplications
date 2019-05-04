@@ -439,12 +439,8 @@ paths:
             type: object
             required:
               - book_id
-              - quantity
             properties:
               book_id:
-                type: integer
-                format: int64
-              quantity:
                 type: integer
                 format: int64
       responses:

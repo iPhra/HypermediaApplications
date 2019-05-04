@@ -112,10 +112,11 @@ exports.accountCartPOST = async (book, token) => {
     if (rows.length > 0) {
       //update cart item quantity
       await trx.table("cart").where({ user_id: user_id, book_id: book.book_id }).update({
-        quantity: (book.quantity + rows[0].quantity)
+        quantity: (rows[0].quantity + 1)
       });
     } else {
       //insert the new book into the cart
+      book.quantity = 1;
       await trx.table("cart").insert(book);
     }
   }).catch(() => { throw { code: 400 } });

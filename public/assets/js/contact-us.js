@@ -1,29 +1,33 @@
+// Posizione iniziale della mappa
+const lat=44.355;
+const lon=11.71;
+const zoom=13;
+
 $(function() {
-    $("#submit-form").click(function(){
-        const form = $("form").serializeArray().reduce(function(obj, item) {
-            obj[item.name] = item.value;
-            return obj;
-        }, {});
-        
-        $.ajax({
-            url: "/v2/account/login", 
-            data: JSON.stringify(form),
-            contentType: "application/json",
-            type: "POST",
-            dataType: "json",
-            success: function(res) {
-                const token = JSON.stringify(res.token);
-                localStorage.setItem("token", token.substring(1,token.length-1));
-                alert('Login successful');
-                location.replace("/");
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                alert("Error " + jqXHR.status +
-                      ": " + errorThrown
-                );
-            }
-        });
-    });
+    const map = new OpenLayers.Map ("map", {
+        controls:[
+            new OpenLayers.Control.Navigation(),
+            new OpenLayers.Control.PanZoomBar(),
+            new OpenLayers.Control.ScaleLine(),
+            new OpenLayers.Control.Permalink('permalink'),
+            new OpenLayers.Control.MousePosition(),
+            new OpenLayers.Control.Attribution()
+        ],
+        projection: new OpenLayers.Projection("EPSG:900913"),
+        displayProjection: new OpenLayers.Projection("EPSG:4326")
+    } );
+
+    const mapnik = new OpenLayers.Layer.OSM("OpenStreetMap (Mapnik)");
+
+    map.addLayer(mapnik);
+
+    const lonLat = new OpenLayers.LonLat( lon ,lat )
+        .transform(
+            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+            map.getProjectionObject() // to Spherical Mercator Projection
+        );
+
+    map.setCenter (lonLat, zoom);
 });
 
 $(function() {

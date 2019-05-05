@@ -5,49 +5,43 @@ async function retrieveAuthor(author_id) {
 }
 
 function fillBook(book, author) {
-    const tpl = {
-        img: "../assets/images/"+book.book.imgpath,
-        title: book.book.title,
-        author_name: author.name,
-        author_surname: author.surname,
-        author_link: "/pages/author.html?id="+book.book.author_id,
-        book_link: "/pages/book.html?id="+book.book_id,
-        rank: book.rank
-    };
-    const template = $('#ListItem').html();
-    let html = Mustache.to_html(template, tpl);
+    const img = "../assets/images/"+book.book.imgpath;
+    const title = book.book.title;
+    const author_name = author.name;
+    const author_surname = author.surname;
+    const author_link = "/pages/author.html?id="+book.book.author_id;
+    const book_link = "/pages/book.html?id="+book.book_id;
+    const rank = book.rank;
 
-    //keep the page responsive
-    html = check_responsiveness(html);
+    let tpl = `<div class="card">
+        <div class="card-header">
+            <div class="rank">
+                <h4>`+rank+`</h4>
+            </div>
+        </div>
+        <img class="card-img-top" src="`+img+`" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">`+title+`</h5>
+            <small>  Author:
+                <a href="`+author_link+`">`+author_name+` `+author_surname+`</a>
+            </small>
+        </div>
+        <div class="card-footer">
+            <div class="row ">
+                <div class="col padding-10px">
+                    <a href="`+book_link+`" class="btn btn-big btn-outline-primary btn-sm">
+                        <i class="fa fa-book"></i>
+                        View Book</a>
+                </div>
+                <div class="col padding-10px">
+                    <a id="`+book.book_id+`" href="#" class="btn btn-outline-primary btn-sm cart">
+                        <i class="fa fa-shopping-cart"></i> Add to cart</a>
+                </div>
+            </div>
+        </div>
+    </div>`;
 
-    return html;
-}
-
-//code to make the card-deck responsive
-function check_responsiveness(html) {
-    counter++;
-    if (counter%2===0) {
-        html = html + '<div class="w-100 d-none d-sm-block d-md-none"><!-- wrap every 2 on sm--></div>'
-    }
-    if (counter%3===0) {
-        html = html + '<div class="w-100 d-none d-md-block d-lg-none"><!-- wrap every 3 on md--></div>'
-    }
-    if (counter%4===0) {
-        html = html + '<div class="w-100 d-none d-lg-block d-xl-none"><!-- wrap every 4 on lg--></div>'
-    }
-    if (counter%5===0) {
-        html = html + '<div class="w-100 d-none d-xl-block"><!-- wrap every 5 on xl--></div>'
-    }
-
-    return html;
-}
-
-function add_padding() {
-    for(let i=0; i<3; i++) {
-        let template = $('#white_card').html();
-        $("#card-deck").append(template);
-        check_responsiveness()
-    }
+    return tpl;
 }
 
 async function appendTop10() {
@@ -62,13 +56,65 @@ async function appendTop10() {
     }
 
     $('#card-deck').append(html);
-    add_padding(); //keep the page responsive
 }
-
-
 
 $(async function() {
     await appendTop10();
+});
+
+$(function() {
+    if(localStorage.getItem("token")) {
+        $("#account-area").append('<a href="/pages/cart.html"> <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>\n' +
+            '      <div class="fa fa-user" aria-hidden="true">\n' +
+            '      </div>' +
+            '       <a id="logout" href="#"> <span class="navbar-text text-white">' +
+            '            \Logout' +
+            '            \      </span> </a>\'')
+    }
+    else {
+        $("#account-area").append('<a href="/pages/login.html"> <span class="navbar-text text-white">\n' +
+            '      Login\n' +
+            '      </span> </a>\n' +
+            '      <span class="text-white">|</span>\n' +
+            '      <a href="/pages/registration.html"> <span class="navbar-text text-white">\n' +
+            '      Register\n' +
+            '      </span> </a>')
+    }
+});
+
+$(function() {
+    $(document).on("click", "#logout", function(){
+        localStorage.removeItem("token");
+        location.reload();
+    });
+});
+
+$(function() {
+    $(document).on("click", ".cart", function(){
+        const token = localStorage.getItem("token");
+        if(!token) alert("You must be logged in to add items to the cart!");
+        else {
+            $.ajax({
+                url: '/v2/account/cart',
+                type: 'POST',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', token);
+                },
+                dataType: "text",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    book_id : parseInt($(this).attr('id'))
+                }),
+                success: function () {
+                    alert("Item added successfully!")
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert("Error " + jqXHR.status +
+                        ": " + errorThrown);
+                }
+            });
+        }
+    });
 });
 
 

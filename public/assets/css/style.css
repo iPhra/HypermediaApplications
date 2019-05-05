@@ -126,6 +126,18 @@
     padding-top: 65px;
 }
 
+.fa-shopping-cart, .fa-user {
+    font-size: 1.5em;
+    color: white;
+    margin-right: 10px;
+}
+
+.checked {
+    color: orange;
+}
+
+
+
 footer{
     position: absolute;
     bottom: 0;

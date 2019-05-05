@@ -1,32 +1,4 @@
 $(function() {
-    $("#submit-form").click(function(){
-        const form = $("form").serializeArray().reduce(function(obj, item) {
-            obj[item.name] = item.value;
-            return obj;
-        }, {});
-        
-        $.ajax({
-            url: "/v2/account/login", 
-            data: JSON.stringify(form),
-            contentType: "application/json",
-            type: "POST",
-            dataType: "json",
-            success: function(res) {
-                const token = JSON.stringify(res.token);
-                localStorage.setItem("token", token.substring(1,token.length-1));
-                alert('Login successful');
-                location.replace("/");
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                alert("Error " + jqXHR.status +
-                      ": " + errorThrown
-                );
-            }
-        });
-    });
-});
-
-$(function() {
     if(localStorage.getItem("token")) {
         $("#account-area").append('<a href="/pages/cart.html"> <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>\n' +
             '      <div class="fa fa-user" aria-hidden="true">\n' +

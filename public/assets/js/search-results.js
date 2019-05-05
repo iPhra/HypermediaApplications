@@ -1,78 +1,63 @@
+$.urlParam = function(name){
+    const results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+    return results[1] || 0;
+};
+
+$(async function() {
+    const keyword = $.urlParam("keyword");
+    await appendResults(keyword);
+});
+
+let counter = 0;
+
 function fillBook(book, author) {
-    const img = "../assets/images/"+book.book.imgpath;
-    const book_link = "/pages/book.html?id="+book.book_id;
-    const author_link = "/pages/author.html?id="+book.book.author_id;
+    const img = "../assets/images/" + book.book.imgpath;
     const title = book.book.title;
     const author_name = author.name;
     const author_surname = author.surname;
-    
-    return `<div class="col-md-4">
-            <div class="card similar-book-card">
-              <img class="card-img-top" src="`+img+`" alt="Card image cap">
-              <div class="card-body">
-                <h5 class="card-title">`+title+`</h5>
-                <small>  Author:
-                  <a href="`+author_link+`">`+author_name+` `+author_surname+`</a>
-                </small>
-              </div>
-              <div class="card-footer">
-                <div class="row ">
-                  <div class="col padding-10px">
-                    <a href="`+book_link+`" class="btn btn-outline-primary btn-sm">
-                      <i class="fa fa-book"></i>
-                      View Book</a>
-                  </div>
-                  <div class="col padding-10px">
-                    <a id="`+book.book_id+`" href="#" class="btn btn-outline-primary btn-sm cart">
-                      <i class="fa fa-shopping-cart"></i> Add to cart</a>
-                  </div>
+    const author_link = "/pages/author.html?id=" + book.book.author_id;
+    const book_link = "/pages/book.html?id=" + book.book_id;
+
+    return `<div class="card">
+        <img class="card-img-top" src="` + img + `" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">` + title + `</h5>
+            <small>  Author:
+                <a href="` + author_link + `">` + author_name + ` ` + author_surname + `</a>
+            </small>
+        </div>
+        <div class="card-footer">
+            <div class="row ">
+                <div class="col padding-10px">
+                    <a href="` + book_link + `" class="btn btn-outline-primary btn-sm">
+                        <i class="fa fa-book"></i>
+                        View Book</a>
                 </div>
-              </div>
+                <div class="col padding-10px">
+                    <a id="` + book.book_id + `" href="#" class="btn btn-outline-primary btn-sm cart">
+                        <i class="fa fa-shopping-cart"></i> Add to cart</a>
+                </div>
             </div>
-          </div>`;
+        </div>
+    </div>`;
 }
 
-async function appendGenres() {
-    const genres = await (await fetch(`/v2/genres`)).json();
-
-    let genre;
-    for(let i=0; i<genres.length; i++) {
-        genre = genres[i].charAt(0).toUpperCase() + genres[i].slice(1);
-        $('.list-group').append('<a href="#" id="'+genres[i]+'"class="list-group-item list-group-item-action">'+genre+'</a>');
-    }
+async function retrieveAuthor(author_id) {
+    return (await fetch('/v2/authors/'+author_id)).json()
 }
 
-async function appendBooks(genre) {
-    let books;
-    if (genre==="All") {
-        books = await (await fetch(`/v2/books?limit=10`)).json();
-    }
-    else {
-        books = await (await fetch(`/v2/books?genre=`+genre+`&limit=10`)).json()
-    }
-
+async function appendResults(keyword) {
+    let books = await (await fetch(`/v2/books?keyword=`+ keyword)).json();
     let author;
+
     let html = "";
     for(let i=0; i<books.length; i++) {
-        author = await (await fetch('/v2/authors/'+books[i].book.author_id)).json();
+        author = await retrieveAuthor(books[i].book.author_id);
         html = html + fillBook(books[i],author);
-    } 
-    $('#book-content').append(html);
+    }
+
+    $('#card-deck').append(html);
 }
-
-
-
-$(async function() {
-    await appendGenres();
-    await appendBooks("All");
-});
-
-$(function() {
-    $(document).on("click", ".list-group-item", async function(){
-        $('#book-content').empty();
-        await appendBooks(this.id);
-    });
-});
 
 $(function() {
     if(localStorage.getItem("token")) {
@@ -128,3 +113,4 @@ $(function() {
         }
     });
 });
+

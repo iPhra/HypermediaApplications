@@ -27,15 +27,14 @@ exports.accountCartCheckoutPOST = async (token) => {
         .select("book_id","title","current_price")
         .whereIn("book_id",ids);
 
-    //add books to purchases or reservation
+    //add books to purchases
     let purchases = [];
     const date = new Date();
     for(let i=0; i<books.length; i++) {
-      //add book to purchases
       purchases.push({
         user_id: user_id,
         book_id: books[i].book_id,
-        timestamp: date.toDateString(),
+        timestamp: date,
         price: books[i].current_price,
         quantity: book_ids[i].quantity
       });
@@ -50,12 +49,25 @@ exports.accountCartCheckoutPOST = async (token) => {
   }).catch( () => { throw { code: 400 } });
 };
 
+/**
+ * Remove all items in the cart.
+ *
+ * no response value expected for this operation
+ **/
+exports.accountCartEmptyPOST = async (token) => {
+  const user_id = await checkToken(token);
+
+  await database("cart").where({
+    "user_id" : user_id
+  }).del();
+};
+
 
 /**
  * Remove an item from the cart
  *
  * item Item Item to be removed and its quantity
- * returns Cart
+ * no response value expected for this operation
  **/
 exports.accountCartDELETE = async (item, token) => {
   const user_id = await checkToken(token);
@@ -100,10 +112,11 @@ exports.accountCartPOST = async (book, token) => {
     if (rows.length > 0) {
       //update cart item quantity
       await trx.table("cart").where({ user_id: user_id, book_id: book.book_id }).update({
-        quantity: (book.quantity + rows[0].quantity)
+        quantity: (rows[0].quantity + 1)
       });
     } else {
       //insert the new book into the cart
+      book.quantity = 1;
       await trx.table("cart").insert(book);
     }
   }).catch(() => { throw { code: 400 } });
@@ -121,7 +134,7 @@ async function retrieveCart(user_id) {
 
   //retrieve all the books associated to those ids
   const books = await database.table("book")
-      .select("book_id","title","current_price")
+      .select("book_id","title","current_price","author_id","imgpath")
       .whereIn("book_id",ids);
 
   let total_price = 0;

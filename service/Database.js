@@ -57,7 +57,7 @@ bookSetup = (database) => {
                 table.enu("cover_type",["Hard cover","Soft cover","E-book"]).notNullable();
                 table.text("imgpath").notNullable();
                 table.text("interview");
-                table.integer("author_id").references("author.author_id").onUpdate("CASCADE").onDelete("CASCADE");;
+                table.integer("author_id").references("author.author_id").onUpdate("CASCADE").onDelete("CASCADE");
             });
         }
     });
@@ -136,7 +136,7 @@ eventSetup = (database) => {
             return database.schema.createTable("event", table => {
                 table.increments("event_id");
                 table.integer("book_id").references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
-                table.timestamp("date").notNullable().defaultTo(database.fn.now());;
+                table.timestamp("date").notNullable().defaultTo(database.fn.now());
                 table.text("description");
                 table.string("location");
                 table.string("organiser_email");
@@ -166,7 +166,7 @@ reviewSetup = (database) => {
     return database.schema.hasTable("review").then(exists => {
         if (!exists) {
             console.log("It doesn't so we create it");
-            database.schema.createTable("review", table => {
+            return database.schema.createTable("review", table => {
                 table.integer("user_id").references("account.user_id").onUpdate("CASCADE").onDelete("CASCADE");
                 table.integer("book_id").references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
                 table.text("text").notNullable();

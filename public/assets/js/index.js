@@ -4,6 +4,42 @@ async function retrieveAuthor(author_id) {
     return (await fetch('/v2/authors/'+author_id)).json()
 }
 
+function fillFavourite(book) {
+    const img = "../assets/images/"+book.book.imgpath;
+    const book_link = "/pages/book.html?id="+book.book_id;
+
+    return `<div class="col">
+      <div class="card">
+        <img class="card-img-top" src="`+img+`" alt="Card image cap">
+        <div class="card-footer text-center">
+          <a href="`+book_link+`" class="btn btn-outline-primary btn-sm">
+                      <i class="fa fa-book"></i>
+                      View Book</a>
+        </div>
+      </div>
+    </div>`;
+}
+
+function fillTop10(book, author) {
+    const img = "../assets/images/"+book.book.imgpath;
+    const title = book.book.title;
+    const genres = (book.book.genres).join(', ');
+    const author_name = author.name;
+    const author_surname = author.surname;
+    const book_link = "/pages/book.html?id="+book.book_id;
+
+    return `<a href="`+book_link+`" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                  <div class="flex-column">
+                    `+title+`
+                    <p><small>by `+author_name+` `+author_surname+`</small></p>
+                    <span class="badge badge-info badge-pill"> `+genres+`</span>
+                  </div>
+                  <div class="image-parent">
+                    <img src="`+img+`" class="img-fluid w-50" alt="cover">
+                  </div>
+                </a>`;
+}
+
 async function appendTop10() {
     let books = await (await fetch(`/v2/books/top10`)).json();
     let author;
@@ -16,23 +52,10 @@ async function appendTop10() {
     $('#top10-content').append(html);
 }
 
-function fillTop10(book, author) {
-    var tpl = {
-        img: book.imgpath,
-        title: book.book.title,
-        genres: (book.book.genres).join(', '),
-        author_name: author.name,
-        author_surname: author.surname,
-        book_link: "/pages/book.html?id="+book.book_id
-    };
-    var template = $('#top10Tpl').html();
-    return Mustache.to_html(template, tpl);
-}
-
 async function appendFavourites() {
     let books = await( await fetch(`/v2/books/favourites`)).json();
 
-    let html = "<div class=\"carousel-item\">\n" +
+    let html = "<div class=\"carousel-item active\">\n" +
         "\n" +
         "<div class=\"row\">";
 
@@ -57,27 +80,62 @@ async function appendFavourites() {
     $('#carousel').append(html);
 }
 
-function fillFavourite(book) {
-    let tpl = {
-        img: book.imgpath,
-        book_link: "/pages/book.html?id="+book.book_id
-    };
-    let template = $('#favCard').html();
-    return Mustache.to_html(template, tpl);
-}
-
 function add_padding(length) {
     console.log("Book number ", length);
-    var html="";
+    let html = "";
     for(let i=0; i<3-length%3; i++) {
-        let template = $('#whiteCard').html();
+           let template = `<div class="col">
+                              <div class="card whiteCard">
+                              </div>
+                            </div>`;
         html = html + template;
     }
     return html;
 }
 
+
+
+//change navbar styling after collapse button have been pressed
+$(document).ready(function() {
+
+    $('.collapse').on('show.bs.collapse', function() {
+        $('#searchBar').removeClass('ml-3');
+    });
+
+    $('.collapse').on('hidden.bs.collapse', function() {
+        $('#searchBar').addClass('ml-3');
+    });
+});
+
+$(async function() {
+    await appendTop10();
+    await appendFavourites();
+});
+
 $(function() {
-    appendTop10();
-    appendFavourites();
+    if(localStorage.getItem("token")) {
+        $("#account-area").append('<a href="/pages/cart.html"> <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>\n' +
+            '      <div class="fa fa-user" aria-hidden="true">\n' +
+            '      </div>' +
+            '       <a id="logout" href="#"> <span class="navbar-text text-white">' +
+            '            \Logout' +
+            '            \      </span> </a>\'')
+    }
+    else {
+        $("#account-area").append('<a href="/pages/login.html"> <span class="navbar-text text-white">\n' +
+            '      Login\n' +
+            '      </span> </a>\n' +
+            '      <span class="text-white">|</span>\n' +
+            '      <a href="/pages/registration.html"> <span class="navbar-text text-white">\n' +
+            '      Register\n' +
+            '      </span> </a>')
+    }
+});
+
+$(function() {
+    $(document).on("click", "#logout", function(){
+        localStorage.removeItem("token");
+        location.reload();
+    });
 });
 

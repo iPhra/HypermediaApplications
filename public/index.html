@@ -16,42 +16,63 @@
   <!-- Custom styles for this template -->
   <link href="assets/css/homepage.css" rel="stylesheet">
 
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
 </head>
 
 <body>
 
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-      <a class="navbar-brand" href="#">Start Bootstrap</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="/">Home
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/pages/bestsellers.html">Bestsellers</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/pages/favourites.html">Our favourites</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/pages/events-this-month.html">Events</a>
-          </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/pages/books-by-genre.html">Genres</a>
-          </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/pages/books-by-theme.html">Themes</a>
-          </li>
-        </ul>
-      </div>
+  <nav class="navbar navbar-expand-xl navbar-dark bg-dark fixed-top">
+
+    <!-- Toggle button -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Collapsible items -->
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="/">Home
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/pages/bestsellers.html">Bestsellers</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/pages/favourites.html">Favourites</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/pages/events-this-month.html">Events</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/pages/books-by-genre.html">Genres</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/pages/books-by-theme.html">Themes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/pages/ordering-and-shipping.html">Ordering & Shipping</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/pages/contact-us.html">Contact us</a>
+        </li>
+      </ul>
+
+      <!-- Search form -->
+      <form class="form-inline my-2 my-lg-0 ml-3 mr-3" action="/pages/search-results.html">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" name="keyword" aria-label="Search">
+        <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+      </form>
+
     </div>
+
+    <!-- icons section -->
+    <div id="account-area" class="icons-section">
+    </div>
+
   </nav>
 
   <!-- Page Content -->
@@ -69,41 +90,7 @@
 
         <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
           <div id="carousel" class="carousel-inner" role="listbox">
-            <div class="carousel-item active">
 
-              <div class="row">
-
-                <div class="col">
-                  <div class="card">
-                    <img class="card-img-top" src="../assets/images/eragon.jpg" alt="Card image cap">
-                    <div class="card-footer text-center">
-                      <button type="button" class="btn btn-outline-primary btn-sm">View Book</button>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col">
-                  <div class="card">
-                    <img class="card-img-top" src="../assets/images/eragon.jpg" alt="Card image cap">
-                    <div class="card-footer text-center">
-                          <button type="button" class="btn btn-outline-primary btn-sm">View Book</button>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col">
-                  <div class="card">
-                    <img class="card-img-top" src="../assets/images/eragon.jpg" alt="Card image cap">
-                    <div class="card-footer text-center">
-                      <button type="button" class="btn btn-outline-primary btn-sm">View Book</button>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-
-
-            </div>
 
 
             </div>
@@ -128,22 +115,11 @@
           <div class="card-header">
             Top 10 Books
           </div>
+
           <ul id="top10-content" class="list-group list-group-flush">
-
-            <script id="top10Tpl" type="text/template">
-                <a href="{{book_link}}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                  <div class="flex-column">
-                    {{title}}
-                    <p><small>by {{author_name}} {{author_surname}}</small></p>
-                    <span class="badge badge-info badge-pill"> {{genres}}</span>
-                  </div>
-                  <div class="image-parent">
-                    <img src="{{img}}" class="img-fluid w-50" alt="cover">
-                  </div>
-                </a>
-            </script>
-
+            <!-- template -->
           </ul>
+
         </div>
 
       </div>
@@ -154,22 +130,10 @@
 
   </div>
 
-  <script id="favCard" type="text/template">
-    <div class="col">
-      <div class="card">
-        <img class="card-img-top" src="{{img}}" alt="Card image cap">
-        <div class="card-footer text-center">
-          <button type="button" class="btn btn-outline-primary btn-sm">View Book</button>
-        </div>
-      </div>
-    </div>
-  </script>
+  <!-- template -->
 
   <script id="whiteCard" type="text/template">
-    <div class="col">
-      <div class="card whiteCard">
-      </div>
-    </div>
+
   </script>
   <!-- /.container -->
 
@@ -184,7 +148,6 @@
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../vendor/mustache/mustache.min.js"></script>
     <script src="assets/js/index.js"></script>
 
 </body>

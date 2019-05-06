@@ -5,9 +5,8 @@ function fillBook(book, author) {
     const title = book.book.title;
     const author_name = author.name;
     const author_surname = author.surname;
-    
-    return `<div class="col-md-4">
-            <div class="card similar-book-card">
+
+    return `<div class="card similar-book-card">
               <img class="card-img-top" src="`+img+`" alt="Card image cap">
               <div class="card-body">
                 <h5 class="card-title">`+title+`</h5>
@@ -18,18 +17,17 @@ function fillBook(book, author) {
               <div class="card-footer">
                 <div class="row ">
                   <div class="col padding-10px">
-                    <a href="`+book_link+`" class="btn btn-outline-primary btn-sm">
+                    <a href="`+book_link+`" class="btn btn-big btn-outline-primary btn-sm">
                       <i class="fa fa-book"></i>
                       View Book</a>
                   </div>
                   <div class="col padding-10px">
-                    <a id="`+book.book_id+`" href="#" class="btn btn-outline-primary btn-sm cart">
+                    <a id="`+book.book_id+`" href="#" class="btn btn-big btn-outline-primary btn-sm cart">
                       <i class="fa fa-shopping-cart"></i> Add to cart</a>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>`;
+            </div>`;
 }
 
 async function appendGenres() {
@@ -56,7 +54,7 @@ async function appendBooks(genre) {
     for(let i=0; i<books.length; i++) {
         author = await (await fetch('/v2/authors/'+books[i].book.author_id)).json();
         html = html + fillBook(books[i],author);
-    } 
+    }
     $('#book-content').append(html);
 }
 

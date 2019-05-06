@@ -18,6 +18,7 @@
     <link href="../assets/css/style.css" rel="stylesheet">
 
     <script src="../vendor/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../assets/js/user-info.js"></script>
 
 </head>
 
@@ -86,24 +87,19 @@
         <div class="card col-md-4">
             <div class="card-body">
                 <h3 class="card-title ">My account info</h3>
-                <form>
-                        <div class="form-group">
-                            <label>First Name</label>
-                            <input type="text" class="form-control" placeholder="placeholder" id="name">
-                        </div>
+                <form id="content">
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" class="form-control" id="name" name="name">
+                    </div>
 
-                        <div class="form-group">
-                            <label>First Name</label>
-                            <input type="text" class="form-control" placeholder="placeholder" id="surname">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input type="text" class="form-control shadow-none" placeholder="placeholder" id="email" readonly>
-                        </div>
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" class="form-control" id="surname" name="surname">
+                    </div>
                 </form>
 
-                <button type="submit" class="btn btn-success">Update info</button>
+                <a href="#" id="submit-form" class="btn btn-primary btn-block"> Update info  </a>
             </div>
         </div>
         <div class="col-md-4"></div>

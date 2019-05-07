@@ -29,13 +29,13 @@ function fillTop10(book, author) {
     const book_link = "/pages/book.html?id="+book.book_id;
 
     return `<a href="`+book_link+`" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                  <div class="flex-column">
+                  <div class="flex-column w-75">
                     `+title+`
                     <p><small>by `+author_name+` `+author_surname+`</small></p>
                     <span class="badge badge-info badge-pill"> `+genres+`</span>
                   </div>
-                  <div class="image-parent">
-                    <img src="`+img+`" class="img-fluid w-50" alt="cover">
+                  <div class="image-parent w-25">
+                    <img src="`+img+`" class="img-fluid w-100" alt="cover">
                   </div>
                 </a>`;
 }

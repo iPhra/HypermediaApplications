@@ -21,7 +21,7 @@ function fillTemplate(event) {
 }
 
 async function appendEvents() {
-    const events = await (await fetch('/v2/events/')).json();
+    const events = await (await fetch('/v2/events?limit=5')).json();
     
     let html = "";
     for(let i=0; i<events.length; i++) {

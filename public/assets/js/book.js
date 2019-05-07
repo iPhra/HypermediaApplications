@@ -147,7 +147,7 @@ async function appendBook(book_id) {
                             <span class="abstract">
                                 `+abstract+`
                             </span>
-                            <a id="read-more" href="#"> Read more</a>
+                            <a id="read-more" href="#abstract"> Read more</a>
                         </div>
                         Details:
                         <ul>

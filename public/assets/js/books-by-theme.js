@@ -1,5 +1,5 @@
 function fillBook(book, author) {
-    const img = "../assets/images/"+book.book.imgpath;
+    const img = "../assets/images/books/"+book.book.imgpath;
     const book_link = "/pages/book.html?id="+book.book_id;
     const author_link = "/pages/author.html?id="+book.book.author_id;
     const title = book.book.title;

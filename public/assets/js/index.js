@@ -5,7 +5,7 @@ async function retrieveAuthor(author_id) {
 }
 
 function fillFavourite(book) {
-    const img = "../assets/images/"+book.book.imgpath;
+    const img = "../assets/images/books/"+book.book.imgpath;
     const book_link = "/pages/book.html?id="+book.book_id;
 
     return `<div class="col">
@@ -21,7 +21,7 @@ function fillFavourite(book) {
 }
 
 function fillTop10(book, author) {
-    const img = "../assets/images/"+book.book.imgpath;
+    const img = "../assets/images/books/"+book.book.imgpath;
     const title = book.book.title;
     const genres = (book.book.genres).join(', ');
     const author_name = author.name;

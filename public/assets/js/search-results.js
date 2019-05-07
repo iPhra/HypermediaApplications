@@ -11,7 +11,7 @@ $(async function() {
 let counter = 0;
 
 function fillBook(book, author) {
-    const img = "../assets/images/" + book.book.imgpath;
+    const img = "../assets/images/books/" + book.book.imgpath;
     const title = book.book.title;
     const author_name = author.name;
     const author_surname = author.surname;

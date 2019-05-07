@@ -1,5 +1,5 @@
 function fillTemplate(event) {
-    const img = "../assets/images/"+event.event.imgpath;
+    const img = "../assets/images/events/"+event.event.imgpath;
     const event_location = event.event.location;
     const event_date= (new Date(event.event.date)).toISOString().substring(0,10);
     const event_link = "/pages/event.html?id="+event.event_id;

@@ -1,5 +1,5 @@
 function fillCart(book, author) {
-    const img = "../assets/images/"+book.imgpath;
+    const img = "../assets/images/books/"+book.imgpath;
     const title = book.title;
     const price = book.current_price;
     const quantity = book.quantity;

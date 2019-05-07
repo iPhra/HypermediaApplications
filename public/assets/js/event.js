@@ -18,7 +18,7 @@ async function appendEvent(event_id) {
     $('#date').text(" " + (new Date(event.date)).toISOString().substring(0,10));
     $('#email').text(" " + event.organiser_email);
     $('#description').text(event.description);
-    $('#img').attr("src", "../assets/images/"+event.imgpath);
+    $('#img').attr("src", "../assets/images/events/"+event.imgpath);
 }
 
 

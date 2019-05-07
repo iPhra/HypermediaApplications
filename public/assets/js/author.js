@@ -4,7 +4,7 @@ $.urlParam = function(name){
 };
 
 function fillBook(book) {
-    const img = "../assets/images/"+book.book.imgpath;
+    const img = "../assets/images/books/"+book.book.imgpath;
     const title = book.book.title;
     const book_link = "/pages/book.html?id="+book.book_id;
     
@@ -39,7 +39,7 @@ async function appendAuthor(author_id) {
         location.replace("/404.html");
     }
     
-    $("#author-picture").attr("src", "../assets/images/"+author.imgpath);
+    $("#author-picture").attr("src", "../assets/images/authors/"+author.imgpath);
     $("#author-name").text(author.name + " " + author.surname);
     $("#biography").text(author.biography);
 }

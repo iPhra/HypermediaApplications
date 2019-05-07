@@ -1,14 +1,14 @@
 let counter = 0;
 
 function fillBook(book, author) {
-    const img = "../assets/images/"+book.book.imgpath;
+    const img = "../assets/images/books/"+book.book.imgpath;
     const title = book.book.title;
     const author_name = author.name;
     const author_surname = author.surname;
     const author_link = "/pages/author.html?id="+book.book.author_id;
     const book_link = "/pages/book.html?id="+book.book_id;
 
-    let tpl = `<div class="card">
+    return`<div class="card">
         <img class="card-img-top" src="`+img+`" alt="Card image cap">
         <div class="card-body">
             <h5 class="card-title">`+title+`</h5>
@@ -30,8 +30,6 @@ function fillBook(book, author) {
             </div>
         </div>
     </div>`;
-
-    return tpl;
 }
 
 async function retrieveAuthor(author_id) {

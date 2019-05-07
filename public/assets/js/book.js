@@ -31,7 +31,7 @@ function fillReview(review) {
 }
 
 function fillSimilar(book, author) {
-    const img = "../assets/images/"+book.imgpath;
+    const img = "../assets/images/books/"+book.imgpath;
     const book_link = "/pages/book.html?id="+book.book_id;
     const author_link = "/pages/author.html?id="+book.author_id;
     const title = book.title;
@@ -65,7 +65,7 @@ function fillSimilar(book, author) {
 }
 
 function fillEvent(event) {
-    const img = "../assets/images/"+event.event.imgpath;
+    const img = "../assets/images/events/"+event.event.imgpath;
     const event_location = event.event.location;
     const event_date = (new Date(event.event.date)).toISOString().substring(0,10);
     const event_link = "/pages/event.html?id="+event.event_id;
@@ -125,7 +125,7 @@ async function appendBook(book_id) {
     }
     const author = await retrieveAuthor(book.author_id);
 
-    const img = "../assets/images/"+book.imgpath;
+    const img = "../assets/images/books/"+book.imgpath;
     const title = book.title;
     const author_link = "/pages/author.html?id="+book.author_id;
     const author_name = author.name;

@@ -38,8 +38,7 @@ function fillSimilar(book, author) {
     const author_name = author.name;
     const author_surname = author.surname;
 
-    return `<div class="col-md-4">
-            <div class="card similar-book-card">
+    return `<div class="card similar-book-card">
               <img class="card-img-top" src="`+img+`" alt="Card image cap">
               <div class="card-body">
                 <h5 class="card-title">`+title+`</h5>
@@ -60,8 +59,7 @@ function fillSimilar(book, author) {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>`;
+            </div>`;
 }
 
 function fillEvent(event) {

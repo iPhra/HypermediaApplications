@@ -6,6 +6,7 @@ function fillCart(book, author) {
     const author_name = author.name;
     const author_surname = author.surname;
     const id = book.book_id;
+    const book_link = "/pages/book.html?id="+book.book_id;
 
     let s = `<div class="card-body">
                     <div class="row">
@@ -13,7 +14,7 @@ function fillCart(book, author) {
                             <img class="img-fluid align-content-center" src="`+img+`">
                         </div>
                         <div class="col-md-7">
-                            <h5 class="card-title">`+title+`</h5>
+                            <a href="`+book_link+`"><h5 class="card-title">`+title+`</h5></a>
                             <div class="card-text">`+author_name+` `+author_surname+`</div>
                         </div>
                         <div class="col-md-3">

@@ -1,6 +1,6 @@
 $(function() {
     $("#submit-form").click(function(){
-        const form = $("form").serializeArray().reduce(function(obj, item) {
+        const form = $("#registration-form").serializeArray().reduce(function(obj, item) {
             obj[item.name] = item.value;
             return obj;
         }, {});

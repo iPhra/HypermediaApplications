@@ -43,11 +43,14 @@ async function appendCart() {
         success: async function (cart) {
             let author;
             let html = "";
+            let total_price = 0;
             for(let i=0; i<cart.book_list.length; i++) {
                 author = await (await fetch('/v2/authors/'+cart.book_list[i].author_id)).json();
                 html = html + fillCart(cart.book_list[i], author);
+                total_price = total_price + (cart.book_list[i].current_price * cart.book_list[i].quantity)
             }
             $('#cart-content').prepend(html);
+            $("#total_price").prepend(total_price)
         },
         error: function(jqXHR, textStatus, errorThrown) {
                 alert("Error " + jqXHR.status +

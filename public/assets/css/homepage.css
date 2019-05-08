@@ -36,3 +36,13 @@ body {
   color: white;
   margin-right: 10px;
 }
+
+footer{
+  position: static;
+  bottom: 0;
+  width: 100%;
+}
+
+.footer-logo{
+  max-width: 150px;
+}

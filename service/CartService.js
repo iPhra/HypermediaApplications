@@ -129,13 +129,14 @@ async function retrieveCart(user_id) {
   //retrieve all the book_ids in the cart
   const book_ids = await database.table("cart")
       .select("book_id","quantity")
-      .where("user_id","=",user_id);
+      .where("user_id","=",user_id)
+      .orderBy("book_id", "asc");
   const ids = book_ids.map(a => a.book_id);
 
   //retrieve all the books associated to those ids
   const books = await database.table("book")
       .select("book_id","title","current_price","author_id","imgpath")
-      .whereIn("book_id",ids);
+      .whereIn("book_id",ids).orderBy("book_id", "asc");
 
   let total_price = 0;
   let price = 0;
@@ -147,6 +148,6 @@ async function retrieveCart(user_id) {
     total_price += price;
   }
 
-  return { "book_list": books, "total_price": total_price };
+  return { "book_list": books, "total_price": total_price.toFixed(2) };
 }
 

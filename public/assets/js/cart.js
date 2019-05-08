@@ -7,7 +7,7 @@ function fillCart(book, author) {
     const author_surname = author.surname;
     const id = book.book_id;
 
-    return `<div class="card-body">
+    let s = `<div class="card-body">
                     <div class="row">
                         <div class="col-md-2">
                             <img class="img-fluid align-content-center" src="`+img+`">
@@ -29,6 +29,7 @@ function fillCart(book, author) {
                     </div>
                 </div>
                 <hr>`;
+    return s;
 }
 
 async function appendCart() {
@@ -43,14 +44,12 @@ async function appendCart() {
         success: async function (cart) {
             let author;
             let html = "";
-            let total_price = 0;
             for(let i=0; i<cart.book_list.length; i++) {
                 author = await (await fetch('/v2/authors/'+cart.book_list[i].author_id)).json();
                 html = html + fillCart(cart.book_list[i], author);
-                total_price = total_price + (cart.book_list[i].current_price * cart.book_list[i].quantity)
             }
             $('#cart-content').prepend(html);
-            $("#total_price").prepend(total_price)
+            $("#total_price").prepend(cart.total_price)
         },
         error: function(jqXHR, textStatus, errorThrown) {
                 alert("Error " + jqXHR.status +

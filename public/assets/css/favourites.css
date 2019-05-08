@@ -99,3 +99,13 @@ body {
         flex: 0 0 calc(20% - 30px);
     }
 }
+
+footer{
+    position: static;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer-logo{
+    max-width: 150px;
+}

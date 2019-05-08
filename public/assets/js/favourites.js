@@ -1,14 +1,14 @@
 let counter = 0;
 
 function fillBook(book, author) {
-    const img = "../assets/images/"+book.book.imgpath;
+    const img = "../assets/images/books/"+book.book.imgpath;
     const title = book.book.title;
     const author_name = author.name;
     const author_surname = author.surname;
     const author_link = "/pages/author.html?id="+book.book.author_id;
     const book_link = "/pages/book.html?id="+book.book_id;
 
-    let tpl = `<div class="card">
+    return`<div class="card">
         <img class="card-img-top" src="`+img+`" alt="Card image cap">
         <div class="card-body">
             <h5 class="card-title">`+title+`</h5>
@@ -30,8 +30,6 @@ function fillBook(book, author) {
             </div>
         </div>
     </div>`;
-
-    return tpl;
 }
 
 async function retrieveAuthor(author_id) {
@@ -58,11 +56,11 @@ $(async function() {
 $(function() {
     if(localStorage.getItem("token")) {
         $("#account-area").append('<a href="/pages/cart.html"> <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>\n' +
-            '      <div class="fa fa-user" aria-hidden="true">\n' +
-            '      </div>' +
+            '      <a href="/pages/user-info.html"> <i class="fa fa-user" aria-hidden="true">\n' +
+            '      </i></a>' +
             '       <a id="logout" href="#"> <span class="navbar-text text-white">' +
             '            \Logout' +
-            '            \      </span> </a>\'')
+            '            \      </span> </a>')
     }
     else {
         $("#account-area").append('<a href="/pages/login.html"> <span class="navbar-text text-white">\n' +

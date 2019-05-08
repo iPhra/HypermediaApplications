@@ -1,18 +1,18 @@
 function fillCart(book, author) {
-    const img = "../assets/images/"+book.imgpath;
+    const img = "../assets/images/books/"+book.imgpath;
     const title = book.title;
     const price = book.current_price;
     const quantity = book.quantity;
     const author_name = author.name;
     const author_surname = author.surname;
     const id = book.book_id;
-    
+
     return `<div class="card-body">
                     <div class="row">
-                        <div class="col-md-3">
-                            <img class="img-responsive" src="`+img+`">
+                        <div class="col-md-2">
+                            <img class="img-fluid align-content-center" src="`+img+`">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-7">
                             <h5 class="card-title">`+title+`</h5>
                             <div class="card-text">`+author_name+` `+author_surname+`</div>
                         </div>
@@ -33,7 +33,7 @@ function fillCart(book, author) {
 
 async function appendCart() {
     const token = localStorage.getItem("token");
-          
+
     $.ajax({
         url: '/v2/account/cart',
         type: 'GET',
@@ -46,7 +46,7 @@ async function appendCart() {
             for(let i=0; i<cart.book_list.length; i++) {
                 author = await (await fetch('/v2/authors/'+cart.book_list[i].author_id)).json();
                 html = html + fillCart(cart.book_list[i], author);
-            } 
+            }
             $('#cart-content').prepend(html);
         },
         error: function(jqXHR, textStatus, errorThrown) {
@@ -63,7 +63,7 @@ $(function() {
     $(document).on("click", ".remove", function(){
         const token = localStorage.getItem("token");
         const id = $(this).attr("id");
-        
+
         $.ajax({
             url: '/v2/account/cart',
             type: 'DELETE',
@@ -111,7 +111,7 @@ $(function() {
 $(function() {
     $(document).on("click", "#checkout", async function(){
         const token = localStorage.getItem("token");
-        
+
         $.ajax({
             url: '/v2/account/cart/checkout',
             type: 'POST',
@@ -134,11 +134,11 @@ $(function() {
 $(async function() {
     if(localStorage.getItem("token")) {
         $("#account-area").append('<a href="/pages/cart.html"> <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>\n' +
-            '      <div class="fa fa-user" aria-hidden="true">\n' +
-            '      </div>' +
+            '      <a href="/pages/user-info.html"> <i class="fa fa-user" aria-hidden="true">\n' +
+            '      </i></a>' +
             '       <a id="logout" href="#"> <span class="navbar-text text-white">' +
             '            \Logout' +
-            '            \      </span> </a>\'');
+            '            \      </span> </a>');
 
         await appendCart();
     }

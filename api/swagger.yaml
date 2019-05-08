@@ -553,8 +553,6 @@ paths:
       operationId: "accountInfoPOST"
       consumes:
       - "application/json"
-      produces:
-      - "application/json"
       parameters:
       - in: "body"
         name: "account"
@@ -565,8 +563,6 @@ paths:
       responses:
         200:
           description: "Account updated."
-          schema:
-            $ref: "#/definitions/User"
         400:
           description: "Bad request."
         401:
@@ -798,7 +794,6 @@ definitions:
         title: "title"
   User:
     required:
-    - "email"
     - "name"
     - "surname"
     properties:

@@ -18,7 +18,7 @@ async function appendEvent(event_id) {
     $('#date').text(" " + (new Date(event.date)).toISOString().substring(0,10));
     $('#email').text(" " + event.organiser_email);
     $('#description').text(event.description);
-    $('#img').attr("src", "../assets/images/"+event.imgpath);
+    $('#img').attr("src", "../assets/images/events/"+event.imgpath);
 }
 
 
@@ -31,11 +31,11 @@ $(async function() {
 $(function() {
     if(localStorage.getItem("token")) {
         $("#account-area").append('<a href="/pages/cart.html"> <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>\n' +
-            '      <div class="fa fa-user" aria-hidden="true">\n' +
-            '      </div>' +
+            '      <a href="/pages/user-info.html"> <i class="fa fa-user" aria-hidden="true">\n' +
+            '      </i></a>' +
             '       <a id="logout" href="#"> <span class="navbar-text text-white">' +
             '            \Logout' +
-            '            \      </span> </a>\'')
+            '            \      </span> </a>')
     }
     else {
         $("#account-area").append('<a href="/pages/login.html"> <span class="navbar-text text-white">\n' +

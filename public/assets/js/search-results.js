@@ -11,7 +11,7 @@ $(async function() {
 let counter = 0;
 
 function fillBook(book, author) {
-    const img = "../assets/images/" + book.book.imgpath;
+    const img = "../assets/images/books/" + book.book.imgpath;
     const title = book.book.title;
     const author_name = author.name;
     const author_surname = author.surname;
@@ -62,11 +62,11 @@ async function appendResults(keyword) {
 $(function() {
     if(localStorage.getItem("token")) {
         $("#account-area").append('<a href="/pages/cart.html"> <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>\n' +
-            '      <div class="fa fa-user" aria-hidden="true">\n' +
-            '      </div>' +
+            '      <a href="/pages/user-info.html"> <i class="fa fa-user" aria-hidden="true">\n' +
+            '      </i></a>' +
             '       <a id="logout" href="#"> <span class="navbar-text text-white">' +
             '            \Logout' +
-            '            \      </span> </a>\'')
+            '            \      </span> </a>')
     }
     else {
         $("#account-area").append('<a href="/pages/login.html"> <span class="navbar-text text-white">\n' +

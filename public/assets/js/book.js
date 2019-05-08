@@ -31,15 +31,14 @@ function fillReview(review) {
 }
 
 function fillSimilar(book, author) {
-    const img = "../assets/images/"+book.imgpath;
+    const img = "../assets/images/books/"+book.imgpath;
     const book_link = "/pages/book.html?id="+book.book_id;
     const author_link = "/pages/author.html?id="+book.author_id;
     const title = book.title;
     const author_name = author.name;
     const author_surname = author.surname;
 
-    return `<div class="col-md-4">
-            <div class="card similar-book-card">
+    return `<div class="card similar-book-card">
               <img class="card-img-top" src="`+img+`" alt="Card image cap">
               <div class="card-body">
                 <h5 class="card-title">`+title+`</h5>
@@ -60,12 +59,11 @@ function fillSimilar(book, author) {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>`;
+            </div>`;
 }
 
 function fillEvent(event) {
-    const img = "../assets/images/"+event.event.imgpath;
+    const img = "../assets/images/events/"+event.event.imgpath;
     const event_location = event.event.location;
     const event_date = (new Date(event.event.date)).toISOString().substring(0,10);
     const event_link = "/pages/event.html?id="+event.event_id;
@@ -125,7 +123,7 @@ async function appendBook(book_id) {
     }
     const author = await retrieveAuthor(book.author_id);
 
-    const img = "../assets/images/"+book.imgpath;
+    const img = "../assets/images/books/"+book.imgpath;
     const title = book.title;
     const author_link = "/pages/author.html?id="+book.author_id;
     const author_name = author.name;
@@ -147,7 +145,7 @@ async function appendBook(book_id) {
                             <span class="abstract">
                                 `+abstract+`
                             </span>
-                            <a id="read-more" href="#"> Read more</a>
+                            <a id="read-more" href="#abstract"> Read more</a>
                         </div>
                         Details:
                         <ul>
@@ -193,11 +191,11 @@ $(async function() {
 $(function() {
     if(localStorage.getItem("token")) {
         $("#account-area").append('<a href="/pages/cart.html"> <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>\n' +
-            '      <div class="fa fa-user" aria-hidden="true">\n' +
-            '      </div>' +
+            '      <a href="/pages/user-info.html"> <i class="fa fa-user" aria-hidden="true">\n' +
+            '      </i></a>' +
             '       <a id="logout" href="#"> <span class="navbar-text text-white">' +
             '            \Logout' +
-            '            \      </span> </a>\'')
+            '            \      </span> </a>')
     }
     else {
         $("#account-area").append('<a href="/pages/login.html"> <span class="navbar-text text-white">\n' +

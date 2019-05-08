@@ -79,7 +79,7 @@ exports.accountLoginPOST = async (login) => {
     //generate jwt token containing user_id
     const token =  jwt.sign({
         user_id: account[0]["user_id"],
-    }, config.get('jwtPrivateKey'), { expiresIn: '1 day' });
+    }, config.get('jwtPrivateKey'));
 
     return {token: token};
 };

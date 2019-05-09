@@ -66,7 +66,7 @@ body {
     visibility: hidden;
 }
 
-.fa-shopping-cart, .fa-user {
+nav .fa-shopping-cart, .fa-user {
     font-size: 1.5em;
     color: white;
     margin-right: 10px;
@@ -108,4 +108,8 @@ footer{
 
 .footer-logo{
     max-width: 150px;
+}
+
+nav{
+    font-size: 15px;
 }

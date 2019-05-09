@@ -31,7 +31,7 @@ body {
   visibility: hidden;
 }
 
-.fa-shopping-cart, .fa-user {
+nav .fa-shopping-cart, .fa-user {
   font-size: 1.5em;
   color: white;
   margin-right: 10px;
@@ -50,4 +50,12 @@ footer{
 .navbar-logo{
   border-radius: 25%;
   max-height: 50px;
+}
+
+.padding-bottom-10px{
+  padding-bottom: 20px;
+}
+
+nav{
+  font-size: 15px;
 }

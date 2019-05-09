@@ -11,14 +11,16 @@ async function appendEvent(event_id) {
         location.replace("/404.html");
     }
     const book = await (await fetch('/v2/books/'+event.book_id)).json();
-    
+
+    const date = (new Date(event.date)).toISOString().substring(0,10);
     $('#location').text(" " + event.location);
     $('#book_link').attr("href","/pages/book.html?id="+event.book_id);
     $('#book_title').text(" " + book.title);
-    $('#date').text(" " + (new Date(event.date)).toISOString().substring(0,10));
+    $('#date').text(" " + date);
     $('#email').text(" " + event.organiser_email);
     $('#description').text(event.description);
     $('#img').attr("src", "../assets/images/events/"+event.imgpath);
+    $("title").text(event.location + " - " +date);
 }
 
 

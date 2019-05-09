@@ -163,6 +163,7 @@ async function appendBook(book_id) {
     $('#interview').text(book.interview);
     $('#abstract').text(book.abstract);
     $('#right-cart').children("a").attr("id",book_id);
+    $("title").text(title);
 }
 
 

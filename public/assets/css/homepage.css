@@ -59,3 +59,12 @@ footer{
 nav{
   font-size: 15px;
 }
+
+.fas {
+  margin-bottom: 10px;
+  font-size: 1em;
+}
+
+.featured-event-img {
+  padding: 0;
+}

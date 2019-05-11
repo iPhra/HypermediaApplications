@@ -62,7 +62,7 @@ exports.accountInfoPOST = async (account, token) => {
  * Login of a registered user.
  *
  * login Login Login details. (optional)
- * returns inline_response_200_3
+ * returns inline_response_200_4
  **/
 exports.accountLoginPOST = async (login) => {
     //query the database to find an existing account with the provided credentials
@@ -89,7 +89,7 @@ exports.accountLoginPOST = async (login) => {
  * Registers a new user.
  *
  * user User User who wants to sign up. (optional)
- * returns inline_response_200_2
+ * returns inline_response_200_3
  **/
 exports.accountRegisterPOST = async (user) => {
     //retrieve users with the same email

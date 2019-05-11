@@ -82,8 +82,6 @@ exports.accountCartDELETE = async (item, token) => {
 /**
  * Returns list of items present in the cart of the specified user.
  *
- * offset Long Offset with regards to the current page. (optional)
- * limit Long Items per page. (optional)
  * returns Cart
  **/
 exports.accountCartGET = async (token) => {
@@ -135,7 +133,7 @@ async function retrieveCart(user_id) {
 
   //retrieve all the books associated to those ids
   const books = await database.table("book")
-      .select("book_id","title","current_price","author_id","imgpath")
+      .select("book_id","title","current_price","imgpath")
       .whereIn("book_id",ids).orderBy("book_id", "asc");
 
   let total_price = 0;

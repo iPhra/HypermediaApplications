@@ -1,17 +1,30 @@
-function fillBook(book, author) {
+function createAuthors(authors) {
+    let author_link;
+    let author_name;
+    let author_surname;
+    let result = ``;
+    for(let i=0; i<authors.length; i++) {
+        author_link = "/pages/author.html?id="+authors[i].author_id;
+        author_name = authors[i].author.name;
+        author_surname = authors[i].author.surname;
+        result = result + `<a href="`+author_link+`">`+author_name+` `+author_surname+`</a>`;
+        if(i<authors.length-1 && authors.length>1) result= result + ', '
+    }
+
+    return result;
+}
+
+function fillBook(book, authors) {
     const img = "../assets/images/books/"+book.book.imgpath;
     const book_link = "/pages/book.html?id="+book.book_id;
-    const author_link = "/pages/author.html?id="+book.book.author_id;
     const title = book.book.title;
-    const author_name = author.name;
-    const author_surname = author.surname;
 
     return `<div class="card similar-book-card">
               <img class="card-img-top" src="`+img+`" alt="Card image cap">
               <div class="card-body">
                 <h5 class="card-title">`+title+`</h5>
                 <small>  by
-                  <a href="`+author_link+`">`+author_name+` `+author_surname+`</a>
+                  `+createAuthors(authors)+`
                 </small>
               </div>
               <div class="card-footer">
@@ -49,11 +62,11 @@ async function appendBooks(genre) {
         books = await (await fetch(`/v2/books?genre=`+genre)).json()
     }
 
-    let author;
+    let authors;
     let html = "";
     for(let i=0; i<books.length; i++) {
-        author = await (await fetch('/v2/authors/'+books[i].book.author_id)).json();
-        html = html + fillBook(books[i],author);
+        authors = await (await fetch('/v2/books/'+books[i].book_id+'/authors')).json();
+        html = html + fillBook(books[i],authors);
     }
     $('#book-content').append(html);
 }

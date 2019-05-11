@@ -5,6 +5,35 @@ const _ = require("lodash");
 
 
 /**
+ * Returns the lists of all authors of a specific book.
+ *
+ * book_id Long The id of the reference book.
+ * returns List
+ **/
+exports.booksBookIdAuthorsGET = async (book_id) => {
+  //find the given book
+  const book = (await database.select().table("book").where("book_id","=",book_id))[0];
+
+  //if the book doesn't exist
+  if(!book) throw {code: 404};
+
+  //retrieve a preview of all the authors of the book
+  const authors = await database("author").join("authorship","authorship.author_id","author.author_id").select("author.author_id","name","surname").where("authorship.book_id","=",book_id);
+
+  //format the response
+  const result = [];
+  for(let i=0; i<authors.length; i++) {
+    result[i] = {
+      "author_id" : authors[i].author_id,
+      "author" : _.pick(authors[i], ["name", "surname"])
+    }
+  }
+
+  return result;
+};
+
+
+/**
  * Returns the lists of presentation events of a specific book.
  *
  * book_id Long The id of the reference book.
@@ -42,7 +71,7 @@ exports.booksBookIdEventsGET = async (book_id) => {
  **/
 exports.booksBookIdGET = async (book_id) => {
   //find the given book
-  const book = (await database.select("title", "current_price", "imgpath","author_id","abstract","num_of_pages","interview","cover_type").table("book").where("book_id","=",book_id))[0];
+  const book = (await database.select("title", "current_price", "imgpath","abstract","num_of_pages","interview","cover_type").table("book").where("book_id","=",book_id))[0];
 
   //if the book doesn't exist
   if(!book) throw {code: 404};
@@ -100,11 +129,9 @@ exports.booksBookIdReviewsGET = async (book_id) => {
  * Returns the lists of books similar to a specific one.
  *
  * book_id Long The id of the reference book.
- * offset Long Offset with regards to the current page. (optional)
- * limit Long Items per page. (optional)
  * returns List
  **/
-exports.booksBookIdSimiliarsGET = async (book_id,offset,limit) => {
+exports.booksBookIdSimiliarsGET = async (book_id) => {
   //find the requested book
   const book = (await database("book").select().where("book_id","=",book_id))[0];
 
@@ -115,17 +142,13 @@ exports.booksBookIdSimiliarsGET = async (book_id,offset,limit) => {
   let books = await database("book")
       .join("similarity","similarity.book_id1","book.book_id")
       .where("similarity.book_id2","=",book_id)
-      .select("book.book_id","book.title","book.abstract","book.imgpath","book.author_id")
-      .offset(offset)
-      .limit(limit);
+      .select("book.book_id","book.title","book.abstract","book.imgpath");
 
   //concatenate the previous books to the ones in the form (given_book, similar_book) in the database
   books = books.concat(await database("book")
       .join("similarity","similarity.book_id2","book.book_id")
       .where("similarity.book_id1","=",book_id)
-      .select("book.book_id","book.title","book.abstract","book.imgpath","book.author_id")
-      .offset(offset)
-      .limit(limit));
+      .select("book.book_id","book.title","book.abstract","book.imgpath"));
 
   return books;
 };
@@ -145,7 +168,7 @@ exports.booksFavouriteGET = async () => {
   for(let i=0; i<books.length; i++) {
     result[i] = {
       "book_id" : books[i].book_id,
-      "book" : _.pick(books[i], ["title", "imgpath", "author_id"])
+      "book" : _.pick(books[i], ["title", "imgpath"])
     }
   }
 
@@ -169,22 +192,22 @@ exports.booksGET = async (keyword,genre,theme,offset,limit) => {
   //if keyword is specified, then retrieve all books matching that keyword (including author)
   if (keyword) {
     books = await database("book")
-        .select("book_id","title", "current_price", "imgpath", "author_id", "abstract")
+        .select("book_id","title", "current_price", "imgpath", "abstract")
         .whereRaw("LOWER(title) LIKE ?",[`%${keyword.toLowerCase()}%`])
         .limit(limit)
         .offset(offset);
 
-    books = books.concat(await database("book")
+    /*books = books.concat(await database("book")
         .select("book.book_id","book.title", "book.current_price", "book.imgpath", "book.author_id", "book.abstract")
         .join("author","author.author_id","book.author_id")
         .whereRaw("LOWER(author.surname) = ?",[keyword.toLowerCase().split(' ').slice(-1).join(' ')])
         .limit(limit)
-        .offset(offset));
+        .offset(offset));*/
   }
   //else if the genre is specified, retrieve all books of that genre
   else if (genre) {
     books = await database("book")
-        .select("book_id","title", "current_price", "imgpath", "author_id", "abstract")
+        .select("book_id","title", "current_price", "imgpath", "abstract")
         .whereRaw("exists(select * from book B join genre on genre.book_id = B.book_id where genre = ? and B.book_id = book.book_id)", [genre])
         .limit(limit)
         .offset(offset);
@@ -192,7 +215,7 @@ exports.booksGET = async (keyword,genre,theme,offset,limit) => {
   //else if the theme is specified, retrieve all books of that theme
   else if (theme) {
     books = await database("book")
-        .select("book_id","title", "current_price", "imgpath", "author_id", "abstract")
+        .select("book_id","title", "current_price", "imgpath", "abstract")
         .whereRaw("exists(select * from book B join theme on theme.book_id = B.book_id where theme = ? and B.book_id = book.book_id)", [theme])
         .limit(limit)
         .offset(offset);
@@ -200,7 +223,7 @@ exports.booksGET = async (keyword,genre,theme,offset,limit) => {
   //if nothing specified
   else {
     books = await database("book")
-        .select("book_id","title", "current_price", "imgpath", "author_id", "abstract")
+        .select("book_id","title", "current_price", "imgpath", "abstract")
         .limit(limit)
         .offset(offset);
   }
@@ -210,7 +233,7 @@ exports.booksGET = async (keyword,genre,theme,offset,limit) => {
   for(let i=0; i<books.length; i++) {
     result[i] = {
       "book_id" : books[i].book_id,
-      "book" : _.pick(books[i], ["title", "current_price", "imgpath","author_id","abstract"])
+      "book" : _.pick(books[i], ["title", "current_price", "imgpath","abstract"])
     }
   }
 
@@ -240,7 +263,7 @@ exports.booksTop10GET = async () => {
   for(let i=0; i<books.length; i++) {
     result[i] = {
       "book_id" : books[i].book_id,
-      "book" : _.pick(books[i], ["title", "imgpath", "author_id", "genres"])
+      "book" : _.pick(books[i], ["title", "imgpath", "genres"])
     }
   }
 

@@ -5,7 +5,7 @@ const _ = require("lodash");
 
 
 /**
- * Returns the lists of books similar to a specific one.
+ * Returns the lists of books of an author.
  *
  * author_id Long The id of the reference author.
  * returns List
@@ -18,7 +18,7 @@ exports.authorsAuthorIdBooksGET = async (author_id) => {
   if(!author) throw {code: 404};
 
   //retrieve the books
-  const books =  await database.select("title", "imgpath", "book_id",).table("book").where("author_id","=",author_id);
+  const books =  await database.select("title", "imgpath", "book.book_id",).table("book").join("authorship","book.book_id","authorship.book_id").where("authorship.author_id","=",author_id);
 
   //format the response
   const result = [];

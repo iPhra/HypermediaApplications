@@ -3,8 +3,24 @@ $.urlParam = function(name){
     return results[1] || 0;
 };
 
-async function retrieveAuthor(author_id) {
-    return (await fetch('/v2/authors/'+author_id)).json()
+function createAuthors(authors) {
+    let author_link;
+    let author_name;
+    let author_surname;
+    let result = ``;
+    for(let i=0; i<authors.length; i++) {
+        author_link = "/pages/author.html?id="+authors[i].author_id;
+        author_name = authors[i].author.name;
+        author_surname = authors[i].author.surname;
+        result = result + `<a href="`+author_link+`">`+author_name+` `+author_surname+`</a>`;
+        if(i<authors.length-1 && authors.length>1) result= result + ', '
+    }
+
+    return result;
+}
+
+async function retrieveAuthors(book_id) {
+    return (await fetch('/v2/books/'+book_id+'/authors')).json()
 }
 
 function fillReview(review) {
@@ -30,20 +46,18 @@ function fillReview(review) {
                   </div>`;
 }
 
-function fillSimilar(book, author) {
+function fillSimilar(book, authors) {
     const img = "../assets/images/books/"+book.imgpath;
     const book_link = "/pages/book.html?id="+book.book_id;
     const author_link = "/pages/author.html?id="+book.author_id;
     const title = book.title;
-    const author_name = author.name;
-    const author_surname = author.surname;
 
     return `<div class="card similar-book-card">
               <img class="card-img-top" src="`+img+`" alt="Card image cap">
               <div class="card-body">
                 <h5 class="card-title">`+title+`</h5>
-                <small>  Author:
-                  <a href="`+author_link+`">`+author_name+` `+author_surname+`</a>
+                <small>  by
+                  <a href="`+author_link+`">`+createAuthors(authors)+`</a>
                 </small>
               </div>
               <div class="card-footer">
@@ -95,11 +109,11 @@ async function appendReviews(book_id) {
 async function appendSimilars(book_id) {
     const similars = await (await fetch('/v2/books/'+book_id+'/similars')).json();
 
-    let author;
+    let authors;
     let html = "";
     for(let i=0; i<similars.length; i++) {
-        author = await retrieveAuthor(similars[i].author_id);
-        html = html + fillSimilar(similars[i], author);
+        authors = await retrieveAuthors(similars[i].book_id);
+        html = html + fillSimilar(similars[i], authors);
     }
     $('#similar-content').prepend(html);
 }
@@ -121,13 +135,11 @@ async function appendBook(book_id) {
     } catch(error) {
         location.replace("/404.html");
     }
-    const author = await retrieveAuthor(book.author_id);
+    const authors = await retrieveAuthors(book_id);
 
     const img = "../assets/images/books/"+book.imgpath;
     const title = book.title;
     const author_link = "/pages/author.html?id="+book.author_id;
-    const author_name = author.name;
-    const author_surname = author.surname;
     const abstract = book.abstract;
     const genres = (book.genres).join(', ');
     const themes = (book.themes).join(', ');
@@ -140,7 +152,7 @@ async function appendBook(book_id) {
                     </div>
                     <div class="col-lg-7">
                         <span class="h4">`+title+`</span> <br>
-                        <span class="h6">by <a href="`+author_link+`">`+author_name+` `+author_surname+`</a></span> <hr>
+                        <span class="h6">by <a href="`+author_link+`">`+createAuthors(authors)+`</a></span> <hr>
                         <div>
                             <span class="abstract">
                                 `+abstract+`

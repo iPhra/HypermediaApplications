@@ -1,7 +1,21 @@
 let counter = 0;
 
-async function retrieveAuthor(author_id) {
-    return (await fetch('/v2/authors/'+author_id)).json()
+function createAuthors(authors) {
+    let author_name;
+    let author_surname;
+    let result = ``;
+    for(let i=0; i<authors.length; i++) {
+        author_name = authors[i].author.name;
+        author_surname = authors[i].author.surname;
+        result = result + `<p>`+author_name+` `+author_surname+`</p>`;
+        if(i<authors.length-1 && authors.length>1) result= result + ', '
+    }
+
+    return result;
+}
+
+async function retrieveAuthors(book_id) {
+    return (await fetch('/v2/books/'+book_id+'/authors')).json()
 }
 
 function fillFavourite(book) {
@@ -20,18 +34,16 @@ function fillFavourite(book) {
     </div>`;
 }
 
-function fillTop10(book, author) {
+function fillTop10(book, authors) {
     const img = "../assets/images/books/"+book.book.imgpath;
     const title = book.book.title;
     const genres = (book.book.genres).join(', ');
-    const author_name = author.name;
-    const author_surname = author.surname;
     const book_link = "/pages/book.html?id="+book.book_id;
 
     return `<a href="`+book_link+`" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                   <div class="flex-column w-75">
                     `+title+`
-                    <p><small>by `+author_name+` `+author_surname+`</small></p>
+                    <p><small>by `+createAuthors(authors)+`</small></p>
                     <span class="badge badge-info badge-pill"> `+genres+`</span>
                   </div>
                   <div class="image-parent w-25">
@@ -42,12 +54,12 @@ function fillTop10(book, author) {
 
 async function appendTop10() {
     let books = await (await fetch(`/v2/books/top10`)).json();
-    let author;
+    let authors;
 
     let html = "";
     for(let i=0; i<books.length; i++) {
-        author = await retrieveAuthor(books[i].book.author_id);
-        html = html + fillTop10(books[i],author);
+        authors = await retrieveAuthors(books[i].book_id);
+        html = html + fillTop10(books[i],authors);
     }
     $('#top10-content').append(html);
 }
@@ -80,6 +92,21 @@ async function appendFavourites() {
     $('#carousel').append(html);
 }
 
+async function appendEvent() {
+    const events = await (await fetch('/v2/events')).json();
+    const event = events.reduce( function (a,b) { if (a.event.date <= b.event.date) return a; else return b } );
+    const book = await (await fetch('/v2/books/'+event.event.book_id)).json();
+
+    const date = (new Date(event.event.date)).toISOString().substring(0,10);
+    $('#location').text(" " + event.event.location);
+    $('#book_link').attr("href","/pages/book.html?id="+event.book_id);
+    $('#book_title').text(" " + book.title);
+    $('#date').text(" " + date);
+    $('#email').text(" " + event.event.organiser_email);
+    $('#img').attr("src", "../assets/images/events/"+event.event.imgpath);
+    $("title").text(event.event.location + " - " +date);
+}
+
 function add_padding(length) {
     console.log("Book number ", length);
     let html = "";
@@ -110,6 +137,7 @@ $(document).ready(function() {
 $(async function() {
     await appendTop10();
     await appendFavourites();
+    await appendEvent();
 });
 
 $(function() {

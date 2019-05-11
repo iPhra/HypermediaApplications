@@ -1,10 +1,24 @@
-function fillCart(book, author) {
+function createAuthors(authors) {
+    let author_link;
+    let author_name;
+    let author_surname;
+    let result = ``;
+    for(let i=0; i<authors.length; i++) {
+        author_link = "/pages/author.html?id="+authors[i].author_id;
+        author_name = authors[i].author.name;
+        author_surname = authors[i].author.surname;
+        result = result + `<a href="`+author_link+`">`+author_name+` `+author_surname+`</a>`;
+        if(i<authors.length-1 && authors.length>1) result= result + ', '
+    }
+
+    return result;
+}
+
+function fillCart(book, authors) {
     const img = "../assets/images/books/"+book.imgpath;
     const title = book.title;
     const price = book.current_price;
     const quantity = book.quantity;
-    const author_name = author.name;
-    const author_surname = author.surname;
     const id = book.book_id;
     const book_link = "/pages/book.html?id="+book.book_id;
 
@@ -15,7 +29,7 @@ function fillCart(book, author) {
                         </div>
                         <div class="col-md-7">
                             <a href="`+book_link+`"><h5 class="card-title">`+title+`</h5></a>
-                            <div class="card-text">`+author_name+` `+author_surname+`</div>
+                            <div class="card-text">by `+createAuthors(authors)+`</div>
                         </div>
                         <div class="col-md-3">
                             <div class="row text-center">
@@ -42,11 +56,11 @@ async function appendCart() {
             xhr.setRequestHeader('Authorization', token);
         },
         success: async function (cart) {
-            let author;
+            let authors;
             let html = "";
             for(let i=0; i<cart.book_list.length; i++) {
-                author = await (await fetch('/v2/authors/'+cart.book_list[i].author_id)).json();
-                html = html + fillCart(cart.book_list[i], author);
+                authors = await (await fetch('/v2/books/'+cart.book_list[i].book_id+'/authors')).json();
+                html = html + fillCart(cart.book_list[i], authors);
             }
             $('#cart-content').prepend(html);
             $("#total_price").prepend(cart.total_price)

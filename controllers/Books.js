@@ -3,6 +3,17 @@
 const utils = require('../utils/writer.js');
 const Books = require('../service/BooksService');
 
+module.exports.booksBookIdAuthorsGET = function booksBookIdAuthorsGET (req, res, next) {
+  const book_id = req.swagger.params['book_id'].value;
+  Books.booksBookIdAuthorsGET(book_id)
+    .then(function (response) {
+      utils.writeJson(res, response);
+    })
+    .catch(function (response) {
+      utils.writeJson(res, response);
+    });
+};
+
 module.exports.booksBookIdEventsGET = function booksBookIdEventsGET (req, res, next) {
   const book_id = req.swagger.params['book_id'].value;
   Books.booksBookIdEventsGET(book_id)
@@ -42,13 +53,13 @@ module.exports.booksBookIdReviewsGET = function booksBookIdReviewsGET (req, res,
 module.exports.booksBookIdSimiliarsGET = function booksBookIdSimiliarsGET (req, res, next) {
   const book_id = req.swagger.params['book_id'].value;
   Books.booksBookIdSimiliarsGET(book_id)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      res.writeHead(response.code);
-      res.end();
-    });
+      .then(function (response) {
+        utils.writeJson(res, response);
+      })
+      .catch(function (response) {
+        res.writeHead(response.code);
+        res.end();
+      });
 };
 
 module.exports.booksFavouriteGET = function booksFavouriteGET (req, res, next) {

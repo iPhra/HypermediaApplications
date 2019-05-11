@@ -140,7 +140,7 @@ async function appendBook(book_id) {
                     </div>
                     <div class="col-lg-7">
                         <span class="h4">`+title+`</span> <br>
-                        <span class="h6"><a href="`+author_link+`">`+author_name+` `+author_surname+`</a></span> <hr>
+                        <span class="h6">by <a href="`+author_link+`">`+author_name+` `+author_surname+`</a></span> <hr>
                         <div>
                             <span class="abstract">
                                 `+abstract+`

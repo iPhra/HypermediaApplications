@@ -7,7 +7,7 @@ function createAuthors(authors) {
     for(let i=0; i<authors.length; i++) {
         author_name = authors[i].author.name;
         author_surname = authors[i].author.surname;
-        result = result + `<p>`+author_name+` `+author_surname+`</p>`;
+        result = result + author_name + " " +author_surname;
         if(i<authors.length-1 && authors.length>1) result= result + ', '
     }
 

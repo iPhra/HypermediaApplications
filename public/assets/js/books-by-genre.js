@@ -10,7 +10,7 @@ function fillBook(book, author) {
               <img class="card-img-top" src="`+img+`" alt="Card image cap">
               <div class="card-body">
                 <h5 class="card-title">`+title+`</h5>
-                <small>  Author:
+                <small>  by
                   <a href="`+author_link+`">`+author_name+` `+author_surname+`</a>
                 </small>
               </div>
@@ -43,10 +43,10 @@ async function appendGenres() {
 async function appendBooks(genre) {
     let books;
     if (genre==="All") {
-        books = await (await fetch(`/v2/books?limit=10`)).json();
+        books = await (await fetch(`/v2/books`)).json();
     }
     else {
-        books = await (await fetch(`/v2/books?genre=`+genre+`&limit=10`)).json()
+        books = await (await fetch(`/v2/books?genre=`+genre)).json()
     }
 
     let author;

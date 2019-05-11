@@ -8,7 +8,7 @@ function fillCart(book, author) {
     const id = book.book_id;
     const book_link = "/pages/book.html?id="+book.book_id;
 
-    let s = `<div class="card-body">
+    return `<div class="card-body">
                     <div class="row">
                         <div class="col-md-2">
                             <img class="img-fluid align-content-center" src="`+img+`">
@@ -30,7 +30,6 @@ function fillCart(book, author) {
                     </div>
                 </div>
                 <hr>`;
-    return s;
 }
 
 async function appendCart() {

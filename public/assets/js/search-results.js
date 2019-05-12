@@ -1,3 +1,19 @@
+function createAuthors(authors) {
+    let author_link;
+    let author_name;
+    let author_surname;
+    let result = ``;
+    for(let i=0; i<authors.length; i++) {
+        author_link = "/pages/author.html?id="+authors[i].author_id;
+        author_name = authors[i].author.name;
+        author_surname = authors[i].author.surname;
+        result = result + `<a href="`+author_link+`">`+author_name+` `+author_surname+`</a>`;
+        if(i<authors.length-1 && authors.length>1) result= result + ', '
+    }
+
+    return result;
+}
+
 $.urlParam = function(name){
     const results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
     return results[1] || 0;
@@ -10,20 +26,16 @@ $(async function() {
 
 let counter = 0;
 
-function fillBook(book, author) {
+function fillBook(book, authors) {
     const img = "../assets/images/books/" + book.book.imgpath;
     const title = book.book.title;
-    const author_name = author.name;
-    const author_surname = author.surname;
-    const author_link = "/pages/author.html?id=" + book.book.author_id;
     const book_link = "/pages/book.html?id=" + book.book_id;
 
     return `<div class="card">
         <img class="card-img-top" src="` + img + `" alt="Card image cap">
         <div class="card-body">
             <h5 class="card-title">` + title + `</h5>
-            <small>  Author:
-                <a href="` + author_link + `">` + author_name + ` ` + author_surname + `</a>
+            <small>  by `+createAuthors(authors)+`
             </small>
         </div>
         <div class="card-footer">
@@ -42,18 +54,18 @@ function fillBook(book, author) {
     </div>`;
 }
 
-async function retrieveAuthor(author_id) {
-    return (await fetch('/v2/authors/'+author_id)).json()
+async function retrieveAuthors(book_id) {
+    return (await fetch('/v2/books/'+book_id+'/authors')).json()
 }
 
 async function appendResults(keyword) {
     let books = await (await fetch(`/v2/books?keyword=`+ keyword)).json();
-    let author;
+    let authors;
 
     let html = "";
     for(let i=0; i<books.length; i++) {
-        author = await retrieveAuthor(books[i].book.author_id);
-        html = html + fillBook(books[i],author);
+        authors = await retrieveAuthors(books[i].book_id);
+        html = html + fillBook(books[i],authors);
     }
 
     $('#card-deck').append(html);

@@ -189,20 +189,13 @@ exports.booksFavouriteGET = async () => {
 exports.booksGET = async (keyword,genre,theme,offset,limit) => {
   let books;
 
-  //if keyword is specified, then retrieve all books matching that keyword (including author)
+  //if keyword is specified, then retrieve all books matching that keyword
   if (keyword) {
     books = await database("book")
         .select("book_id","title", "current_price", "imgpath", "abstract")
         .whereRaw("LOWER(title) LIKE ?",[`%${keyword.toLowerCase()}%`])
         .limit(limit)
         .offset(offset);
-
-    /*books = books.concat(await database("book")
-        .select("book.book_id","book.title", "book.current_price", "book.imgpath", "book.author_id", "book.abstract")
-        .join("author","author.author_id","book.author_id")
-        .whereRaw("LOWER(author.surname) = ?",[keyword.toLowerCase().split(' ').slice(-1).join(' ')])
-        .limit(limit)
-        .offset(offset));*/
   }
   //else if the genre is specified, retrieve all books of that genre
   else if (genre) {

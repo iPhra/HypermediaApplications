@@ -3,9 +3,9 @@
 ## General group information
 | Member n. | Role          | First name | Last Name | Matricola | Email address   |
 | --------- | ------------- | ---------- | --------- | --------- | --------------- |
-| 1 | ??? | Luca | Molteni | 10489796 | Luca7.molteni@mail.polimi.it |
-| 2 | ??? | Federico | Piccinini | ??? | Federico.piccinini@mail.polimi.it |
-| 3 | ??? | Francesco | Lorenzo | ??? | Francesco.lorenzo@mail.polimi.it |
+| 1 | Team leader | Luca | Molteni | 10489796 | luca7.molteni@mail.polimi.it |
+| 2 | Member | Federico | Piccinini | ??? | federico.piccinini@mail.polimi.it |
+| 3 | Member | Francesco | Lorenzo | 10521186 | francesco.lorenzo@mail.polimi.it |
 
 
  - Deliverable D0: the web application is accessible at [this address](https://polimi-hyp-2019-team-10489796.herokuapp.com).
@@ -26,9 +26,22 @@ they interact. Highlight which parts belong to the application layer, data layer
 or presentation layer. How did you ensure that HTML is not rendered server side?
 ### API
 #### REST compliance
-Describe here to what extent did you follow REST principles and what are the
-reasons for which you might have decided to diverge. Note, you must not describe
-the whole API here, just the design decisions.
+Following the main architectural constraints of REST:
+
+- Uniform Interface  
+It's ensured through the definition of clear APIs that follow the OpenAPI specifications. All resources are accessible through HTTP requests at precise endpoints, and use JSON as a format to exchange data when needed.  
+We did not completely follow REST guidelines concerning what PUT/POST/DELETE should have as return value, as we found them overly complex and meaningless for our case, so most of the times those requests return an empty 200 OK message instead of the resource they interacted with. Obviously, complying with the guidelines would require just small changes to the code.
+
+- Client-server paradigm  
+The paradigm is ensured as the client only interacts with the server through its public endpoints, and both could be deployed on different machines without issues.
+
+- Stateless  
+The server does not store any information, so parallel instances of the server could be shut down, booted or restarted without disrupting the service (assuming one is always running and instances are stopped when idle).
+In our case we have only one instance of the server, and no session information is stored as authentication is dealt with using JSON web tokens.  
+No files are saved server-side.
+
+- Caching  
+It's not been dealt with server side as we didn't find it meaningful, so if caching happens it's done by the browser.
 #### OpenAPI Resource models
 Describe here synthetically, which models you have introduced for resources.
 ### Data model
@@ -36,34 +49,40 @@ Describe with an ER diagram the model used in the data layer of your web
 application. How these map to the OpenAPI data model?
 ## Implementation
 ### Tools used
-Describe here which tools, languages and frameworks did you use for the backend
-of the application.
- <ul>  
-<li>Tools</li>  
-<ul>  
-<li>Webstorm</li>
-Webstorm is a Javascript IDE by JetBrains that offers complete support for the whole javascript ecosystem. It supports both backend (Node.js) and frontend development. It is able to provide intelligent code completion, on-the-fly error detection, powerful navigation and refactoring for JavaScript, stylesheet languages, and all the most popular frameworks.
-<li>PgAdmin 4</li>  
-PgAdmin is a free application that provide a GUI to easily manage a PostgreSQL database. PgAdmin allows to easily build a database from scratch, create tables and execute optimization operations. It also provide functionalities for database population, query and backup of data.  Through the GUI is possible to  graphically modify tables, create constraints, adding enumerations and so on. It is also available  in Heroku that is the free hosting platform selected for this project.
-<li>SwaggerHub</li> 
-SwaggerHub is an integrated API development platform that brings together all the core capabilities of the open source Swagger framework, along with additional advanced capabilities to build, document, manage the APIs. We used SwaggerHub in order to write and define our RESTful APIs in a shared environment as a team.
-<li>Swagger editor</li> 
-Swagger Editor is an open source editor to design, define and document RESTful APIs using the Swagger Specification. Given a valid OpenAPI specification it is capable to automatically generate a server stub, providing a solid base upon which starting to implement the endpoint functionalities. Since we edited our API in a shared environment using SwaggerHub we used Swagger editor for the sole purpose of generating the server code.
-</ul>  
-<li>Languages</li>  
-<ul>  
-<li>Javascript</li>   
-</ul> 
-<li>Frameworks  and Libraries
-<ul>  
-<li>Knex.js</li>   
-<li>jsonwebtoken</li>
-<li>bcrypt.js</li>
-<li>Config</li>
-<li>Connect</li>
-</ul>  
 
-</ul>
+#####Environment
+- Node.js:  
+Node.js is an open-source run-time environment to execute JavaScript code outside of a browser, allowing to run server-side scripts.
+
+#####Tools
+- Webstorm:  
+Webstorm is a JavaScript IDE by JetBrains that offers complete support for the whole javascript ecosystem. It supports both backend (Node.js) and frontend development. It is able to provide intelligent code completion, on-the-fly error detection, powerful navigation and refactoring for JavaScript, stylesheet languages, and all the most popular frameworks.
+- PgAdmin:  
+PgAdmin is a free application that provide a GUI to easily manage a PostgreSQL database. PgAdmin allows to easily build a database from scratch, create tables and execute optimization operations. It also provide functionalities for database population, query and backup of data.  Through the GUI is possible to  graphically modify tables, create constraints, adding enumerations and so on. It is also available  in Heroku that is the free hosting platform selected for this project.
+- SwaggerHub:  
+SwaggerHub is an integrated API development platform that brings together all the core capabilities of the open source Swagger framework, along with additional advanced capabilities to build, document, manage the APIs. We used SwaggerHub in order to write and define our RESTful APIs in a shared environment as a team.
+- Swagger editor:  
+Swagger Editor is an open source editor to design, define and document RESTful APIs using the Swagger Specification. Given a valid OpenAPI specification it is capable to automatically generate a server stub, providing a solid base upon which starting to implement the endpoint functionalities. Since we edited our API in a shared environment using SwaggerHub we used Swagger editor for the sole purpose of generating the server code.
+
+#####Languages
+- Javascript
+ 
+#####Frameworks and Libraries:
+- Knex.js:  
+Knex.js is a Node.js library that features SQL query and schema builders for the most popular DBMS available. Here it's used to connect to the database, create the schema (in case it's not present already) and query it.
+- Jsonwebtoken:  
+Jsonwebtoken is the JavaScript implementation of JSON Web Tokens, used here to deal with user authentication (login).   
+Expiration date is infinite for demonstration purposes, but it would be finite for an actual release.  
+The private key to decode the token is stored in a config file using the Config library.
+- bcrypt.js:  
+Bcrypt.js is a Node.js library used here to encrypt and decrypt passwords before storing them in the database, in order to ensure better privacy for the users.
+- Config:  
+Config is a library used to configure Node.js applications for development, testing and production. Here it is used only for production, storing jwt keys and database configurations.
+- Lodash:  
+Lodash is a popular JavaScript library for utilities. Here it is used for quick object manipulation.
+- Serve-static:  
+Serve-static is a Node.js library used here to serve static content over HTTP.
+
 
 ### Discussion
 Describe here:
@@ -76,23 +95,34 @@ Describe here:
 - Which technology did you use (relational or a no-SQL database) for managing
   the data model?
 ## Other information
+
+
 ### Task assignment
-Describe here how development tasks have been subdivided among members of the
-group, e.g.:
-- Foo worked on front end (80%) and OpenAPI Spec (20% of the time)
-- Bar worked on ....
+
+All members took part in defining the overall structure of the website, its design according to the IDM models and the APIs offered by the web server.
+
+Francesco Lorenzo
+ - Design: formalised the IDM models using Draw.io.
+ - Backend: contributed to the development of the assigned APIs and maintained the backend during the whole development.
+ - Frontend: dealt mainly with JQuery scripting to enable dynamic HTML content.
+
+Luca Molteni
+
+Federico Piccinini
+
+
 ### Analysis of existing API
 
 
 Describe here if you have found relevant APIs that have inspired the OpenAPI
 specification and why (at least two).
-### Learning outcome
-What was the most important thing all the members have learned while developing
-this part of the project, what questions remained unanswered, how you will use
-what you've learned in your everyday life?
-Examples:
-- Foo learned to write SQL queries and Javascript but wanted to know more about
-  caching, he's probably going to create his own startup with what she has
-  learned
-- Bar learned how to deploy on a cloud platform, he would have liked to know
-  more about promises for asynchronous code..
+### Learning outcome 
+Being the first experience with both frontend and backend development at once, all members learned how to put into use all the good practices of software engineering, especially for what concerns integration, readability and usability. 
+Moreover, having to coordinate the frontend with the backend and to coordinate the interaction between us, we acquired experience in defining and providing clear requirements of what a component has to offer, in order to avoid integration mistakes.
+
+Francesco Lorenzo learnt to build a web application using Swagger, which adds to his previous experience with Express.
+He had the opportunity to go in-depth with JQuery and AJAX for frontend scripting. Finally, despite not working heavily on the static and styling part of the website, he now knows how CSS and HTML work, and how to create dynamic content for the latter, which was his main goal in the first place. 
+
+Luca Molteni 
+
+Federico Piccinini

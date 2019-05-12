@@ -107,7 +107,7 @@ async function appendEvent() {
 
     const date = (new Date(event.event.date)).toISOString().substring(0,10);
     $('#location').text(" " + event.event.location);
-    $('#book_link').attr("href","/pages/book.html?id="+event.book_id);
+    $('#book_link').attr("href","/pages/book.html?id="+event.event.book_id);
     $('#book_title').text(" " + book.title);
     $('#date').text(" " + date);
     $('#email').text(" " + event.event.organiser_email);

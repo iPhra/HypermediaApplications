@@ -94,7 +94,15 @@ async function appendFavourites() {
 
 async function appendEvent() {
     const events = await (await fetch('/v2/events')).json();
-    const event = events.reduce( function (a,b) { if (a.event.date <= b.event.date) return a; else return b } );
+    const today = new Date();
+    const event = events.reduce( function (a,b) {
+        const date_a = new Date(a.event.date);
+        const date_b = new Date(b.event.date);
+        if ( date_a < today) return b;
+        else if (date_b < today) return a;
+        else if (date_a <= date_b) return a;
+        else return b
+    } );
     const book = await (await fetch('/v2/books/'+event.event.book_id)).json();
 
     const date = (new Date(event.event.date)).toISOString().substring(0,10);

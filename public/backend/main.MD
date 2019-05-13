@@ -50,8 +50,6 @@ No files are saved server-side.
 It's not been dealt with server side as we didn't find it meaningful, so if caching happens it's done by the browser.
 
 #### OpenAPI Resource models
-Describe here synthetically, which models you have introduced for resources.
-
 - Book: contains the fact sheet of the book, its genres, themes and a path to the image of its cover.
 - Author: contains the biographical information of the author, and a path to an image of him.
 - Event: contains information regarding the date and place of the event, the organiser, the book it's related to and a path to an image of the location.
@@ -60,6 +58,7 @@ Describe here synthetically, which models you have introduced for resources.
 - User: contains the email, password, id, name and surname of the user.
 - Genre: enumeration of all possible genres.
 - Theme: enumeration of all possible themes.
+
 
 ### Data model
 Describe with an ER diagram the model used in the data layer of your web
@@ -117,12 +116,11 @@ As mentioned in the Tools section, we dealt with sessions by using JSON Web Toke
 The server receives the key and tries to decrypt it using the private key stored in configuration files. If decryption is successful, the server retrieves the user id stored in the jwt and proceeds with the request, otherwise it returns a HTTP 401 Unauthorized error.  
 The jwt doesn't have an expiration date as we decided not to implement the logic to handle expired tokens in the fronted, and the relative endpoint in the backend. Still, the check would be a very simple ping to the endpoint to see if the token is valid, otherwise showing the user as not logged in.  
 
-For what concerns the database, we decided to opt for a relational data model, as the data we are dealing with has an intrinsic structure that has to be modeled with tables.
+For what concerns the database, we decided to opt for a relational data model, as the data we are dealing with has an intrinsic structure that must to be modeled with tables.
   
   
 
 ## Other information
-
 
 ### Task assignment
 All members took part in defining the overall structure of the website, its design according to the IDM models and the APIs offered by the web server.

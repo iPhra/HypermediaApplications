@@ -77,7 +77,7 @@ Node.js is an open-source run-time environment to execute JavaScript code outsid
 - Webstorm:  
 Webstorm is a JavaScript IDE by JetBrains that offers complete support for the whole javascript ecosystem. It supports both backend (Node.js) and frontend development. It is able to provide intelligent code completion, on-the-fly error detection, powerful navigation and refactoring for JavaScript, stylesheet languages, and all the most popular frameworks.
 - PgAdmin:  
-PgAdmin is a free application that provide a GUI to easily manage a PostgreSQL database. PgAdmin allows to easily build a database from scratch, create tables and execute optimization operations. It also provide functionalities for database population, query and backup of data.  Through the GUI is possible to  graphically modify tables, create constraints, adding enumerations and so on. It is also available  in Heroku that is the free hosting platform selected for this project.
+PgAdmin is a free application that provide a GUI to easily manage a PostgreSQL database. PgAdmin allows to easily build a database from scratch, create tables and execute optimization operations. It also provide functionalities for database population, query and backup of data.  Through the GUI is possible to  graphically modify tables, create constraints, add enumerations and so on. It is also available  in Heroku that is the free hosting platform selected for this project.
 - SwaggerHub:  
 SwaggerHub is an integrated API development platform that brings together all the core capabilities of the open source Swagger framework, along with additional advanced capabilities to build, document, manage the APIs. We used SwaggerHub in order to write and define our RESTful APIs in a shared environment as a team.
 - Swagger editor:  
@@ -116,7 +116,7 @@ As mentioned in the Tools section, we dealt with sessions by using JSON Web Toke
 The server receives the key and tries to decrypt it using the private key stored in configuration files. If decryption is successful, the server retrieves the user id stored in the jwt and proceeds with the request, otherwise it returns a HTTP 401 Unauthorized error.  
 The jwt doesn't have an expiration date as we decided not to implement the logic to handle expired tokens in the fronted, and the relative endpoint in the backend. Still, the check would be a very simple ping to the endpoint to see if the token is valid, otherwise showing the user as not logged in.  
 
-For what concerns the database, we decided to opt for a relational data model, as the data we are dealing with has an intrinsic structure that must to be modeled with tables.
+For what concerns the database, we decided to opt for a relational data model, as the data we are dealing with has an intrinsic structure that can be easily modeled with tables.
   
   
 
@@ -131,6 +131,9 @@ Francesco Lorenzo
  - Frontend: dealt mainly with JQuery scripting to enable dynamic HTML content.
 
 Luca Molteni
+- Design: set up and updated the database tables and formalized the corresponding E-R diagram. Contributed to the design of the APIs needed to serve the website contents.
+ - Backend: contributed to the development of the assigned APIs.
+ - Frontend: designed homepage, bestsellers, favourites and contact-us pages. Designed navigation bar and implemented search functionality on front-end side. Responsible for website responsiveness.
 
 Federico Piccinini
 
@@ -148,6 +151,6 @@ Moreover, having to coordinate the frontend with the backend and to coordinate t
 Francesco Lorenzo learnt to build a web application using Swagger, which adds to his previous experience with Express.
 He had the opportunity to go in-depth with JQuery and AJAX for frontend scripting. Finally, despite not working heavily on the static and styling part of the website, he now knows how CSS and HTML work, and how to create dynamic content for the latter, which was his main goal in the first place. 
 
-Luca Molteni 
+Luca Molteni learnt to properly design and formalize using Swagger/OpenAPI notation a RESTful API. Had the opportunity to delve deeper into backend programming using Node.js runtime environment and improved his ability to exploit javascript asynchronous capability using premises. He experienced for the first time the task of web application developing without the support of a framework (e.g. Vue.js). Largely improved his knowledge about HTML and css and in particular faced the problems of content responsiveness with the support of Bootstrap 4. 
 
 Federico Piccinini

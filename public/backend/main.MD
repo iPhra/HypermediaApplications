@@ -77,7 +77,7 @@ Node.js is an open-source run-time environment to execute JavaScript code outsid
 - Webstorm:  
 Webstorm is a JavaScript IDE by JetBrains that offers complete support for the whole javascript ecosystem. It supports both backend (Node.js) and frontend development. It is able to provide intelligent code completion, on-the-fly error detection, powerful navigation and refactoring for JavaScript, stylesheet languages, and all the most popular frameworks.
 - PgAdmin:  
-PgAdmin is a free application that provide a GUI to easily manage a PostgreSQL database. PgAdmin allows to easily build a database from scratch, create tables and execute optimization operations. It also provide functionalities for database population, query and backup of data.  Through the GUI is possible to  graphically modify tables, create constraints, add enumerations and so on. It is also available  in Heroku that is the free hosting platform selected for this project.
+PgAdmin is a free application that provide a GUI to easily manage a PostgreSQL database. PgAdmin allows to easily build a database from scratch, create tables and execute optimization operations. It also provide functionalities for database population, query and backup of data.  Through the GUI is possible to  graphically modify tables, create constraints, add enumerations and so on.
 - SwaggerHub:  
 SwaggerHub is an integrated API development platform that brings together all the core capabilities of the open source Swagger framework, along with additional advanced capabilities to build, document, manage the APIs. We used SwaggerHub in order to write and define our RESTful APIs in a shared environment as a team.
 - Swagger editor:  

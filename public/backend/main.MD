@@ -64,6 +64,7 @@ It's not been dealt with server side as we didn't find it meaningful, so if cach
 Describe with an ER diagram the model used in the data layer of your web
 application. How these map to the OpenAPI data model?
 
+![ER Diagram](Hypermedia-ERD.png)
 
 
 ## Implementation

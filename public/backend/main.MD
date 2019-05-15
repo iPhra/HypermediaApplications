@@ -131,7 +131,7 @@ Francesco Lorenzo
  - Frontend: dealt mainly with JQuery scripting to enable dynamic HTML content.
 
 Luca Molteni
-- Design: set up and updated the database tables and formalized the corresponding E-R diagram. Contributed to the design of the APIs needed to serve the website contents.
+ - Design: set up and updated the database tables and formalized the corresponding E-R diagram. Contributed to the design of the APIs needed to serve the website contents.
  - Backend: contributed to the development of the assigned APIs.
  - Frontend: designed homepage, bestsellers, favourites and contact-us pages. Designed navigation bar and implemented search functionality on front-end side. Responsible for website responsiveness.
 
@@ -151,6 +151,6 @@ Moreover, having to coordinate the frontend with the backend and to coordinate t
 Francesco Lorenzo learnt to build a web application using Swagger, which adds to his previous experience with Express.
 He had the opportunity to go in-depth with JQuery and AJAX for frontend scripting. Finally, despite not working heavily on the static and styling part of the website, he now knows how CSS and HTML work, and how to create dynamic content for the latter, which was his main goal in the first place. 
 
-Luca Molteni learnt to properly design and formalize using Swagger/OpenAPI notation a RESTful API. Had the opportunity to delve deeper into backend programming using Node.js runtime environment and improved his ability to exploit javascript asynchronous capability using premises. He experienced for the first time the task of web application developing without the support of a framework (e.g. Vue.js). Largely improved his knowledge about HTML and css and in particular faced the problems of content responsiveness with the support of Bootstrap 4. 
+Luca Molteni learnt to properly design and formalize using Swagger/OpenAPI notation a RESTful API. Had the opportunity to delve deeper into backend programming using Node.js runtime environment and improved his ability to exploit javascript asynchronous capability using promises. He experienced for the first time the task of web application developing without the support of a framework (e.g. Vue.js). Largely improved his knowledge about HTML and CSS and in particular faced the problems of content responsiveness with the support of Bootstrap 4. 
 
 Federico Piccinini

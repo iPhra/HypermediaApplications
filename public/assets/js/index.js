@@ -133,13 +133,13 @@ function add_padding(length) {
 //change navbar styling after collapse button have been pressed
 $(document).ready(function() {
 
-    $('.collapse').on('show.bs.collapse', function() {
+    $('.collapse')
+        .on('show.bs.collapse', function() {
         $('#searchBar').removeClass('ml-3');
-    });
-
-    $('.collapse').on('hidden.bs.collapse', function() {
-        $('#searchBar').addClass('ml-3');
-    });
+        })
+        .on('hidden.bs.collapse', function() {
+            $('#searchBar').addClass('ml-3');
+        });
 });
 
 $(async function() {

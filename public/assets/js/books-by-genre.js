@@ -64,7 +64,7 @@ async function appendGenres(current) {
         current = genres[0];
     }
     active = current;
-    $("#info").text(active);
+    $("#info").text("Genre / "+active);
     await appendBooks(active);
 }
 
@@ -97,7 +97,7 @@ $(async function() {
 $(function() {
     $(document).on("click", ".list-group-item", async function(){
         active = this.id;
-        $("#info").text(active);
+        $("#info").text("Genre / "+active);
         $('#book-content').empty();
         await appendBooks(this.id);
     });

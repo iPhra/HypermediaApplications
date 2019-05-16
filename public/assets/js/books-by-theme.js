@@ -64,7 +64,7 @@ async function appendThemes(current) {
         current = themes[0];
     }
     active = current;
-    $("#info").text(active);
+    $("#info").text("Theme / "+active);
     await appendBooks(active);
 }
 
@@ -98,7 +98,7 @@ $(async function() {
 $(function() {
     $(document).on("click", ".list-group-item", async function() {
         active = this.id;
-        $("#info").text(active);
+        $("#info").text("Theme / "+active);
         $('#book-content').empty();
         await appendBooks(this.id);
     });

@@ -122,7 +122,7 @@ $(function() {
 $(function() {
     $(document).on("click", ".outgoing", function() {
         localStorage.setItem("link",window.location.href);
-        localStorage.setItem("page","<< Back to author: "+$("title").text());
+        localStorage.setItem("page","<< Authors / "+$("title").text());
     })
 });
 

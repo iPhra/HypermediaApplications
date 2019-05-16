@@ -257,7 +257,7 @@ $(function() {
 $(function() {
     $(document).on("click", ".outgoing", function() {
         localStorage.setItem("link",window.location.href);
-        localStorage.setItem("page","<< Back to book: "+$("title").text());
+        localStorage.setItem("page","<< Books / "+$("title").text());
     })
 });
 

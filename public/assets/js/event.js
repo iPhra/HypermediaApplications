@@ -25,6 +25,7 @@ async function appendEvent(event_id) {
 
 
 
+
 $(async function() {
     const event_id = $.urlParam("id"); 
     await appendEvent(event_id);
@@ -60,7 +61,7 @@ $(function() {
 $(function() {
     $(document).on("click", ".outgoing", function() {
         localStorage.setItem("link",window.location.href);
-        localStorage.setItem("page","<< Back to associated event");
+        localStorage.setItem("page","<< Event / "+$("title").text());
     })
 });
 

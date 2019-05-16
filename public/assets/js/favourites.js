@@ -124,6 +124,6 @@ $(function() {
 $(function() {
     $(document).on("click", ".outgoing", function() {
         localStorage.setItem("link",window.location.href);
-        localStorage.setItem("page","<< Back to Favourites");
+        localStorage.setItem("page","<< Favourites");
     })
 });

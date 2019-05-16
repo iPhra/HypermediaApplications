@@ -131,7 +131,7 @@ $(function() {
 $(function() {
     $(document).on("click", ".outgoing", function() {
         localStorage.setItem("link",window.location.href);
-        localStorage.setItem("page","<< Back to Bestsellers");
+        localStorage.setItem("page","<< Bestsellers");
     })
 });
 

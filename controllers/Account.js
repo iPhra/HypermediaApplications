@@ -3,18 +3,6 @@
 const utils = require('../utils/writer.js');
 const Account = require('../service/AccountService');
 
-module.exports.accountInfoDELETE = function accountInfoDELETE (req, res, next) {
-  const token = req.headers.authorization;
-  Account.accountInfoDELETE(token)
-      .then(function (response) {
-        utils.writeJson(res, response);
-      })
-      .catch(function (response) {
-        res.writeHead(response.code);
-        res.end();
-      });
-};
-
 module.exports.accountInfoGET = function accountInfoGET (req, res, next) {
   const token = req.headers.authorization;
   Account.accountInfoGET(token)

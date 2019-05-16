@@ -9,21 +9,6 @@ const hashPassword = require("../utils/authenticator").hashPassword;
 
 
 /**
- * Delete an existing acccount.
- *
- * no response value expected for this operation
- **/
-exports.accountInfoDELETE = async (token) => {
-    const user_id = await checkToken(token);
-
-    if(!user_id) throw {code: 404};
-
-    await database("account").where("user_id", user_id).del();
-    return "Account deleted.";
-};
-
-
-/**
  * Returns info about a user.
  *
  * returns User
@@ -33,7 +18,7 @@ exports.accountInfoGET = async (token) => {
     const user_id = await checkToken(token);
 
     //retrieve the info about the account
-    return (await database.select("email","name","surname","admin").table("account").where("user_id","=",user_id))[0];
+    return (await database.select("email","name","surname").table("account").where("user_id","=",user_id))[0];
 };
 
 
@@ -52,7 +37,7 @@ exports.accountInfoPOST = async (account, token) => {
 
     return database.transaction(async trx => {
         //update existing account
-        return (await trx.update(account, ['email', 'name', 'surname', 'admin']).table("account").where({ 'user_id': user_id }))[0];
+        return (await trx.update(account, ['email', 'name', 'surname']).table("account").where({ 'user_id': user_id }))[0];
     }).catch(() => { throw { code: 400 } }
     );
 };

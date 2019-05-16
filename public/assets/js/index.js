@@ -1,5 +1,6 @@
 let counter = 0;
 let event_id;
+let next_event;
 
 function createAuthors(authors) {
     let author_name;
@@ -114,7 +115,7 @@ async function appendEvent() {
     $('#email').text(" " + event.event.organiser_email);
     $('#img').attr("src", "../assets/images/events/"+event.event.imgpath);
     $('#description').text(event.event.description);
-    $("title").text(event.event.location + " - " +date);
+    next_event = event.event.location + " - " +date;
     event_id = event.event_id;
 }
 
@@ -181,21 +182,21 @@ $(function() {
 $(function() {
     $(document).on("click", ".bestsellers", function() {
         localStorage.setItem("link","../pages/bestsellers.html");
-        localStorage.setItem("page","<< Back to Bestsellers");
+        localStorage.setItem("page","<< Bestsellers");
     })
 });
 
 $(function() {
     $(document).on("click", ".favourites", function() {
         localStorage.setItem("link","../pages/favourites.html");
-        localStorage.setItem("page","<< Back to Favourites");
+        localStorage.setItem("page","<< Favourites");
     })
 });
 
 $(function() {
     $(document).on("click", ".event", function() {
         localStorage.setItem("link","/pages/event.html?id="+event_id);
-        localStorage.setItem("page","<< Back to associated event");
+        localStorage.setItem("page","<< Event / "+next_event);
     })
 });
 

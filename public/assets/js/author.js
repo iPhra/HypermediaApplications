@@ -90,3 +90,14 @@ $(function() {
         location.reload();
     });
 });
+
+$(function() {
+    $(window).on("beforeunload", function() {
+        localStorage.setItem("link",window.location.href);
+        localStorage.setItem("page","<< Back to author: "+$("title").text());
+    })
+});
+
+$(function() {
+    $("#info").attr("href",localStorage.getItem("link")).text(localStorage.getItem("page"));
+});

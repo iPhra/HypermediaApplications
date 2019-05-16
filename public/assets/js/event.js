@@ -56,3 +56,14 @@ $(function() {
         location.reload();
     });
 });
+
+$(function() {
+    $(window).on("beforeunload", function() {
+        localStorage.setItem("link",window.location.href);
+        localStorage.setItem("page","<< Back to associated event");
+    })
+});
+
+$(function() {
+    $("#info").attr("href",localStorage.getItem("link")).text(localStorage.getItem("page"));
+});

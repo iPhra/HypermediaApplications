@@ -1,3 +1,5 @@
+let active;
+
 function createAuthors(authors) {
     let author_link;
     let author_name;
@@ -45,12 +47,17 @@ function fillBook(book, authors) {
 
 async function appendGenres() {
     const genres = await (await fetch(`/v2/genres`)).json();
+    genres.sort();
 
     let genre;
     for(let i=0; i<genres.length; i++) {
         genre = genres[i].charAt(0).toUpperCase() + genres[i].slice(1);
         $('.list-group').append('<a href="#" id="'+genres[i]+'"class="list-group-item list-group-item-action">'+genre+'</a>');
     }
+
+    active = genres[0];
+    $("#info").text(active);
+    await appendBooks(genres[0]);
 }
 
 async function appendBooks(genre) {
@@ -75,11 +82,12 @@ async function appendBooks(genre) {
 
 $(async function() {
     await appendGenres();
-    await appendBooks("All");
 });
 
 $(function() {
     $(document).on("click", ".list-group-item", async function(){
+        active = this.id;
+        $("#info").text(active);
         $('#book-content').empty();
         await appendBooks(this.id);
     });
@@ -138,4 +146,11 @@ $(function() {
             });
         }
     });
+});
+
+$(function() {
+    $(window).on("beforeunload", function() {
+        localStorage.setItem("link",window.location.href);
+        localStorage.setItem("page","<< Back to "+active+ " books");
+    })
 });

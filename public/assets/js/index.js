@@ -176,3 +176,10 @@ $(function() {
     });
 });
 
+$(function() {
+    $(window).on("click", "a", function() {
+        localStorage.setItem("link",window.location.href);
+        localStorage.setItem("page","<< Back to Bestsellers");
+    })
+});
+

@@ -60,3 +60,10 @@ $(function() {
         location.reload();
     });
 });
+
+$(function() {
+    $(window).on("beforeunload", function() {
+        localStorage.setItem("link",window.location.href);
+        localStorage.setItem("page","<< Back to all events");
+    })
+});

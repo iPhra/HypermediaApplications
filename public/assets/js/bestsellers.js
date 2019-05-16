@@ -32,7 +32,7 @@ function fillBook(book, authors) {
                 <h4>`+rank+`</h4>
             </div>
         </div>
-        <img class="card-img-top" src="`+img+`" alt="Card image cap">
+        <img class="card-img-top" src="`+img+`" alt="Book cover">
         <div class="card-body">
             <h5 class="card-title">`+title+`</h5>
             <small>  by

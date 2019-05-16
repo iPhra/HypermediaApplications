@@ -24,7 +24,7 @@ function fillFavourite(book) {
 
     return `<div class="col">
       <div class="card">
-        <img class="card-img-top" src="`+img+`" alt="Card image cap">
+        <img class="card-img-top" src="`+img+`" alt="Book cover">
         <div class="card-footer text-center">
           <a href="`+book_link+`" class="btn btn-outline-primary btn-sm">
                       <i class="fa fa-book"></i>
@@ -47,7 +47,7 @@ function fillTop10(book, authors) {
                     <span class="badge badge-info badge-pill"> `+genres+`</span>
                   </div>
                   <div class="image-parent w-25">
-                    <img src="`+img+`" class="img-fluid w-100" alt="cover">
+                    <img src="`+img+`" class="img-fluid w-100" alt="Book cover">
                   </div>
                 </a>`;
 }

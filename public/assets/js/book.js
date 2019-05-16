@@ -53,7 +53,7 @@ function fillSimilar(book, authors) {
     const title = book.title;
 
     return `<div class="card similar-book-card">
-              <img class="card-img-top" src="`+img+`" alt="Card image cap">
+              <img class="card-img-top" src="`+img+`" alt="Book cover">
               <div class="card-body">
                 <h5 class="card-title">`+title+`</h5>
                 <small>  by

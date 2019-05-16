@@ -112,6 +112,7 @@ async function appendEvent() {
     $('#date').text(" " + date);
     $('#email').text(" " + event.event.organiser_email);
     $('#img').attr("src", "../assets/images/events/"+event.event.imgpath);
+    $('#description').text(event.event.description);
     $("title").text(event.event.location + " - " +date);
 }
 

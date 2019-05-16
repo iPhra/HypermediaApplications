@@ -84,7 +84,7 @@
     display: inline-block;
     word-wrap: break-word;
     overflow: hidden;
-    max-height: 18em; /* (Number of lines you want visible) * (line-height) */
+    max-height: 16.8em; /* (Number of lines you want visible) * (line-height) */
     line-height: 1.2em;
     text-align:justify;
 }
@@ -94,13 +94,9 @@
 }
 
 .author-book-card{
-    width: 90%;
-    margin: auto;
 }
 
 .author-books-container{
-    overflow-y: auto;
-    max-height: 500px;
 }
 
 .image-no-overflow{
@@ -196,4 +192,31 @@ nav{
 
 #pignolo{
     margin-left: 30%;
+}
+
+/* set card number per row on author's page book section */
+@media (min-width: 0) {
+    .author-books-container .author-book-card {
+        flex: 0 0 calc(50% - 30px);
+    }
+}
+@media (min-width: 576px) {
+    .author-books-container .author-book-card {
+        flex: 0 0 calc(33.33333% - 30px);
+    }
+}
+@media (min-width: 768px) {
+    .author-books-container .author-book-card {
+        flex: 0 0 calc(20% - 30px);
+    }
+}
+@media (min-width: 992px) {
+    .author-books-container .author-book-card {
+        flex: 0 0 calc(20% - 30px);
+    }
+}
+@media (min-width: 1200px) {
+    .author-books-container .author-book-card {
+        flex: 0 0 calc(20% - 30px);
+    }
 }

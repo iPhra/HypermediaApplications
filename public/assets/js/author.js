@@ -7,9 +7,8 @@ function fillBook(book) {
     const img = "../assets/images/books/"+book.book.imgpath;
     const title = book.book.title;
     const book_link = "/pages/book.html?id="+book.book_id;
-    
-    return `<div class="col-md-4 margin-top-10">
-                    <div class="card author-book-card">
+
+    return `<div class="card author-book-card">
                         <img class="card-img-top" src="`+img+`" alt="Card image cap">
                         <div class="card-body">
                             <h5 class="card-title">`+title+`</h5>
@@ -17,18 +16,17 @@ function fillBook(book) {
                         <div class="card-footer">
                             <div class="row">
                                 <div class="col padding-10px">
-                                    <a href="`+book_link+`" class="btn btn-outline-primary btn-sm outgoing">
+                                    <a href="`+book_link+`" class="btn btn-big btn-outline-primary btn-sm outgoing">
                                         <i class="fa fa-book"></i>
-                                        View Book</a>
+                                        <div>View Book</div></a>
                                 </div>
                                 <div class="col padding-10px">
-                                    <a id="`+book.book_id+`" href="#" class="btn btn-outline-primary btn-sm cart">
-                                        <i class="fa fa-shopping-cart"></i> Add to cart</a>
+                                    <a id="`+book.book_id+`" href="#" class="btn btn-big btn-outline-primary btn-sm cart">
+                                        <i class="fa fa-shopping-cart"></i> <div>Add to cart</div></a>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>`;
+                    </div>`;
 }
 
 async function appendAuthor(author_id) {
@@ -38,7 +36,7 @@ async function appendAuthor(author_id) {
     } catch(error) {
         location.replace("/404.html");
     }
-    
+
     $("#author-picture").attr("src", "../assets/images/authors/"+author.imgpath);
     $("#author-name").text(author.name + " " + author.surname);
     $("title").text(author.name + " " + author.surname);
@@ -48,7 +46,7 @@ async function appendAuthor(author_id) {
 
 async function appendBooks(author_id) {
     const books = await (await fetch('/v2/authors/'+author_id+'/books')).json();
-    
+
     let html = "";
     for(let i=0; i<books.length; i++) {
         html = html + fillBook(books[i]);
@@ -57,9 +55,9 @@ async function appendBooks(author_id) {
 }
 
 
-   
+
 $(async function() {
-    const author_id = $.urlParam("id"); 
+    const author_id = $.urlParam("id");
     await appendAuthor(author_id);
     await appendBooks(author_id);
 });

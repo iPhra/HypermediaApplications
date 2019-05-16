@@ -17,13 +17,13 @@ function fillBook(book) {
                         <div class="card-footer">
                             <div class="row">
                                 <div class="col padding-10px">
-                                    <a href="`+book_link+`" class="btn btn-outline-primary btn-sm">
+                                    <a href="`+book_link+`" class="btn btn-outline-primary btn-sm outgoing">
                                         <i class="fa fa-book"></i>
                                         View Book</a>
                                 </div>
                                 <div class="col padding-10px">
-                                    <a href="{{link_add_to_cart}}" class="btn btn-outline-primary btn-sm">
-                                        <i class="fa fa-shopping-cart"></i> Add to cart </a>
+                                    <a id="`+book.book_id+`" href="#" class="btn btn-outline-primary btn-sm cart">
+                                        <i class="fa fa-shopping-cart"></i> Add to cart</a>
                                 </div>
                             </div>
                         </div>
@@ -92,7 +92,35 @@ $(function() {
 });
 
 $(function() {
-    $(window).on("beforeunload", function() {
+    $(document).on("click", ".cart", function(){
+        const token = localStorage.getItem("token");
+        if(!token) alert("You must be logged in to add items to the cart!");
+        else {
+            $.ajax({
+                url: '/v2/account/cart',
+                type: 'POST',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', token);
+                },
+                dataType: "text",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    book_id : parseInt($(this).attr('id'))
+                }),
+                success: function () {
+                    alert("Item added successfully!")
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert("Error " + jqXHR.status +
+                        ": " + errorThrown);
+                }
+            });
+        }
+    });
+});
+
+$(function() {
+    $(document).on("click", ".outgoing", function() {
         localStorage.setItem("link",window.location.href);
         localStorage.setItem("page","<< Back to author: "+$("title").text());
     })

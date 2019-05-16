@@ -1,4 +1,5 @@
 let counter = 0;
+let event_id;
 
 function createAuthors(authors) {
     let author_name;
@@ -26,7 +27,7 @@ function fillFavourite(book) {
       <div class="card">
         <img class="card-img-top" src="`+img+`" alt="Book cover">
         <div class="card-footer text-center">
-          <a href="`+book_link+`" class="btn btn-outline-primary btn-sm">
+          <a href="`+book_link+`" class="btn btn-outline-primary btn-sm favourites">
                       <i class="fa fa-book"></i>
                       View Book</a>
         </div>
@@ -40,7 +41,7 @@ function fillTop10(book, authors) {
     const genres = (book.book.genres).join(', ');
     const book_link = "/pages/book.html?id="+book.book_id;
 
-    return `<a href="`+book_link+`" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+    return `<a href="`+book_link+`" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center bestsellers">
                   <div class="flex-column w-75">
                     `+title+`
                     <p><small>by `+createAuthors(authors)+`</small></p>
@@ -114,6 +115,7 @@ async function appendEvent() {
     $('#img').attr("src", "../assets/images/events/"+event.event.imgpath);
     $('#description').text(event.event.description);
     $("title").text(event.event.location + " - " +date);
+    event_id = event.event_id;
 }
 
 function add_padding(length) {
@@ -177,9 +179,23 @@ $(function() {
 });
 
 $(function() {
-    $(window).on("click", "a", function() {
-        localStorage.setItem("link",window.location.href);
+    $(document).on("click", ".bestsellers", function() {
+        localStorage.setItem("link","../pages/bestsellers.html");
         localStorage.setItem("page","<< Back to Bestsellers");
+    })
+});
+
+$(function() {
+    $(document).on("click", ".favourites", function() {
+        localStorage.setItem("link","../pages/favourites.html");
+        localStorage.setItem("page","<< Back to Favourites");
+    })
+});
+
+$(function() {
+    $(document).on("click", ".event", function() {
+        localStorage.setItem("link","/pages/event.html?id="+event_id);
+        localStorage.setItem("page","<< Back to associated event");
     })
 });
 

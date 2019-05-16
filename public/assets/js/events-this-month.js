@@ -13,7 +13,7 @@ function fillTemplate(event) {
                         </div>
                     </div>
                     <div class="card-footer text-center">
-                        <a href="`+event_link+`" class="btn btn-outline-primary btn-sm">
+                        <a href="`+event_link+`" class="btn btn-outline-primary btn-sm outgoing">
                             <i class="fa fa-calendar"></i> View more </a>
                     </div>
                 </div>
@@ -62,7 +62,7 @@ $(function() {
 });
 
 $(function() {
-    $(window).on("beforeunload", function() {
+    $(document).on("click", ".outgoing", function() {
         localStorage.setItem("link",window.location.href);
         localStorage.setItem("page","<< Back to all events");
     })

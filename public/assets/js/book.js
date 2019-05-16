@@ -12,7 +12,7 @@ function createAuthors(authors) {
         author_link = "/pages/author.html?id="+authors[i].author_id;
         author_name = authors[i].author.name;
         author_surname = authors[i].author.surname;
-        result = result + `<a href="`+author_link+`">`+author_name+` `+author_surname+`</a>`;
+        result = result + `<a href="`+author_link+`" class="outgoing">`+author_name+` `+author_surname+`</a>`;
         if(i<authors.length-1 && authors.length>1) result= result + ', '
     }
 
@@ -49,7 +49,6 @@ function fillReview(review) {
 function fillSimilar(book, authors) {
     const img = "../assets/images/books/"+book.imgpath;
     const book_link = "/pages/book.html?id="+book.book_id;
-    const author_link = "/pages/author.html?id="+book.author_id;
     const title = book.title;
 
     return `<div class="card similar-book-card">
@@ -57,13 +56,13 @@ function fillSimilar(book, authors) {
               <div class="card-body">
                 <h5 class="card-title">`+title+`</h5>
                 <small>  by
-                  <a href="`+author_link+`">`+createAuthors(authors)+`</a>
+                  `+createAuthors(authors)+`
                 </small>
               </div>
               <div class="card-footer">
                 <div class="row ">
                   <div class="col padding-10px">
-                    <a href="`+book_link+`" class="btn btn-outline-primary btn-sm">
+                    <a href="`+book_link+`" class="btn btn-outline-primary btn-sm outgoing">
                       <i class="fa fa-book"></i>
                       View Book</a>
                   </div>
@@ -90,7 +89,7 @@ function fillEvent(event) {
                             </div>
                     </div>
                     <div class="card-footer text-center">
-                        <a href="`+event_link+`" class="btn btn-outline-primary btn-sm">
+                        <a href="`+event_link+`" class="btn btn-outline-primary btn-sm outgoing">
                             <i class="fa fa-calendar"></i> View more </a>
                     </div>
                 </div>`;
@@ -139,7 +138,6 @@ async function appendBook(book_id) {
 
     const img = "../assets/images/books/"+book.imgpath;
     const title = book.title;
-    const author_link = "/pages/author.html?id="+book.author_id;
     const abstract = book.abstract;
     const genres = (book.genres).join(', ');
     const themes = (book.themes).join(', ');
@@ -152,7 +150,7 @@ async function appendBook(book_id) {
                     </div>
                     <div class="col-lg-7">
                         <span class="h4">`+title+`</span> <br>
-                        <span class="h6">by <a href="`+author_link+`">`+createAuthors(authors)+`</a></span> <hr>
+                        <span class="h6">by `+createAuthors(authors)+`</span> <hr>
                         <div>
                             <span class="abstract">
                                 `+abstract+`
@@ -257,7 +255,7 @@ $(function() {
 });
 
 $(function() {
-    $(window).on("beforeunload", function() {
+    $(document).on("click", ".outgoing", function() {
         localStorage.setItem("link",window.location.href);
         localStorage.setItem("page","<< Back to book: "+$("title").text());
     })

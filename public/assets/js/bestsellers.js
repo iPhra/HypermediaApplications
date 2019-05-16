@@ -42,7 +42,7 @@ function fillBook(book, authors) {
         <div class="card-footer">
             <div class="row ">
                 <div class="col padding-10px">
-                    <a href="`+book_link+`" class="btn btn-big btn-outline-primary btn-sm">
+                    <a href="`+book_link+`" class="btn btn-big btn-outline-primary btn-sm outgoing">
                         <i class="fa fa-book"></i>
                         View Book</a>
                 </div>
@@ -129,7 +129,7 @@ $(function() {
 });
 
 $(function() {
-    $(window).on("beforeunload", function() {
+    $(document).on("click", ".outgoing", function() {
         localStorage.setItem("link",window.location.href);
         localStorage.setItem("page","<< Back to Bestsellers");
     })

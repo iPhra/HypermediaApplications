@@ -7,7 +7,7 @@ function createAuthors(authors) {
         author_link = "/pages/author.html?id="+authors[i].author_id;
         author_name = authors[i].author.name;
         author_surname = authors[i].author.surname;
-        result = result + `<a href="`+author_link+`">`+author_name+` `+author_surname+`</a>`;
+        result = result + `<a href="`+author_link+`" class="outgoing">`+author_name+` `+author_surname+`</a>`;
         if(i<authors.length-1 && authors.length>1) result= result + ', '
     }
 
@@ -28,7 +28,7 @@ function fillCart(book, authors) {
                             <img alt="book_img" class="img-fluid align-content-center" src="`+img+`">
                         </div>
                         <div class="col-md-7">
-                            <a href="`+book_link+`"><h5 class="card-title">`+title+`</h5></a>
+                            <a href="`+book_link+`" class="outgoing"><h5 class="card-title">`+title+`</h5></a>
                             <div class="card-text">by `+createAuthors(authors)+`</div>
                         </div>
                         <div class="col-md-3">
@@ -172,7 +172,7 @@ $(function() {
 });
 
 $(function() {
-    $(window).on("beforeunload", function() {
+    $(document).on("click", ".outgoing", function() {
         localStorage.setItem("link",window.location.href);
         localStorage.setItem("page","<< Back to cart");
     })

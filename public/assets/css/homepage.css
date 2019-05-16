@@ -7,16 +7,17 @@ body {
   padding-top: 56px;
 }
 
-.card {
-  margin-top: 26px;
+#bestsellers{
+  margin-top: 15px;
 }
 
 .jumbotron {
-  margin-top: 26px;
+  margin-top: 15px;
   background-image: url("../images/home-background.png");
   background-size: cover;
   color: white;
   align-content: center;
+  margin-bottom: 10px;
 }
 
 .card-img-top {
@@ -67,4 +68,10 @@ nav{
 
 .featured-event-img {
   padding: 0;
+}
+
+
+.debug{
+  border-color: red;
+  border-style: solid;
 }

@@ -8,7 +8,6 @@ let sqlDb = sqlDbFactory({
 });
 
 accountSetup = (database) => {
-    sqlDb = database;
     console.log("Checking if account table exists");
     return database.schema.hasTable("account").then(exists => {
         if (!exists) {
@@ -19,14 +18,12 @@ accountSetup = (database) => {
                 table.string("password").notNullable();
                 table.string("name").notNullable();
                 table.string("surname").notNullable();
-                table.boolean("admin").defaultTo(false);
             })
         }
     });
 };
 
 authorSetup = (database) => {
-    sqlDb = database;
     console.log("Checking if author table exists");
     return database.schema.hasTable("author").then(exists => {
         if (!exists) {
@@ -42,8 +39,21 @@ authorSetup = (database) => {
     });
 };
 
+authorshipSetup = (database) => {
+    console.log("Checking if authorship table exists");
+    return database.schema.hasTable("authorship").then(exists => {
+        if (!exists) {
+            console.log("It doesn't so we create it");
+            return database.schema.createTable("authorship", table => {
+                table.integer("author_id").references("author.author_id").onUpdate("CASCADE").onDelete("CASCADE");
+                table.integer("book_id").references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
+                table.primary(["author_id","book_id"]);
+            });
+        }
+    });
+};
+
 bookSetup = (database) => {
-    sqlDb = database;
     console.log("Checking if book table exists");
     return database.schema.hasTable("book").then(exists => {
         if (!exists) {
@@ -57,14 +67,12 @@ bookSetup = (database) => {
                 table.enu("cover_type",["Hard cover","Soft cover","E-book"]).notNullable();
                 table.text("imgpath").notNullable();
                 table.text("interview");
-                table.integer("author_id").references("author.author_id").onUpdate("CASCADE").onDelete("CASCADE");
             });
         }
     });
 };
 
 cartSetup = (database) => {
-    sqlDb = database;
     console.log("Checking if cart table exists");
     return database.schema.hasTable("cart").then(exists => {
         if (!exists) {
@@ -79,8 +87,38 @@ cartSetup = (database) => {
     });
 };
 
+eventSetup = (database) => {
+    console.log("Checking if event table exists");
+    return database.schema.hasTable("event").then(exists => {
+        if (!exists) {
+            console.log("It doesn't so we create it");
+            return database.schema.createTable("event", table => {
+                table.increments("event_id");
+                table.integer("book_id").references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
+                table.timestamp("date").notNullable().defaultTo(database.fn.now());
+                table.text("description").notNullable();
+                table.string("location").notNullable();
+                table.string("organiser_email").notNullable();
+                table.text("imgpath").notNullable();
+            })
+        }
+    })
+};
+
+favouriteSetup = (database) => {
+    console.log("Checking if favourite table exists");
+    return database.schema.hasTable("favourite").then(exists => {
+        if (!exists) {
+            console.log("It doesn't so we create it");
+            return database.schema.createTable("favourite", table => {
+                table.integer("book_id").references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
+                table.primary(["book_id"]);
+            })
+        }
+    })
+};
+
 genreSetup = (database) => {
-    sqlDb = database;
     console.log("Checking if genre table exists");
     return database.schema.hasTable("genre").then(exists => {
         if (!exists) {
@@ -95,7 +133,6 @@ genreSetup = (database) => {
 };
 
 purchaseSetup = (database) => {
-    sqlDb = database;
     console.log("Checking if purchase table exists");
     return database.schema.hasTable("purchase").then(exists => {
         if (!exists) {
@@ -112,56 +149,7 @@ purchaseSetup = (database) => {
     });
 };
 
-similaritySetup = (database) => {
-    sqlDb = database;
-    console.log("Checking if similarity table exists");
-    return database.schema.hasTable("similarity").then(exists => {
-        if (!exists) {
-            console.log("It doesn't so we create it");
-            return database.schema.createTable("similarity", table => {
-                table.integer("book_id1").references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
-                table.integer("book_id2").references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
-                table.primary(["book_id1","book_id2"]);
-            });
-        }
-    });
-};
-
-eventSetup = (database) => {
-    sqlDb = database;
-    console.log("Checking if event table exists");
-    return database.schema.hasTable("event").then(exists => {
-        if (!exists) {
-            console.log("It doesn't so we create it");
-            return database.schema.createTable("event", table => {
-                table.increments("event_id");
-                table.integer("book_id").references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
-                table.timestamp("date").notNullable().defaultTo(database.fn.now());
-                table.text("description");
-                table.string("location");
-                table.string("organiser_email");
-                table.text("imgpath").notNullable();
-            })
-        }
-    })
-};
-
-favouriteSetup = (database) => {
-    sqlDb = database;
-    console.log("Checking if favourite table exists");
-    return database.schema.hasTable("favourite").then(exists => {
-        if (!exists) {
-            console.log("It doesn't so we create it");
-            return database.schema.createTable("favourite", table => {
-                table.integer("book_id").references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
-                table.primary(["book_id"]);
-            })
-        }
-    })
-};
-
 reviewSetup = (database) => {
-    sqlDb = database;
     console.log("Checking if review table exists");
     return database.schema.hasTable("review").then(exists => {
         if (!exists) {
@@ -177,8 +165,21 @@ reviewSetup = (database) => {
     })
 };
 
+similaritySetup = (database) => {
+    console.log("Checking if similarity table exists");
+    return database.schema.hasTable("similarity").then(exists => {
+        if (!exists) {
+            console.log("It doesn't so we create it");
+            return database.schema.createTable("similarity", table => {
+                table.integer("book_id1").references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
+                table.integer("book_id2").references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
+                table.primary(["book_id1","book_id2"]);
+            });
+        }
+    });
+};
+
 themeSetup = (database) => {
-    sqlDb = database;
     console.log("Checking if theme table exists");
     return database.schema.hasTable("theme").then(exists => {
         if (!exists) {
@@ -193,14 +194,13 @@ themeSetup = (database) => {
 };
 
 top10Setup = (database) => {
-    sqlDb = database;
     console.log("Checking if top10 table exists");
     return database.schema.hasTable("top10").then(exists => {
         if (!exists) {
             console.log("It doesn't so we create it");
             return database.schema.createTable("top10", table => {
                 table.integer("book_id").references("book.book_id").onUpdate("CASCADE").onDelete("CASCADE");
-                table.integer("rank").unique();
+                table.integer("rank").unique().notNullable();
                 table.primary(["book_id"]);
             })
         }
@@ -211,6 +211,7 @@ function setupDatabase() {
     console.log("Setting up the database");
     accountSetup(sqlDb);
     authorSetup(sqlDb);
+    authorshipSetup(sqlDb);
     bookSetup(sqlDb);
     cartSetup(sqlDb);
     genreSetup(sqlDb);

@@ -25,7 +25,7 @@ function fillCart(book, authors) {
     return `<div class="card-body">
                     <div class="row">
                         <div class="col-md-2">
-                            <img class="img-fluid align-content-center" src="`+img+`">
+                            <img alt="book_img" class="img-fluid align-content-center" src="`+img+`">
                         </div>
                         <div class="col-md-7">
                             <a href="`+book_link+`"><h5 class="card-title">`+title+`</h5></a>

@@ -24,7 +24,7 @@ function fillFavourite(book) {
 
     return `<div class="col">
       <div class="card">
-        <img class="card-img-top" src="`+img+`" alt="Card image cap">
+        <img class="card-img-top" src="`+img+`" alt="Book cover">
         <div class="card-footer text-center">
           <a href="`+book_link+`" class="btn btn-outline-primary btn-sm">
                       <i class="fa fa-book"></i>
@@ -47,7 +47,7 @@ function fillTop10(book, authors) {
                     <span class="badge badge-info badge-pill"> `+genres+`</span>
                   </div>
                   <div class="image-parent w-25">
-                    <img src="`+img+`" class="img-fluid w-100" alt="cover">
+                    <img src="`+img+`" class="img-fluid w-100" alt="Book cover">
                   </div>
                 </a>`;
 }
@@ -112,6 +112,7 @@ async function appendEvent() {
     $('#date').text(" " + date);
     $('#email').text(" " + event.event.organiser_email);
     $('#img').attr("src", "../assets/images/events/"+event.event.imgpath);
+    $('#description').text(event.event.description);
     $("title").text(event.event.location + " - " +date);
 }
 
@@ -133,13 +134,13 @@ function add_padding(length) {
 //change navbar styling after collapse button have been pressed
 $(document).ready(function() {
 
-    $('.collapse').on('show.bs.collapse', function() {
+    $('.collapse')
+        .on('show.bs.collapse', function() {
         $('#searchBar').removeClass('ml-3');
-    });
-
-    $('.collapse').on('hidden.bs.collapse', function() {
-        $('#searchBar').addClass('ml-3');
-    });
+        })
+        .on('hidden.bs.collapse', function() {
+            $('#searchBar').addClass('ml-3');
+        });
 });
 
 $(async function() {

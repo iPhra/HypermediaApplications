@@ -31,7 +31,7 @@ exports.eventsEventIdGET = async (event_id) => {
 exports.eventsGET = async (offset,limit) => {
   //retrieve a preview of all the events of the month
   const events = await database("event")
-      .select("event_id","location","date","imgpath","book_id","organiser_email")
+      .select("event_id","location","date","imgpath","book_id","description", "organiser_email")
       .whereRaw("to_char(date, 'MM-YYYY') = ?", getDate())
       .limit(limit)
       .offset(offset);
@@ -41,7 +41,7 @@ exports.eventsGET = async (offset,limit) => {
   for(let i=0; i<events.length; i++) {
     result[i] = {
       "event_id" : events[i].event_id,
-      "event" : _.pick(events[i], ["location", "date", "imgpath","book_id","organiser_email"])
+      "event" : _.pick(events[i], ["location", "date", "imgpath","book_id", "description", "organiser_email"])
     }
   }
 

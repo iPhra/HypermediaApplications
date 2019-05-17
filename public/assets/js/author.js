@@ -56,11 +56,6 @@ async function appendBooks(author_id) {
 
 
 
-$(async function() {
-    const author_id = $.urlParam("id");
-    await appendAuthor(author_id);
-    await appendBooks(author_id);
-});
 
 $(function() {
     if(localStorage.getItem("token")) {
@@ -83,13 +78,13 @@ $(function() {
 });
 
 $(function() {
-    $(document).on("click", "#logout", function(){
-        localStorage.removeItem("token");
-        location.reload();
-    });
-});
+    $("#info").attr("href",localStorage.getItem("link")).text(localStorage.getItem("page"));
 
-$(function() {
+    $(document).on("click", ".outgoing", function() {
+        localStorage.setItem("link",window.location.href);
+        localStorage.setItem("page","<< Authors / "+$("title").text());
+    });
+
     $(document).on("click", ".cart", function(){
         const token = localStorage.getItem("token");
         if(!token) alert("You must be logged in to add items to the cart!");
@@ -115,15 +110,17 @@ $(function() {
             });
         }
     });
+
+    $(document).on("click", "#logout", function(){
+        localStorage.removeItem("token");
+        location.reload();
+    });
 });
 
-$(function() {
-    $(document).on("click", ".outgoing", function() {
-        localStorage.setItem("link",window.location.href);
-        localStorage.setItem("page","<< Authors / "+$("title").text());
-    })
+$(async function() {
+    const author_id = $.urlParam("id");
+    await appendAuthor(author_id);
+    await appendBooks(author_id);
 });
 
-$(function() {
-    $("#info").attr("href",localStorage.getItem("link")).text(localStorage.getItem("page"));
-});
+

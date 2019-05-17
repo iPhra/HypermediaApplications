@@ -178,26 +178,6 @@ async function appendBook(book_id) {
 
 
 
-$(document).on("click", "#read-more", function() {
-    $("#book-tab-content").addClass('active').addClass('show').siblings().removeClass('active').removeClass('show');
-    $("#book-tab").addClass('active').addClass('show').parent().siblings().children().removeClass('active').removeClass('show');
-    location.href = "#book-tab";
-});
-
-$(document).ready(function(){
-    $(window).scroll(function(){
-        const newPos = $(document).scrollTop();
-        $('.floating-price').css( {top:newPos});
-    })
-});
-
-$(async function() {
-    const book_id = $.urlParam("id");
-    await appendBook(book_id);
-    await appendReviews(book_id);
-    await appendSimilars(book_id);
-    await appendEvents(book_id);
-});
 
 $(function() {
     if(localStorage.getItem("token")) {
@@ -220,13 +200,13 @@ $(function() {
 });
 
 $(function() {
-    $(document).on("click", "#logout", function(){
-        localStorage.removeItem("token");
-        location.reload();
-    });
-});
+    $("#info").attr("href",localStorage.getItem("link")).text(localStorage.getItem("page"));
 
-$(function() {
+    $(document).on("click", ".outgoing", function() {
+        localStorage.setItem("link",window.location.href);
+        localStorage.setItem("page","<< Books / "+$("title").text());
+    })
+
     $(document).on("click", ".cart", function(){
         const token = localStorage.getItem("token");
         if(!token) alert("You must be logged in to add items to the cart!");
@@ -252,17 +232,30 @@ $(function() {
             });
         }
     });
-});
 
-$(function() {
-    $(document).on("click", ".outgoing", function() {
-        localStorage.setItem("link",window.location.href);
-        localStorage.setItem("page","<< Books / "+$("title").text());
+    $(document).on("click", "#logout", function(){
+        localStorage.removeItem("token");
+        location.reload();
+    });
+
+    $(document).on("click", "#read-more", function() {
+        $("#book-tab-content").addClass('active').addClass('show').siblings().removeClass('active').removeClass('show');
+        $("#book-tab").addClass('active').addClass('show').parent().siblings().children().removeClass('active').removeClass('show');
+        location.href = "#book-tab";
+    });
+
+    $(window).scroll(function(){
+        const newPos = $(document).scrollTop();
+        $('.floating-price').css( {top:newPos});
     })
 });
 
-$(function() {
-    $("#info").attr("href",localStorage.getItem("link")).text(localStorage.getItem("page"));
+$(async function() {
+    const book_id = $.urlParam("id");
+    await appendBook(book_id);
+    await appendReviews(book_id);
+    await appendSimilars(book_id);
+    await appendEvents(book_id);
 });
 
 

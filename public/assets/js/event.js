@@ -26,11 +26,6 @@ async function appendEvent(event_id) {
 
 
 
-$(async function() {
-    const event_id = $.urlParam("id"); 
-    await appendEvent(event_id);
-});
-
 $(function() {
     if(localStorage.getItem("token")) {
         $("#account-area").append('<a href="/pages/cart.html"> <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>\n' +
@@ -52,19 +47,20 @@ $(function() {
 });
 
 $(function() {
+    $("#info").attr("href",localStorage.getItem("link")).text(localStorage.getItem("page"));
+
     $(document).on("click", "#logout", function(){
         localStorage.removeItem("token");
         location.reload();
     });
-});
 
-$(function() {
     $(document).on("click", ".outgoing", function() {
         localStorage.setItem("link",window.location.href);
-        localStorage.setItem("page","<< Event / "+$("title").text());
-    })
+        localStorage.setItem("page","<< Events / "+$("title").text());
+    });
 });
 
-$(function() {
-    $("#info").attr("href",localStorage.getItem("link")).text(localStorage.getItem("page"));
+$(async function() {
+    const event_id = $.urlParam("id");
+    await appendEvent(event_id);
 });

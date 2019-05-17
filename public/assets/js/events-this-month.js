@@ -30,9 +30,8 @@ async function appendEvents() {
     $('#event-content').append(html);
 }
 
-$(async function() {
-    await appendEvents();
-});
+
+
 
 $(function() {
     if(localStorage.getItem("token")) {
@@ -59,11 +58,13 @@ $(function() {
         localStorage.removeItem("token");
         location.reload();
     });
-});
 
-$(function() {
     $(document).on("click", ".outgoing", function() {
         localStorage.setItem("link",window.location.href);
         localStorage.setItem("page","<< All Events");
-    })
+    });
+});
+
+$(async function() {
+    await appendEvents();
 });

@@ -64,7 +64,7 @@ async function appendThemes(current) {
         current = themes[0];
     }
     active = current;
-    $("#info").text("Theme / "+active);
+    $("#info").text("Themes / "+active);
     await appendBooks(active);
 }
 
@@ -89,21 +89,6 @@ async function appendBooks(theme) {
 
 
 
-$(async function() {
-    const id = $.urlParam("id");
-    if(id) await appendThemes(id);
-    else await appendThemes();
-});
-
-$(function() {
-    $(document).on("click", ".list-group-item", async function() {
-        active = this.id;
-        $("#info").text("Theme / "+active);
-        $('#book-content').empty();
-        await appendBooks(this.id);
-    });
-});
-
 $(function() {
     if(localStorage.getItem("token")) {
         $("#account-area").append('<a href="/pages/cart.html"> <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>\n' +
@@ -122,13 +107,6 @@ $(function() {
             '      Register\n' +
             '      </span> </a>')
     }
-});
-
-$(function() {
-    $(document).on("click", "#logout", function(){
-        localStorage.removeItem("token");
-        location.reload();
-    });
 });
 
 $(function() {
@@ -157,15 +135,31 @@ $(function() {
             });
         }
     });
-});
 
-$(function() {
     $(document).on("click", ".outgoing", function() {
         if(window.location.href.includes("?id="))
             localStorage.setItem("link",window.location.href);
         else
             localStorage.setItem("link",window.location.href+"?id="+active);
-        localStorage.setItem("page","<< Back to "+active+ " books");
-    })
+        localStorage.setItem("page","<< Themes / "+active);
+    });
+
+    $(document).on("click", "#logout", function(){
+        localStorage.removeItem("token");
+        location.reload();
+    });
+
+    $(document).on("click", ".list-group-item", async function() {
+        active = this.id;
+        $("#info").text("Themes / "+active);
+        $('#book-content').empty();
+        await appendBooks(this.id);
+    });
+});
+
+$(async function() {
+    const id = $.urlParam("id");
+    if(id) await appendThemes(id);
+    else await appendThemes();
 });
 

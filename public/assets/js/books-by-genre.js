@@ -64,7 +64,7 @@ async function appendGenres(current) {
         current = genres[0];
     }
     active = current;
-    $("#info").text("Genre / "+active);
+    $("#info").text("Genres / "+active);
     await appendBooks(active);
 }
 
@@ -88,20 +88,6 @@ async function appendBooks(genre) {
 
 
 
-$(async function() {
-    const id = $.urlParam("id");
-    if(id) await appendGenres(id);
-    else await appendGenres();
-});
-
-$(function() {
-    $(document).on("click", ".list-group-item", async function(){
-        active = this.id;
-        $("#info").text("Genre / "+active);
-        $('#book-content').empty();
-        await appendBooks(this.id);
-    });
-});
 
 $(function() {
     if(localStorage.getItem("token")) {
@@ -124,13 +110,14 @@ $(function() {
 });
 
 $(function() {
-    $(document).on("click", "#logout", function(){
-        localStorage.removeItem("token");
-        location.reload();
+    $(document).on("click", ".outgoing", function() {
+        if(window.location.href.includes("?id="))
+            localStorage.setItem("link",window.location.href);
+        else
+            localStorage.setItem("link",window.location.href+"?id="+active);
+        localStorage.setItem("page","<< Genres / "+active);
     });
-});
 
-$(function() {
     $(document).on("click", ".cart", function(){
         const token = localStorage.getItem("token");
         if(!token) alert("You must be logged in to add items to the cart!");
@@ -156,14 +143,22 @@ $(function() {
             });
         }
     });
+
+    $(document).on("click", "#logout", function(){
+        localStorage.removeItem("token");
+        location.reload();
+    });
+
+    $(document).on("click", ".list-group-item", async function(){
+        active = this.id;
+        $("#info").text("Genres / "+active);
+        $('#book-content').empty();
+        await appendBooks(this.id);
+    });
 });
 
-$(function() {
-    $(document).on("click", ".outgoing", function() {
-        if(window.location.href.includes("?id="))
-            localStorage.setItem("link",window.location.href);
-        else
-            localStorage.setItem("link",window.location.href+"?id="+active);
-        localStorage.setItem("page","<< Back to "+active+ " books");
-    })
+$(async function() {
+    const id = $.urlParam("id");
+    if(id) await appendGenres(id);
+    else await appendGenres();
 });

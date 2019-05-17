@@ -62,9 +62,8 @@ async function appendFavourites() {
     $('#card-deck').append(html);
 }
 
-$(async function() {
-    await appendFavourites();
-});
+
+
 
 $(function() {
     if(localStorage.getItem("token")) {
@@ -84,13 +83,6 @@ $(function() {
             '      Register\n' +
             '      </span> </a>')
     }
-});
-
-$(function() {
-    $(document).on("click", "#logout", function(){
-        localStorage.removeItem("token");
-        location.reload();
-    });
 });
 
 $(function() {
@@ -119,11 +111,19 @@ $(function() {
             });
         }
     });
-});
 
-$(function() {
     $(document).on("click", ".outgoing", function() {
         localStorage.setItem("link",window.location.href);
         localStorage.setItem("page","<< Favourites");
-    })
+    });
+
+    $(document).on("click", "#logout", function(){
+        localStorage.removeItem("token");
+        location.reload();
+    });
 });
+
+$(async function() {
+    await appendFavourites();
+});
+

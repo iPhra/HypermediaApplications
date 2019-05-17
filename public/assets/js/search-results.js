@@ -1,3 +1,10 @@
+let counter = 0;
+
+$.urlParam = function(name){
+    const results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+    return results[1] || 0;
+};
+
 function createAuthors(authors) {
     let author_link;
     let author_name;
@@ -14,17 +21,9 @@ function createAuthors(authors) {
     return result;
 }
 
-$.urlParam = function(name){
-    const results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-    return results[1] || 0;
-};
-
-$(async function() {
-    const keyword = $.urlParam("keyword");
-    await appendResults(keyword);
-});
-
-let counter = 0;
+async function retrieveAuthors(book_id) {
+    return (await fetch('/v2/books/'+book_id+'/authors')).json()
+}
 
 function fillBook(book, authors) {
     const img = "../assets/images/books/" + book.book.imgpath;
@@ -54,10 +53,6 @@ function fillBook(book, authors) {
     </div>`;
 }
 
-async function retrieveAuthors(book_id) {
-    return (await fetch('/v2/books/'+book_id+'/authors')).json()
-}
-
 async function appendResults(keyword) {
     let books = await (await fetch(`/v2/books?keyword=`+ keyword)).json();
     let authors;
@@ -70,6 +65,9 @@ async function appendResults(keyword) {
 
     $('#card-deck').append(html);
 }
+
+
+
 
 $(function() {
     if(localStorage.getItem("token")) {
@@ -89,13 +87,6 @@ $(function() {
             '      Register\n' +
             '      </span> </a>')
     }
-});
-
-$(function() {
-    $(document).on("click", "#logout", function(){
-        localStorage.removeItem("token");
-        location.reload();
-    });
 });
 
 $(function() {
@@ -124,12 +115,21 @@ $(function() {
             });
         }
     });
-});
 
-$(function() {
+    $(document).on("click", "#logout", function(){
+        localStorage.removeItem("token");
+        location.reload();
+    });
+
     $(document).on("click", ".outgoing", function() {
         localStorage.setItem("link",window.location.href);
         localStorage.setItem("page","<< Search Results");
     })
+
+});
+
+$(async function() {
+    const keyword = $.urlParam("keyword");
+    await appendResults(keyword);
 });
 

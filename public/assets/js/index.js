@@ -134,23 +134,6 @@ function add_padding(length) {
 
 
 
-//change navbar styling after collapse button have been pressed
-$(document).ready(function() {
-
-    $('.collapse')
-        .on('show.bs.collapse', function() {
-        $('#searchBar').removeClass('ml-3');
-        })
-        .on('hidden.bs.collapse', function() {
-            $('#searchBar').addClass('ml-3');
-        });
-});
-
-$(async function() {
-    await appendTop10();
-    await appendFavourites();
-    await appendEvent();
-});
 
 $(function() {
     if(localStorage.getItem("token")) {
@@ -173,30 +156,38 @@ $(function() {
 });
 
 $(function() {
+    $(document).on("click", ".favourites", function() {
+        localStorage.setItem("link","../pages/favourites.html");
+        localStorage.setItem("page","<< Favourites");
+    });
+
+    $(document).on("click", ".event", function() {
+        localStorage.setItem("link","/pages/event.html?id="+event_id);
+        localStorage.setItem("page","<< Event / "+next_event);
+    });
+
+    $(document).on("click", ".bestsellers", function() {
+        localStorage.setItem("link","../pages/bestsellers.html");
+        localStorage.setItem("page","<< Bestsellers");
+    });
+
     $(document).on("click", "#logout", function(){
         localStorage.removeItem("token");
         location.reload();
     });
+
+    $('.collapse')
+        .on('show.bs.collapse', function() {
+            $('#searchBar').removeClass('ml-3');
+        })
+        .on('hidden.bs.collapse', function() {
+            $('#searchBar').addClass('ml-3');
+        });
 });
 
-$(function() {
-    $(document).on("click", ".bestsellers", function() {
-        localStorage.setItem("link","../pages/bestsellers.html");
-        localStorage.setItem("page","<< Bestsellers");
-    })
-});
-
-$(function() {
-    $(document).on("click", ".favourites", function() {
-        localStorage.setItem("link","../pages/favourites.html");
-        localStorage.setItem("page","<< Favourites");
-    })
-});
-
-$(function() {
-    $(document).on("click", ".event", function() {
-        localStorage.setItem("link","/pages/event.html?id="+event_id);
-        localStorage.setItem("page","<< Event / "+next_event);
-    })
+$(async function() {
+    await appendTop10();
+    await appendFavourites();
+    await appendEvent();
 });
 

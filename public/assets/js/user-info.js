@@ -77,5 +77,3 @@ $(function() {
         });
     });
 });
-
-//@todo rotta

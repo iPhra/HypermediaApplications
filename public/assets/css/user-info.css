@@ -2,25 +2,3 @@
     margin-top: 26px;
     margin-bottom: 26px;
 }
-
-body {
-    padding-top: 56px;
-}
-
-footer{
-    position: static;
-    bottom: 0;
-    width: 100%;
-}
-
-.footer-logo{
-    max-width: 150px;
-}
-
-.navcolor {
-    background-color: #706ad8 !important;
-}
-
-.footer-link {
-    color: #ffb020;
-}

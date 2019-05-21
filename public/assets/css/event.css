@@ -1,0 +1,13 @@
+.image-no-overflow{
+    max-width: 100%;
+}
+
+.events-container{
+    padding-bottom: 20px;
+}
+
+.orientation-info {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: blue;
+}

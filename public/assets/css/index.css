@@ -1,16 +1,3 @@
-/*!
- * Start Bootstrap - Shop Homepage (https://startbootstrap.com/template-overviews/shop-homepage)
- * Copyright 2013-2019 Start Bootstrap
- * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-shop-homepage/blob/master/LICENSE)
- */
-body {
-  padding-top: 56px;
-}
-
-#bestsellers{
-  margin-top: 15px;
-}
-
 .jumbotron {
   margin-top: 15px;
   background-image: url("../images/home-background.png");
@@ -28,37 +15,12 @@ body {
   text-align: right;
 }
 
-.whiteCard {
+.white-card {
   visibility: hidden;
-}
-
-nav .fa-shopping-cart, .fa-user {
-  font-size: 1.5em;
-  color: white;
-  margin-right: 10px;
-}
-
-footer{
-  position: static;
-  bottom: 0;
-  width: 100%;
-}
-
-.footer-logo{
-  max-width: 150px;
-}
-
-.navbar-logo{
-  border-radius: 25%;
-  max-height: 50px;
 }
 
 .padding-bottom-10px{
   padding-bottom: 20px;
-}
-
-nav{
-  font-size: 15px;
 }
 
 .fas {
@@ -70,20 +32,12 @@ nav{
   padding: 0;
 }
 
-
-.debug{
-  border-color: red;
-  border-style: solid;
-}
-
-.navcolor {
-  background-color: #706ad8 !important;
-}
-
 .badge-info {
   background-color: #ffb020;
 }
 
-.footer-link {
-  color: #ffb020;
+
+
+#bestsellers{
+  margin-top: 15px;
 }

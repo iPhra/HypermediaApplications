@@ -124,7 +124,7 @@ function add_padding(length) {
     let html = "";
     for(let i=0; i<3-length%3; i++) {
            let template = `<div class="col">
-                              <div class="card whiteCard">
+                              <div class="card white-card">
                               </div>
                             </div>`;
         html = html + template;

@@ -1,113 +1,15 @@
-.custom-footer{
-    margin-top: 10px;
+nav {
+    font-size: 15px;
 }
 
-#price-tag{
-    text-align: right;
+body {
+    padding-top: 56px;
 }
 
-.book-cover-container{
-    background: gainsboro;
-}
-
-.debug{
-    border-color: red;
-    border-style: solid;
-}
-
-
-#exTab1 .tab-content {
-    color : white;
-    background-color: #428bca;
-    padding : 5px 15px;
-}
-
-#exTab2 h3 {
-    color : white;
-    background-color: #428bca;
-    padding : 5px 15px;
-}
-
-/* remove border radius for the tab */
-
-#exTab1 .nav-pills > li > a {
-    border-radius: 0;
-}
-
-/* change border radius for the tab , apply corners on top*/
-
-#exTab3 .nav-pills > li > a {
-    border-radius: 4px 4px 0 0 ;
-}
-
-#exTab3 .tab-content {
-    color : white;
-    background-color: #428bca;
-    padding : 5px 15px;
-}
-
-
-.floating-price{
-    position: relative;
-}
-
-.margin-top-10{
-    margin-top: 10px;
-}
-
-.review{
-    margin-top: 20px;
-}
-
-.fill-parent{
-    width: auto;
-}
-
-.similar-book-cover{
-    width: 286px;
-    height: 180px;
-}
-
-.similar-book-card{
-    margin-bottom: 15px !important;
-}
-
-.text {
-    position: relative;
-    font-size: 14px;
-    color: black;
-    width: 250px; /* Could be anything you like. */
-}
-
-.abstract {
-    position: relative;
-    display: inline-block;
-    word-wrap: break-word;
-    overflow: hidden;
-    max-height: 16.8em; /* (Number of lines you want visible) * (line-height) */
-    line-height: 1.2em;
-    text-align:justify;
-}
-
-.author-biography{
-    max-height: 400px;
-}
-
-.image-no-overflow{
-    max-width: 100%;
-}
-
-.card-event{
-    width: 90%;
-    margin: 10px auto auto;
-}
-
-.events-container{
-    padding-bottom: 20px;
-}
-
-.padding-top-65px{
-    padding-top: 65px;
+footer {
+    position: static;
+    bottom: 0;
+    width: 100%;
 }
 
 nav .fa-shopping-cart, .fa-user {
@@ -116,20 +18,37 @@ nav .fa-shopping-cart, .fa-user {
     margin-right: 10px;
 }
 
-.checked {
-    color: orange;
+
+
+
+.custom-footer{
+    margin-top: 10px;
 }
 
+.margin-top-10{
+    margin-top: 10px;
+}
 
-
-footer{
-    position: static;
-    bottom: 0;
+.btn-big {
+    height: 100%;
     width: 100%;
 }
 
-/* keep card deck responsive */
+.footer-logo{
+    max-width: 150px;
+}
 
+.footer-link {
+    color: #ffb020;
+}
+
+.navcolor {
+    background-color: #706ad8 !important;
+}
+
+
+
+/* keep card deck responsive */
 @media (min-width: 0) {
     .card-deck .card {
         flex: 0 0 calc(100% - 30px);
@@ -154,70 +73,4 @@ footer{
     .card-deck .card {
         flex: 0 0 calc(33.33333% - 30px);
     }
-}
-
-.btn-big {
-    height: 100%;
-    width: 100%;
-}
-
-.item-list {
-    margin-bottom: 15px;
-}
-
-.footer-logo{
-    max-width: 150px;
-}
-
-nav{
-    font-size: 15px;
-}
-
-.orientation-info {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    color: blue;
-}
-
-#myTab{
-    width: 100%;
-}
-
-#pignolo{
-    margin-left: 30%;
-}
-
-/* set card number per row on author's page book section */
-@media (min-width: 0) {
-    .author-books-container .author-book-card {
-        flex: 0 0 calc(50% - 30px);
-    }
-}
-@media (min-width: 576px) {
-    .author-books-container .author-book-card {
-        flex: 0 0 calc(33.33333% - 30px);
-    }
-}
-@media (min-width: 768px) {
-    .author-books-container .author-book-card {
-        flex: 0 0 calc(20% - 30px);
-    }
-}
-@media (min-width: 992px) {
-    .author-books-container .author-book-card {
-        flex: 0 0 calc(20% - 30px);
-    }
-}
-@media (min-width: 1200px) {
-    .author-books-container .author-book-card {
-        flex: 0 0 calc(20% - 30px);
-    }
-}
-
-.footer-link {
-    color: #ffb020;
-}
-
-.navcolor {
-    background-color: #706ad8 !important;
 }

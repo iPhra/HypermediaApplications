@@ -188,8 +188,11 @@ $(document).on("click", "#read-more", function() {
 
 $(document).ready(function(){
     $(window).scroll(function(){
-        const newPos = $(document).scrollTop();
-        $('.floating-price').css( {top:newPos});
+        // Avoid scrolling if the screen size is too small. Maintain responsiveness
+        if (screen.width >= 768) {
+            const newPos = $(document).scrollTop();
+            $('.floating-price').css({top: newPos});
+        }
     })
 });
 

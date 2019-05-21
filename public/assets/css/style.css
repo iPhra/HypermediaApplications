@@ -93,12 +93,6 @@
     max-height: 400px;
 }
 
-.author-book-card{
-}
-
-.author-books-container{
-}
-
 .image-no-overflow{
     max-width: 100%;
 }
@@ -187,7 +181,6 @@ nav{
 
 #myTab{
     width: 100%;
-
 }
 
 #pignolo{
@@ -219,4 +212,12 @@ nav{
     .author-books-container .author-book-card {
         flex: 0 0 calc(20% - 30px);
     }
+}
+
+.footer-link {
+    color: #ffb020;
+}
+
+.navcolor {
+    background-color: #706ad8 !important;
 }

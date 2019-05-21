@@ -116,3 +116,11 @@ footer{
 nav{
     font-size: 15px;
 }
+
+.navcolor {
+    background-color: #706ad8 !important;
+}
+
+.footer-link {
+    color: #ffb020;
+}

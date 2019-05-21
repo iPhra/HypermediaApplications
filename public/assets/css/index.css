@@ -75,3 +75,15 @@ nav{
   border-color: red;
   border-style: solid;
 }
+
+.navcolor {
+  background-color: #706ad8 !important;
+}
+
+.badge-info {
+  background-color: #ffb020;
+}
+
+.footer-link {
+  color: #ffb020;
+}

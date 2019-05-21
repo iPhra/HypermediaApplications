@@ -9,7 +9,7 @@ function createAuthors(authors) {
         author_link = "/pages/author.html?id="+authors[i].author_id;
         author_name = authors[i].author.name;
         author_surname = authors[i].author.surname;
-        result = result + `<a href="`+author_link+`">`+author_name+` `+author_surname+`</a>`;
+        result = result + `<a href="`+author_link+`" class="outgoing">`+author_name+` `+author_surname+`</a>`;
         if(i<authors.length-1 && authors.length>1) result= result + ', '
     }
 
@@ -36,7 +36,7 @@ function fillBook(book, authors) {
         <div class="card-footer">
             <div class="row ">
                 <div class="col padding-10px">
-                    <a href="`+book_link+`" class="btn btn-big btn-outline-primary btn-sm">
+                    <a href="`+book_link+`" class="btn btn-big btn-outline-primary btn-sm outgoing">
                         <i class="fa fa-book"></i>
                         View Book</a>
                 </div>
@@ -62,9 +62,8 @@ async function appendFavourites() {
     $('#card-deck').append(html);
 }
 
-$(async function() {
-    await appendFavourites();
-});
+
+
 
 $(function() {
     if(localStorage.getItem("token")) {
@@ -84,13 +83,6 @@ $(function() {
             '      Register\n' +
             '      </span> </a>')
     }
-});
-
-$(function() {
-    $(document).on("click", "#logout", function(){
-        localStorage.removeItem("token");
-        location.reload();
-    });
 });
 
 $(function() {
@@ -119,4 +111,19 @@ $(function() {
             });
         }
     });
+
+    $(document).on("click", ".outgoing", function() {
+        localStorage.setItem("link",window.location.href);
+        localStorage.setItem("page","<< Favourites");
+    });
+
+    $(document).on("click", "#logout", function(){
+        localStorage.removeItem("token");
+        location.reload();
+    });
 });
+
+$(async function() {
+    await appendFavourites();
+});
+

@@ -37,23 +37,21 @@
             <span class="sr-only">(current)</span>
           </a>
         </li>
-        <li class="nav-item">
-          <s><a class="nav-link" href="#">Latest Products</a></s>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="pages/bestsellers.html">Bestsellers</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="pages/favourites.html">Favourites</a>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Books
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <s><a class="dropdown-item" href="#">Latest Products</a></s>
+            <a class="dropdown-item" href="pages/bestsellers.html">Bestsellers</a>
+            <a class="dropdown-item" href="pages/favourites.html">Favourites</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="pages/books-by-genre.html">By genre</a>
+            <a class="dropdown-item" href="pages/books-by-theme.html">By theme</a>
+          </div>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="pages/events-this-month.html">Events</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="pages/books-by-genre.html">Genres</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="pages/books-by-theme.html">Themes</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="pages/ordering-and-shipping.html">Ordering & Shipping</a>
@@ -123,11 +121,11 @@
           <div class="card-body">
             <div class="row">
               <div class="col-md-8">
-                <div><a id="book_link" href=""><i class="fas fa-book"></i><span id="book_title"></span></a></div>
+                <div><a id="book_link" href="" class="event"><i class="fas fa-book"></i><span id="book_title"></span></a></div>
                 <div> <i class="fas fa-map-marker-alt"></i><span id="location"></span ></div>
                 <div> <i class="fas fa-calendar-day"></i> <span id="date"></span></div>
                 <div> <i class="fas fa-id-badge"></i><span id="email"></span></div> <hr>
-                <p id="description">Ciao</p>
+                <p id="description"></p>
               </div>
               <div class="col-md-4">
                 <img class="card-img-top featured-event-img" id="img" src="" alt="Next event">
@@ -179,7 +177,7 @@
           <p class="rights"><span>©  </span><span class="copyright-year">2019</span><span> </span><span>Library</span><span>. </span><span>All Rights Reserved.</span></p>
         </div>
         <div class="col-md-4 text-right">
-          <img class="img-fluid footer-logo" src="../assets/images/logo.png" alt="Logo image">
+          <img class="img-fluid footer-logo" src="assets/images/logo.png" alt="Logo image">
 
         </div>
         <div class="col-md-4">

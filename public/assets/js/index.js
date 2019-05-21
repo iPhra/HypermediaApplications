@@ -1,4 +1,6 @@
 let counter = 0;
+let event_id;
+let next_event;
 
 function createAuthors(authors) {
     let author_name;
@@ -26,7 +28,7 @@ function fillFavourite(book) {
       <div class="card">
         <img class="card-img-top" src="`+img+`" alt="Book cover">
         <div class="card-footer text-center">
-          <a href="`+book_link+`" class="btn btn-outline-primary btn-sm">
+          <a href="`+book_link+`" class="btn btn-outline-primary btn-sm favourites">
                       <i class="fa fa-book"></i>
                       View Book</a>
         </div>
@@ -40,7 +42,7 @@ function fillTop10(book, authors) {
     const genres = (book.book.genres).join(', ');
     const book_link = "/pages/book.html?id="+book.book_id;
 
-    return `<a href="`+book_link+`" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+    return `<a href="`+book_link+`" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center bestsellers">
                   <div class="flex-column w-75">
                     `+title+`
                     <p><small>by `+createAuthors(authors)+`</small></p>
@@ -113,7 +115,8 @@ async function appendEvent() {
     $('#email').text(" " + event.event.organiser_email);
     $('#img').attr("src", "../assets/images/events/"+event.event.imgpath);
     $('#description').text(event.event.description);
-    $("title").text(event.event.location + " - " +date);
+    next_event = event.event.location + " - " +date;
+    event_id = event.event_id;
 }
 
 function add_padding(length) {
@@ -131,23 +134,6 @@ function add_padding(length) {
 
 
 
-//change navbar styling after collapse button have been pressed
-$(document).ready(function() {
-
-    $('.collapse')
-        .on('show.bs.collapse', function() {
-        $('#searchBar').removeClass('ml-3');
-        })
-        .on('hidden.bs.collapse', function() {
-            $('#searchBar').addClass('ml-3');
-        });
-});
-
-$(async function() {
-    await appendTop10();
-    await appendFavourites();
-    await appendEvent();
-});
 
 $(function() {
     if(localStorage.getItem("token")) {
@@ -170,9 +156,38 @@ $(function() {
 });
 
 $(function() {
+    $(document).on("click", ".favourites", function() {
+        localStorage.setItem("link","../pages/favourites.html");
+        localStorage.setItem("page","<< Favourites");
+    });
+
+    $(document).on("click", ".event", function() {
+        localStorage.setItem("link","/pages/event.html?id="+event_id);
+        localStorage.setItem("page","<< Event / "+next_event);
+    });
+
+    $(document).on("click", ".bestsellers", function() {
+        localStorage.setItem("link","../pages/bestsellers.html");
+        localStorage.setItem("page","<< Bestsellers");
+    });
+
     $(document).on("click", "#logout", function(){
         localStorage.removeItem("token");
         location.reload();
     });
+
+    $('.collapse')
+        .on('show.bs.collapse', function() {
+            $('#searchBar').removeClass('ml-3');
+        })
+        .on('hidden.bs.collapse', function() {
+            $('#searchBar').addClass('ml-3');
+        });
+});
+
+$(async function() {
+    await appendTop10();
+    await appendFavourites();
+    await appendEvent();
 });
 

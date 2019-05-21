@@ -7,7 +7,7 @@ function createAuthors(authors) {
         author_link = "/pages/author.html?id="+authors[i].author_id;
         author_name = authors[i].author.name;
         author_surname = authors[i].author.surname;
-        result = result + `<a href="`+author_link+`">`+author_name+` `+author_surname+`</a>`;
+        result = result + `<a href="`+author_link+`" class="outgoing">`+author_name+` `+author_surname+`</a>`;
         if(i<authors.length-1 && authors.length>1) result= result + ', '
     }
 
@@ -28,7 +28,7 @@ function fillCart(book, authors) {
                             <img alt="book_img" class="img-fluid align-content-center" src="`+img+`">
                         </div>
                         <div class="col-md-7">
-                            <a href="`+book_link+`"><h5 class="card-title">`+title+`</h5></a>
+                            <a href="`+book_link+`" class="outgoing"><h5 class="card-title">`+title+`</h5></a>
                             <div class="card-text">by `+createAuthors(authors)+`</div>
                         </div>
                         <div class="col-md-3">
@@ -75,33 +75,56 @@ async function appendCart() {
 
 
 
-$(function() {
-    $(document).on("click", ".remove", function(){
-        const token = localStorage.getItem("token");
-        const id = $(this).attr("id");
 
-        $.ajax({
-            url: '/v2/account/cart',
-            type: 'DELETE',
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Authorization', token);
-            },
-            data: JSON.stringify({book_id: parseInt(id)}),
-            dataType: "text",
-            contentType: "application/json",
-            success: function () {
-                location.reload();
-                alert("Item removed successfully!")
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                alert("Error " + jqXHR.status +
-                      ": " + errorThrown);
-            }
-        });
-    });
+$(async function() {
+    if(localStorage.getItem("token")) {
+        $("#account-area").append('<a href="/pages/cart.html"> <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>\n' +
+            '      <a href="/pages/user-info.html"> <i class="fa fa-user" aria-hidden="true">\n' +
+            '      </i></a>' +
+            '       <a id="logout" href="#"> <span class="navbar-text text-white">' +
+            '            \Logout' +
+            '            \      </span> </a>');
+
+        await appendCart();
+    }
+    else {
+        alert("You must be logged in to access your cart!");
+        location.href = "/pages/login.html";
+    }
 });
 
 $(function() {
+    $(document).on("click", ".outgoing", function() {
+        localStorage.setItem("link",window.location.href);
+        localStorage.setItem("page","<< Cart");
+    });
+
+    $(document).on("click", "#logout", function(){
+        localStorage.removeItem("token");
+        location.reload();
+    });
+
+    $(document).on("click", "#checkout", async function(){
+        const token = localStorage.getItem("token");
+
+        $.ajax({
+            url: '/v2/account/cart/checkout',
+            type: 'POST',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', token);
+            },
+            dataType: "text",
+            success: function () {
+                location.reload();
+                alert("Items bought successfully!")
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert("Error " + jqXHR.status +
+                    ": " + errorThrown);
+            }
+        });
+    });
+
     $(document).on("click", "#empty", function(){
         const token = localStorage.getItem("token");
 
@@ -122,51 +145,28 @@ $(function() {
             }
         });
     });
-});
 
-$(function() {
-    $(document).on("click", "#checkout", async function(){
+    $(document).on("click", ".remove", function(){
         const token = localStorage.getItem("token");
+        const id = $(this).attr("id");
 
         $.ajax({
-            url: '/v2/account/cart/checkout',
-            type: 'POST',
+            url: '/v2/account/cart',
+            type: 'DELETE',
             beforeSend: function (xhr) {
                 xhr.setRequestHeader('Authorization', token);
             },
+            data: JSON.stringify({book_id: parseInt(id)}),
             dataType: "text",
+            contentType: "application/json",
             success: function () {
                 location.reload();
-                alert("Items bought successfully!")
+                alert("Item removed successfully!")
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 alert("Error " + jqXHR.status +
-                      ": " + errorThrown);
+                    ": " + errorThrown);
             }
         });
-    });
-});
-
-$(async function() {
-    if(localStorage.getItem("token")) {
-        $("#account-area").append('<a href="/pages/cart.html"> <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>\n' +
-            '      <a href="/pages/user-info.html"> <i class="fa fa-user" aria-hidden="true">\n' +
-            '      </i></a>' +
-            '       <a id="logout" href="#"> <span class="navbar-text text-white">' +
-            '            \Logout' +
-            '            \      </span> </a>');
-
-        await appendCart();
-    }
-    else {
-        alert("You must be logged in to access your cart!");
-        location.href = "/pages/login.html";
-    }
-});
-
-$(function() {
-    $(document).on("click", "#logout", function(){
-        localStorage.removeItem("token");
-        location.reload();
     });
 });

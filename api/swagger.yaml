@@ -585,22 +585,6 @@ paths:
       security:
       - Bearer: []
       x-swagger-router-controller: "Account"
-    delete:
-      tags:
-      - "Account"
-      summary: "Delete an existing acccount."
-      operationId: "accountInfoDELETE"
-      parameters: []
-      responses:
-        200:
-          description: "Account deleted."
-        400:
-          description: "Bad request."
-        401:
-          description: "Unauthorized."
-      security:
-      - Bearer: []
-      x-swagger-router-controller: "Account"
   /account/register:
     post:
       tags:

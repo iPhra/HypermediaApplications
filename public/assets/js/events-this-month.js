@@ -13,7 +13,7 @@ function fillTemplate(event) {
                         </div>
                     </div>
                     <div class="card-footer text-center">
-                        <a href="`+event_link+`" class="btn btn-outline-primary btn-sm">
+                        <a href="`+event_link+`" class="btn btn-outline-primary btn-sm outgoing">
                             <i class="fa fa-calendar"></i> View more </a>
                     </div>
                 </div>
@@ -30,9 +30,8 @@ async function appendEvents() {
     $('#event-content').append(html);
 }
 
-$(async function() {
-    await appendEvents();
-});
+
+
 
 $(function() {
     if(localStorage.getItem("token")) {
@@ -59,4 +58,13 @@ $(function() {
         localStorage.removeItem("token");
         location.reload();
     });
+
+    $(document).on("click", ".outgoing", function() {
+        localStorage.setItem("link",window.location.href);
+        localStorage.setItem("page","<< All Events");
+    });
+});
+
+$(async function() {
+    await appendEvents();
 });

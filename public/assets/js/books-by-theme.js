@@ -1,3 +1,10 @@
+let active;
+
+$.urlParam = function(name){
+    const results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+    if(results) return results[1] || 0;
+};
+
 function createAuthors(authors) {
     let author_link;
     let author_name;
@@ -7,7 +14,7 @@ function createAuthors(authors) {
         author_link = "/pages/author.html?id="+authors[i].author_id;
         author_name = authors[i].author.name;
         author_surname = authors[i].author.surname;
-        result = result + `<a href="`+author_link+`">`+author_name+` `+author_surname+`</a>`;
+        result = result + `<a href="`+author_link+`" class="outgoing">`+author_name+` `+author_surname+`</a>`;
         if(i<authors.length-1 && authors.length>1) result= result + ', '
     }
 
@@ -30,7 +37,7 @@ function fillBook(book, authors) {
               <div class="card-footer">
                 <div class="row ">
                   <div class="col padding-10px">
-                    <a href="`+book_link+`" class="btn btn-big btn-outline-primary btn-sm">
+                    <a href="`+book_link+`" class="btn btn-big btn-outline-primary btn-sm outgoing">
                       <i class="fa fa-book"></i>
                       View Book</a>
                   </div>
@@ -43,14 +50,22 @@ function fillBook(book, authors) {
             </div>`;
 }
 
-async function appendThemes() {
+async function appendThemes(current) {
     const themes = await (await fetch(`/v2/themes`)).json();
+    themes.sort();
 
     let theme;
     for(let i=0; i<themes.length; i++) {
         theme = themes[i].charAt(0).toUpperCase() + themes[i].slice(1);
-        $('.list-group').append('<a href="#" id="'+themes[i]+'"class="list-group-item list-group-item-action">'+theme+'</a>');
+        $('.list-group').append('<a href="#" id="'+themes[i]+'" class="list-group-item list-group-item-action">'+theme+'</a>');
     }
+
+    if(!current) {
+        current = themes[0];
+    }
+    active = current;
+    $("#info").text("Themes / "+active);
+    await appendBooks(active);
 }
 
 async function appendBooks(theme) {
@@ -74,18 +89,6 @@ async function appendBooks(theme) {
 
 
 
-$(async function() {
-    await appendThemes();
-    await appendBooks("All");
-});
-
-$(function() {
-    $(document).on("click", ".list-group-item", async function(){
-        $('#book-content').empty();
-        await appendBooks(this.id);
-    });
-});
-
 $(function() {
     if(localStorage.getItem("token")) {
         $("#account-area").append('<a href="/pages/cart.html"> <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>\n' +
@@ -104,13 +107,6 @@ $(function() {
             '      Register\n' +
             '      </span> </a>')
     }
-});
-
-$(function() {
-    $(document).on("click", "#logout", function(){
-        localStorage.removeItem("token");
-        location.reload();
-    });
 });
 
 $(function() {
@@ -139,4 +135,31 @@ $(function() {
             });
         }
     });
+
+    $(document).on("click", ".outgoing", function() {
+        if(window.location.href.includes("?id="))
+            localStorage.setItem("link",window.location.href);
+        else
+            localStorage.setItem("link",window.location.href+"?id="+active);
+        localStorage.setItem("page","<< Themes / "+active);
+    });
+
+    $(document).on("click", "#logout", function(){
+        localStorage.removeItem("token");
+        location.reload();
+    });
+
+    $(document).on("click", ".list-group-item", async function() {
+        active = this.id;
+        $("#info").text("Themes / "+active);
+        $('#book-content').empty();
+        await appendBooks(this.id);
+    });
 });
+
+$(async function() {
+    const id = $.urlParam("id");
+    if(id) await appendThemes(id);
+    else await appendThemes();
+});
+

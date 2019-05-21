@@ -25,10 +25,6 @@ async function appendEvent(event_id) {
 
 
 
-$(async function() {
-    const event_id = $.urlParam("id"); 
-    await appendEvent(event_id);
-});
 
 $(function() {
     if(localStorage.getItem("token")) {
@@ -51,8 +47,20 @@ $(function() {
 });
 
 $(function() {
+    $("#info").attr("href",localStorage.getItem("link")).text(localStorage.getItem("page"));
+
     $(document).on("click", "#logout", function(){
         localStorage.removeItem("token");
         location.reload();
     });
+
+    $(document).on("click", ".outgoing", function() {
+        localStorage.setItem("link",window.location.href);
+        localStorage.setItem("page","<< Events / "+$("title").text());
+    });
+});
+
+$(async function() {
+    const event_id = $.urlParam("id");
+    await appendEvent(event_id);
 });

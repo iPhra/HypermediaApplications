@@ -1,0 +1,49 @@
+.floating-price{
+    position: relative;
+}
+
+.review{
+    margin-top: 20px;
+}
+
+.fill-parent{
+    width: auto;
+}
+
+.abstract {
+    position: relative;
+    display: inline-block;
+    word-wrap: break-word;
+    overflow: hidden;
+    max-height: 16.8em; /* (Number of lines you want visible) * (line-height) */
+    line-height: 1.2em;
+    text-align:justify;
+}
+
+.checked {
+    color: orange;
+}
+
+.orientation-info {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: blue;
+}
+
+
+
+#margin-left{
+    margin-left: 30%;
+}
+
+#myTab{
+    width: 100%;
+}
+
+/* set padding on smaller screens */
+@media (min-width: 0) {
+    .tab-content, #myTab {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}

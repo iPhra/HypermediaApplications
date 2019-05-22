@@ -14,6 +14,7 @@
   <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
   <link href="../assets/css/style.css" rel="stylesheet">
+  <link href="../assets/css/books-by.css" rel="stylesheet">
 
 </head>
 
@@ -21,7 +22,7 @@
 
 
 <!-- Navigation -->
-<nav class="navbar navbar-expand-xl navbar-dark bg-dark fixed-top">
+<nav class="navbar navbar-expand-xl navbar-dark bg-dark fixed-top navcolor">
 
   <!-- Toggle button -->
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,7 +32,7 @@
   <!-- Collapsible items -->
   <div class="collapse navbar-collapse" id="navbarResponsive">
     <ul class="navbar-nav">
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="/">Home
           <span class="sr-only">(current)</span>
         </a>
@@ -45,7 +46,7 @@
           <a class="dropdown-item" href="../pages/bestsellers.html">Bestsellers</a>
           <a class="dropdown-item" href="../pages/favourites.html">Favourites</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="../pages/books-by-genre.html">By genre</a>
+          <a class="dropdown-item active" href="../pages/books-by-genre.html">By genre</a>
           <a class="dropdown-item" href="../pages/books-by-theme.html">By theme</a>
         </div>
       </li>
@@ -81,7 +82,7 @@
 </nav>
 
   <!-- Page Content -->
-  <div class="container padding-top-65px">
+  <div class="container margin-top-10">
     <div class="row">
       <div class="h2 col-md-12 text-center">Books by genre</div>
     </div>
@@ -111,7 +112,7 @@
   <!-- /.container -->
 
 <!-- Footer -->
-<footer class="py-3 bg-dark custom-footer margin-top-10">
+<footer class="py-3 bg-dark custom-footer margin-top-10 navcolor">
   <div class="container text-white">
     <div class="row">
       <div class="col-md-4">
@@ -127,7 +128,7 @@
         <p>
           <b>Contacts:</b> <br />
           Phone: +01 234 567890<br />
-          E-mail: <a href="mailto:support@mysite.com">mail@hyp-mail.com</a><br />
+          E-mail: <a class="footer-link" href="mailto:support@mysite.com">mail@hyp-mail.com</a><br />
           <br />
           <b>Hypermedia Inc.:</b><br />
           Ice Road 46<br />

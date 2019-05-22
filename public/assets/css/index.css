@@ -1,0 +1,49 @@
+.jumbotron {
+  margin-top: 15px;
+  background-image: url("../images/home-background.png");
+  background-size: cover;
+  color: white;
+  align-content: center;
+  margin-bottom: 10px;
+}
+
+@media (min-width: 576px) {
+  .jumbotron {
+    padding: 3rem 2rem;
+  }
+}
+
+.card-img-top {
+  padding: 10px;
+}
+
+.image-parent {
+  text-align: right;
+}
+
+.white-card {
+  visibility: hidden;
+}
+
+.padding-bottom-10px{
+  padding-bottom: 20px;
+}
+
+.fas {
+  margin-bottom: 10px;
+  font-size: 1em;
+}
+
+.featured-event-img {
+  padding: 0;
+}
+
+.badge-info {
+  background-color: #ffb020;
+}
+
+
+
+#bestsellers{
+  margin-top: 15px;
+}

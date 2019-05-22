@@ -20,7 +20,7 @@ function fillBook(book) {
                                         <i class="fa fa-book"></i>
                                         <div>View Book</div></a>
                                 </div>
-                                <div class="col padding-10px">
+                                <div class="col padding-10px cart-btn-col">
                                     <a id="`+book.book_id+`" href="#" class="btn btn-big btn-outline-primary btn-sm cart">
                                         <i class="fa fa-shopping-cart"></i> <div>Add to cart</div></a>
                                 </div>

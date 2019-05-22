@@ -39,3 +39,11 @@
 #myTab{
     width: 100%;
 }
+
+/* set padding on smaller screens */
+@media (min-width: 0) {
+    .tab-content, #myTab {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}

@@ -7,6 +7,12 @@
   margin-bottom: 10px;
 }
 
+@media (min-width: 576px) {
+  .jumbotron {
+    padding: 3rem 2rem;
+  }
+}
+
 .card-img-top {
   padding: 10px;
 }

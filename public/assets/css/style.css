@@ -19,8 +19,6 @@ nav .fa-shopping-cart, .fa-user {
 }
 
 
-
-
 .custom-footer{
     margin-top: 10px;
 }
@@ -73,4 +71,8 @@ nav .fa-shopping-cart, .fa-user {
     .card-deck .card {
         flex: 0 0 calc(33.33333% - 30px);
     }
+}
+
+body{
+    text-align: justify;
 }

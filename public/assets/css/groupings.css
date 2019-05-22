@@ -8,6 +8,11 @@
     border: transparent;
 }
 
+footer, .img-fluid{
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
 .card-body {
     background-color: #eceff1;
 }

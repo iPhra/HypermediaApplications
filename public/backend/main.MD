@@ -4,7 +4,7 @@
 | Member n. | Role          | First name | Last Name | Matricola | Email address   |
 | --------- | ------------- | ---------- | --------- | --------- | --------------- |
 | 1 | Team leader | Luca | Molteni | 10489796 | luca7.molteni@mail.polimi.it |
-| 2 | Member | Federico | Piccinini | ??? | federico.piccinini@mail.polimi.it |
+| 2 | Member | Federico | Piccinini | 10542302 | federico1.piccinini@mail.polimi.it |
 | 3 | Member | Francesco | Lorenzo | 10521186 | francesco.lorenzo@mail.polimi.it |
 
 
@@ -137,6 +137,9 @@ Luca Molteni
  - Frontend: designed homepage, bestsellers, favourites and contact-us pages. Designed navigation bar and implemented search functionality on front-end side. Responsible for website responsiveness.
 
 Federico Piccinini
+- Design: contributed to the design of APIs and consistency check between pages' contents and IDM diagrams.
+- Backend: definition, implemetation and testing of the assigned APIs
+- Frontend: design and implementation of several pages(books_by_X, event, author, cart, book, ordering_and_shipping) and shared elements like footers.
 
 
 ### Analysis of existing API
@@ -154,4 +157,4 @@ He had the opportunity to go in-depth with JQuery and AJAX for frontend scriptin
 
 Luca Molteni learnt to properly design and formalize using Swagger/OpenAPI notation a RESTful API. Had the opportunity to delve deeper into backend programming using Node.js runtime environment and improved his ability to exploit javascript asynchronous capability using promises. He experienced for the first time the task of web application developing without the support of a framework (e.g. Vue.js). Largely improved his knowledge about HTML and CSS and in particular faced the problems of content responsiveness with the support of Bootstrap 4. 
 
-Federico Piccinini
+Federico Piccinini learnt how to use node.js technology in order to build a full stack web application. Furthermore, he learnt to formally define and implement a suite of RESTful APIs usign Swagger2. From the frontend perspective, he learnt how to design and implement good looking and responsive web pages, using Boostrap 4 tools. Finally, despite not working heavily on the dynamic part of the website, he learnt how to use JQuery and AJAX for several purposes, like making HTTP requests and implementing dynamic page behaviour.

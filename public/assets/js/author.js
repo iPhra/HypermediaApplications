@@ -41,7 +41,6 @@ async function appendAuthor(author_id) {
     $("#author-name").text(author.name + " " + author.surname);
     $("title").text(author.name + " " + author.surname);
     $("#biography").text(author.biography);
-
 }
 
 async function appendBooks(author_id) {

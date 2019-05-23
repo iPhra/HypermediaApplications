@@ -45,7 +45,7 @@ function fillTop10(book, authors) {
     return `<a href="`+book_link+`" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center bestsellers">
                   <div class="flex-column w-75">
                     `+title+`
-                    <p id="authors"><small>by `+createAuthors(authors)+`</small></p>
+                    <p><small>by `+createAuthors(authors)+`</small></p>
                     <span class="badge badge-info badge-pill"> `+genres+`</span>
                   </div>
                   <div class="image-parent w-25">

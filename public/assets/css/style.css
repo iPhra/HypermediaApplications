@@ -44,6 +44,10 @@ nav .fa-shopping-cart, .fa-user {
     background-color: #706ad8 !important;
 }
 
+.left {
+    text-align: justify;
+}
+
 
 
 /* keep card deck responsive */
@@ -73,6 +77,5 @@ nav .fa-shopping-cart, .fa-user {
     }
 }
 
-body{
-    text-align: justify;
-}
+
+

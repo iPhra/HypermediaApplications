@@ -122,7 +122,7 @@ $(function() {
     $(document).on("click", ".outgoing", function() {
         localStorage.setItem("link",window.location.href);
         localStorage.setItem("page","<< Bestsellers");
-    })
+    });
 
     $(document).on("click", "#logout", function(){
         localStorage.removeItem("token");

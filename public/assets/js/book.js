@@ -38,7 +38,7 @@ function fillReview(review) {
     return `<div class="card review">
                       <div class="card-body">
                           <h5 class="card-title">`+review_author+`</h5>
-                          <p class="card-text">`+review_text+`</p>
+                          <p class="card-text left">`+review_text+`</p>
                       </div>
                       <div class="card-footer">
                         `+rating+`

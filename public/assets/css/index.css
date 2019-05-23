@@ -42,8 +42,10 @@
   background-color: #ffb020;
 }
 
-
-
 #bestsellers{
   margin-top: 15px;
 }
+
+.carousel-control-prev, .carousel-control-next {
+   height: 80%;
+ }

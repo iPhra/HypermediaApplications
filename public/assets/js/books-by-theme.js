@@ -27,7 +27,7 @@ function fillBook(book, authors) {
     const title = book.book.title;
 
     return `<div class="card similar-book-card">
-              <img class="card-img-top" src="`+img+`" alt="Book cover">
+              <a class="outgoing" href="`+book_link+`"><img class="card-img-top" src="`+img+`" alt="Book cover"></a>
               <div class="card-body">
                 <h5 class="card-title">`+title+`</h5>
                 <small>  by

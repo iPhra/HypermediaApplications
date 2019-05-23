@@ -9,3 +9,12 @@
 .item-list {
     margin-bottom: 15px;
 }
+
+.card-img-top {
+    padding: 5px;
+    background-color: #eceff1;
+}
+
+.card-body {
+    background-color: #eceff1;
+}

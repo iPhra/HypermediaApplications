@@ -31,7 +31,7 @@ function fillBook(book, authors) {
     const book_link = "/pages/book.html?id=" + book.book_id;
 
     return `<div class="card">
-        <img class="card-img-top" src="` + img + `" alt="Book cover">
+        <a class="outgoing" href="`+book_link+`"><img class="card-img-top" src="` + img + `" alt="Book cover"></a>
         <div class="card-body">
             <h5 class="card-title">` + title + `</h5>
             <small>  by `+createAuthors(authors)+`

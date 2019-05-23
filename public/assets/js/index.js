@@ -26,7 +26,7 @@ function fillFavourite(book) {
 
     return `<div class="col">
       <div class="card">
-        <img class="card-img-top" src="`+img+`" alt="Book cover">
+        <a href="`+book_link+`"><img class="card-img-top" src="`+img+`" alt="Book cover"></a>
         <div class="card-footer text-center">
           <a href="`+book_link+`" class="btn btn-outline-primary btn-sm favourites">
                       <i class="fa fa-book"></i>

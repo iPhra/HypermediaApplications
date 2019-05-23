@@ -9,7 +9,7 @@ function fillBook(book) {
     const book_link = "/pages/book.html?id="+book.book_id;
 
     return `<div class="card author-book-card">
-                        <img class="card-img-top" src="`+img+`" alt="Card image cap">
+                        <a class="outgoing" href="`+book_link+`"><img class="card-img-top" src="`+img+`" alt="Card image cap"></a>
                         <div class="card-body">
                             <h5 class="card-title">`+title+`</h5>
                         </div>

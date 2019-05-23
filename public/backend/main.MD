@@ -61,10 +61,12 @@ It's not been dealt with server side as we didn't find it meaningful, so if cach
 
 
 ### Data model
-Describe with an ER diagram the model used in the data layer of your web
-application. How these map to the OpenAPI data model?
+How these map to the OpenAPI data model?
 
 ![ER Diagram](Hypermedia-ERD.png)
+
+For what concerns the table top10, representing the Bestsellers of the month, we decided to fill it manually with 10 arbitrary chosen books.
+In a real implementation of the system we would fill the table with a trigger that activates every day and updates the 10 most sold books of the month thus far. 
 
 
 ## Implementation

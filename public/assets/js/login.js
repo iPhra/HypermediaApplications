@@ -43,9 +43,12 @@ $(function() {
                 location.replace("/");
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                alert("Error " + jqXHR.status +
-                    ": " + errorThrown
-                );
+                if(jqXHR.status===401)
+                    alert("Wrong credentials");
+                else
+                    alert("Error " + jqXHR.status +
+                        ": " + errorThrown
+                    );
             }
         });
     });

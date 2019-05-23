@@ -41,9 +41,12 @@ $(function() {
                 location.replace("/pages/login.html");
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                alert("Error " + jqXHR.status +
-                    ": " + errorThrown
-                );
+                if(jqXHR.status=== 409)
+                    alert("Already registered");
+                else
+                    alert("Error " + jqXHR.status +
+                        ": " + errorThrown
+                    );
             }
         });
     });

@@ -26,3 +26,17 @@ module.exports.authorsAuthorIdGET = function authorsAuthorIdGET (req, res, next)
         res.end();
       });
 };
+
+module.exports.authorsGET = function authorsGET (req, res, next) {
+    const offset = req.swagger.params['offset'].value;
+    const limit = req.swagger.params['limit'].value;
+    Authors.authorsGET(offset,limit)
+        .then(function (response) {
+            utils.writeJson(res, response);
+        })
+        .catch(function (response) {
+            res.writeHead(response.code);
+            res.end();
+        });
+};
+

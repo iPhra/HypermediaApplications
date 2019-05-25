@@ -49,3 +49,30 @@ exports.authorsAuthorIdGET = async (author_id) => {
   return author;
 };
 
+
+/**
+ * Returns a list of all the authors.
+ *
+ * offset Long Offset with regards to the current page. (optional)
+ * limit Long Items per page. (optional)
+ * returns List
+ **/
+exports.authorsGET = async (offset,limit) => {
+  //retrieve all the authors in the database
+  const authors = await database("author")
+      .select()
+      .limit(limit)
+      .offset(offset);
+
+  //format the response
+  const result = [];
+  for(let i=0; i<authors.length; i++) {
+    result[i] = {
+      "author_id" : authors[i].author_id,
+      "author" : _.pick(authors[i], ["name", "surname","imgpath"])
+    }
+  }
+
+  return result;
+};
+

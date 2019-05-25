@@ -1,0 +1,31 @@
+
+@media (min-width: 0) {
+    .author-container .card {
+        flex: 0 0 calc(50% - 30px);
+    }
+}
+@media (min-width: 576px) {
+    .author-container .card {
+        flex: 0 0 calc(33.33333% - 30px);
+    }
+}
+@media (min-width: 768px) {
+    .author-container .card {
+        flex: 0 0 calc(25% - 30px);
+    }
+}
+@media (min-width: 992px) {
+    .author-container .card {
+        flex: 0 0 calc(20% - 30px);
+    }
+}
+@media (min-width: 1200px) {
+    .author-container .card {
+        flex: 0 0 calc(20% - 30px);
+    }
+}
+
+.card {
+    width: 90%;
+    margin: 10px auto auto;
+}

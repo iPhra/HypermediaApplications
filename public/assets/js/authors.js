@@ -4,8 +4,7 @@ function fillTemplate(author) {
     const author_surname = author.author.surname;
     const author_link = "/pages/author.html?id="+author.author_id;
 
-    return `<div class="col-md-4">
-                <div class="card card-event">
+    return `<div class="card">
                     <a class="outgoing" href="`+author_link+`"><img class="card-img-top" src="`+img+`" alt="Card image cap"></a>
                     <div class="card-body">
                         <div class="card-subtitle">
@@ -16,12 +15,19 @@ function fillTemplate(author) {
                         <a href="`+author_link+`" class="btn btn-outline-primary btn-sm outgoing">
                             <i class="fa fa-calendar"></i> View more </a>
                     </div>
-                </div>
-            </div>`;
+                </div>`;
 }
 
 async function appendAuthors() {
-    const authors = await (await fetch('/v2/authors')).json();
+    let authors = await (await fetch('/v2/authors')).json();
+    authors.sort(function(a, b){
+        let nameA = a.author.surname.toLowerCase(), nameB = b.author.surname.toLowerCase();
+        if (nameA < nameB)
+            return -1;
+        if (nameA > nameB)
+            return 1;
+        return 0;
+    });
 
     let html = "";
     for(let i=0; i<authors.length; i++) {

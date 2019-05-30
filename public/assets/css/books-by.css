@@ -18,3 +18,7 @@
 .card-body {
     background-color: #eceff1;
 }
+
+.card {
+    margin-bottom: 10px !important;
+}

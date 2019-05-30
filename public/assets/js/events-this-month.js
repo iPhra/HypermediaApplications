@@ -21,7 +21,16 @@ function fillTemplate(event) {
 }
 
 async function appendEvents() {
-    const events = await (await fetch('/v2/events')).json();
+    let events = await (await fetch('/v2/events')).json();
+    events.sort( function (a,b) {
+        const date_a = new Date(a.event.date);
+        const date_b = new Date(b.event.date);
+        if ( date_a < date_b)
+            return 1;
+        else if (date_a > date_b)
+            return -1;
+        return 0;
+    } );
 
     let html = "";
     for(let i=0; i<events.length; i++) {

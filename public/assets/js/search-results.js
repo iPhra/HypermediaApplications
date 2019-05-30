@@ -57,6 +57,11 @@ async function appendResults(keyword) {
     let books = await (await fetch(`/v2/books?keyword=`+ keyword)).json();
     let authors;
 
+    if(books.length===0) {
+        $('#card-deck').append("<p>No book was found. Please try with another title.</p>");
+        return;
+    }
+
     let html = "";
     for(let i=0; i<books.length; i++) {
         authors = await retrieveAuthors(books[i].book_id);

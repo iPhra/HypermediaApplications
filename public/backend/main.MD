@@ -145,10 +145,15 @@ Federico Piccinini
 
 
 ### Analysis of existing API
+The first and basic example used to understand how the OpenAPI specification works can be found here https://www.kennethlange.com/write-beautiful-rest-documentation-with-swagger/.
+It briefly describes how the document should be structured, and then goes in detail explaining the meaning of the fields for each part: the general information, the REST services and the resources defined.
+The running example used is a simple Movie.
 
+The second and more in-depth example is the one proposed by default by Swagger Editor, and is the complete version of the pet store: https://editor.swagger.io.
+This example was used to understand mainly which HTTP requests are usually offered for the same endpoint, and how they should be defined in order to be REST compliant.  
+Our OpenAPI specification tries to include as many verbs as possible, but lacks some endpoints that should be used by admins and were deemed unnecessary.
 
-Describe here if you have found relevant APIs that have inspired the OpenAPI
-specification and why (at least two).
+Finally, for all syntactic issues we referred to the official specification itself:  https://swagger.io/specification/.
 
 ### Learning outcome 
 Being the first experience with both frontend and backend development at once, all members learned how to put into use all the good practices of software engineering, especially for what concerns integration, readability and usability. 
@@ -159,4 +164,4 @@ He had the opportunity to go in-depth with JQuery and AJAX for frontend scriptin
 
 Luca Molteni learnt to properly design and formalize using Swagger/OpenAPI notation a RESTful API. Had the opportunity to delve deeper into backend programming using Node.js runtime environment and improved his ability to exploit javascript asynchronous capability using promises. He experienced for the first time the task of web application developing without the support of a framework (e.g. Vue.js). Largely improved his knowledge about HTML and CSS and in particular faced the problems of content responsiveness with the support of Bootstrap 4. 
 
-Federico Piccinini learnt how to use node.js technology in order to build a full stack web application. Furthermore, he learnt to formally define and implement a suite of RESTful APIs usign Swagger2. From the frontend perspective, he learnt how to design and implement good looking and responsive web pages, using Boostrap 4 tools. Finally, despite not working heavily on the dynamic part of the website, he learnt how to use JQuery and AJAX for several purposes, like making HTTP requests and implementing dynamic page behaviour.
+Federico Piccinini learnt how to use Node.js technology in order to build a full stack web application. Furthermore, he learnt to formally define and implement a suite of RESTful APIs usign Swagger2. From the frontend perspective, he learnt how to design and implement good looking and responsive web pages, using Boostrap 4 tools. Finally, despite not working heavily on the dynamic part of the website, he learnt how to use JQuery and AJAX for several purposes, like making HTTP requests and implementing dynamic page behaviour.

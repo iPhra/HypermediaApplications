@@ -25,9 +25,18 @@
 ## Specification
 
 ### Web Architecture
-Describe here, with a diagram, the components of your web application and how
-they interact. Highlight which parts belong to the application layer, data layer
-or presentation layer. How did you ensure that HTML is not rendered server side?
+
+![Three tier architecture](webarc_diagram.png)
+
+The web architecture implemented is a three tier one, in which data, the business logic of the application and the presentation
+represent different actors which interact between them as shown in the previous picture.
+
+Furthermore, the Data tier represents the DBMS and the storage part, in our case a PostgreSQL database server.
+The application layer interacts both with the database and the presentation layer; in the first case it retrieve data from
+the database, while in the latter it responds to the API requests received from clients.
+Finally, the presentation layer renders the HTML page, both the static and the dynamic part, and presents it to the user.
+Notice that, it is ensured that the HTML is rendered client side (presentation tier) since the HTML pages are rendered using
+a well designed API schema.
 
 ### API
 

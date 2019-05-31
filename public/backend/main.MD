@@ -70,13 +70,23 @@ It's not been dealt with server side as we didn't find it meaningful, so if cach
 
 
 ### Data model
-How these map to the OpenAPI data model?
+Here follows a graphical representation of the design of the relational database supporting the data layer of the system. Please notice that to guarantee better clarity the scheme already implements the final table structure of the database; as a consequence all the relations, were needed, are projected on additional tables. 
 
 ![ER Diagram](Hypermedia-ERD.png)
 
 For what concerns the table top10, representing the Bestsellers of the month, we decided to fill it manually with 10 arbitrary chosen books.
 In a real implementation of the system we would fill the table with a trigger that activates every day and updates the 10 most sold books of the month thus far. 
 
+Next we present the description of the mapping between relational tables and the OpenAPI data model. 
+
+ - Book: the content between the OpenAPI model and the database table has a 1 to 1 correspondence apart from the missing book_id. Also only certain attributes are mandatory in the OenAPI model since depending on the kind or request different subsets of the book content needs to be sent.
+ - Author:
+ - Event: similarly to book, the event model find a direct correspondence in a database table with the exclusion of the id for the aforementioned reasons.
+ - Review: the same considerations made for book and author hold for this model as well.
+ - Cart: this is probably the model that has the biggest differences when compared to its database counterpart; While in the database table "cart" is mainly used to link books with the user who picked them, without carrying any additional content (since it is part of the "book" table), in the OpenAPI model for convenience reasons the cart also contains all the relevant information that we want to show about the books it contains.
+ - User: the user model presents a 1 to 1 correspondence with the relative table in the database apart from one attribute; the admin attribute contained in the table is an information that does not have to be exposed through the APIs. It allows to determine whether a user has the required permissions to perform certain actions. (Even if these functionalities are not implemented we can think of adding, deleting and updating books, authors etc.)
+ - Genre: this model  rather that mapping to the "genre" table inside the database find a direct correspondence in an enumeration defined as "genre_name".
+ - Theme: the exact same considerations also hold for this data model.
 
 ## Implementation
 ### Tools used

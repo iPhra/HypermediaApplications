@@ -1,10 +1,12 @@
 let counter = 0;
 
+//retrieve the parameter "name" in the URL
 $.urlParam = function(name){
     const results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
     return results[1] || 0;
 };
 
+//create the template allowing to have multiple authors for each book
 function createAuthors(authors) {
     let author_link;
     let author_name;
@@ -21,10 +23,12 @@ function createAuthors(authors) {
     return result;
 }
 
+//retrieve the authors of the specified book
 async function retrieveAuthors(book_id) {
     return (await fetch('/v2/books/'+book_id+'/authors')).json()
 }
 
+//fill the template for a single book
 function fillBook(book, authors) {
     const img = "../assets/images/books/" + book.book.imgpath;
     const title = book.book.title;
@@ -53,6 +57,7 @@ function fillBook(book, authors) {
     </div>`;
 }
 
+//retrieve books matching the keyword, retrieve its authors and fill the template
 async function appendResults(keyword) {
     let books = await (await fetch(`/v2/books?keyword=`+ keyword)).json();
     let authors;
@@ -73,7 +78,7 @@ async function appendResults(keyword) {
 
 
 
-
+//check if the user is logged in, if so display cart and info in the navbar, otherwise display login and registration button
 $(function() {
     if(localStorage.getItem("token")) {
         $("#account-area").append('<a href="/pages/cart.html"> <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>\n' +
@@ -95,6 +100,7 @@ $(function() {
 });
 
 $(function() {
+    //when a user adds a book the cart, send the request to the server
     $(document).on("click", ".cart", function(){
         const token = localStorage.getItem("token");
         if(!token) alert("You must be logged in to add items to the cart!");
@@ -121,11 +127,13 @@ $(function() {
         }
     });
 
+    //when the user clicks on logout, remove the jwt token from localstorage
     $(document).on("click", "#logout", function(){
         localStorage.removeItem("token");
         location.reload();
     });
 
+    //when the user leaves the page, save in local storage the variables for the orientation info of the next page
     $(document).on("click", ".outgoing", function() {
         localStorage.setItem("link",window.location.href);
         localStorage.setItem("page","<< Search Results");
@@ -133,6 +141,7 @@ $(function() {
 
 });
 
+//retrieve keyword from URL and fill page
 $(async function() {
     const keyword = $.urlParam("keyword");
     await appendResults(keyword);

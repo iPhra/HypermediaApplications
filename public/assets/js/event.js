@@ -1,8 +1,10 @@
+//retrieve the parameter "name" in the URL
 $.urlParam = function(name){
     const results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
     return results[1] || 0;
 };
 
+//retrieve and fill the template for the event
 async function appendEvent(event_id) {
     let event;
     try {
@@ -25,7 +27,7 @@ async function appendEvent(event_id) {
 
 
 
-
+//check if the user is logged in, if so display cart and info in the navbar, otherwise display login and registration button
 $(function() {
     if(localStorage.getItem("token")) {
         $("#account-area").append('<a href="/pages/cart.html"> <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>\n' +
@@ -47,19 +49,23 @@ $(function() {
 });
 
 $(function() {
+    //set the orientation info taking info from localstorage
     $("#info").attr("href",localStorage.getItem("link")).text(localStorage.getItem("page"));
 
+    //when the user clicks on logout, remove the jwt token from localstorage
     $(document).on("click", "#logout", function(){
         localStorage.removeItem("token");
         location.reload();
     });
 
+    //when the user leaves the page, save in local storage the variables for the orientation info of the next page
     $(document).on("click", ".outgoing", function() {
         localStorage.setItem("link",window.location.href);
         localStorage.setItem("page","<< Events / "+$("title").text());
     });
 });
 
+//retrieve the event id from URL and fill the page
 $(async function() {
     const event_id = $.urlParam("id");
     await appendEvent(event_id);

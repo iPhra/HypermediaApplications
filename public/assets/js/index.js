@@ -1,7 +1,7 @@
-let counter = 0;
-let event_id;
+let event_id; //id of the next event
 let next_event;
 
+//create the template allowing to have multiple authors for each book
 function createAuthors(authors) {
     let author_name;
     let author_surname;
@@ -16,10 +16,12 @@ function createAuthors(authors) {
     return result;
 }
 
+//retrieve the authors of the specified book
 async function retrieveAuthors(book_id) {
     return (await fetch('/v2/books/'+book_id+'/authors')).json()
 }
 
+//fill the template of a single book in the favourite ones
 function fillFavourite(book) {
     const img = "../assets/images/books/"+book.book.imgpath;
     const book_link = "/pages/book.html?id="+book.book_id;
@@ -36,6 +38,7 @@ function fillFavourite(book) {
     </div>`;
 }
 
+//fill the template of a single book in the top10 ones
 function fillTop10(book, authors) {
     const img = "../assets/images/books/"+book.book.imgpath;
     const title = book.book.title;
@@ -54,6 +57,7 @@ function fillTop10(book, authors) {
                 </a>`;
 }
 
+//retrieve the bestsellers and fill the template for each of them
 async function appendTop10() {
     let books = await (await fetch(`/v2/books/top10`)).json();
     let authors;
@@ -66,6 +70,7 @@ async function appendTop10() {
     $('#top10-content').append(html);
 }
 
+//retrieve the favourites and fill the template for each of them
 async function appendFavourites() {
     let books = await( await fetch(`/v2/books/favourites`)).json();
 
@@ -94,6 +99,7 @@ async function appendFavourites() {
     $('#carousel').append(html);
 }
 
+//find the next event (the one closest to today) and fill the template
 async function appendEvent() {
     const events = await (await fetch('/v2/events')).json();
     const today = new Date();
@@ -134,7 +140,7 @@ function add_padding(length) {
 
 
 
-
+//check if the user is logged in, if so display cart and info in the navbar, otherwise display login and registration button
 $(function() {
     if(localStorage.getItem("token")) {
         $("#account-area").append('<a href="/pages/cart.html"> <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>\n' +
@@ -156,21 +162,25 @@ $(function() {
 });
 
 $(function() {
+    //when the user leaves the page through favourites, save in local storage the variables for the orientation info of the next page
     $(document).on("click", ".favourites", function() {
         localStorage.setItem("link","../pages/favourites.html");
         localStorage.setItem("page","<< Favourites");
     });
 
+    //when the user leaves the page through events, save in local storage the variables for the orientation info of the next page
     $(document).on("click", ".event", function() {
         localStorage.setItem("link","/pages/event.html?id="+event_id);
         localStorage.setItem("page","<< Event / "+next_event);
     });
 
+    //when the user leaves the page through bestsellers, save in local storage the variables for the orientation info of the next page
     $(document).on("click", ".bestsellers", function() {
         localStorage.setItem("link","../pages/bestsellers.html");
         localStorage.setItem("page","<< Bestsellers");
     });
 
+    //when the user clicks on logout, remove the jwt token from localstorage
     $(document).on("click", "#logout", function(){
         localStorage.removeItem("token");
         location.reload();
@@ -185,6 +195,7 @@ $(function() {
         });
 });
 
+//fill the page
 $(async function() {
     await appendTop10();
     await appendFavourites();

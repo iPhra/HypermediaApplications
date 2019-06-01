@@ -207,6 +207,7 @@ top10Setup = (database) => {
     })
 };
 
+//create the schema of each table, if not present already
 function setupDatabase() {
     console.log("Setting up the database");
     accountSetup(sqlDb);

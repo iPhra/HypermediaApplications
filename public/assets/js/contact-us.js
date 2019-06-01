@@ -1,3 +1,4 @@
+//check if the user is logged in, if so display cart and info in the navbar, otherwise display login and registration button
 $(function() {
     if(localStorage.getItem("token")) {
         $("#account-area").append('<a href="/pages/cart.html"> <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>\n' +
@@ -19,6 +20,7 @@ $(function() {
 });
 
 $(function() {
+    //when the user clicks on logout, remove the jwt token from localstorage
     $(document).on("click", "#logout", function(){
         localStorage.removeItem("token");
         location.reload();

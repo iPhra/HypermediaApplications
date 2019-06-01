@@ -1,10 +1,12 @@
-let active;
+let active; //this is the theme selected at the moment
 
+//retrieve the parameter "name" in the URL
 $.urlParam = function(name){
     const results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
     if(results) return results[1] || 0;
 };
 
+//create the template allowing to have multiple authors for each book
 function createAuthors(authors) {
     let author_link;
     let author_name;
@@ -21,6 +23,7 @@ function createAuthors(authors) {
     return result;
 }
 
+//fill the template for a single book
 function fillBook(book, authors) {
     const img = "../assets/images/books/"+book.book.imgpath;
     const book_link = "/pages/book.html?id="+book.book_id;
@@ -50,6 +53,7 @@ function fillBook(book, authors) {
             </div>`;
 }
 
+//retrieve all the available themes and fill the orientation info with the current one
 async function appendThemes(current) {
     const themes = await (await fetch(`/v2/themes`)).json();
     themes.sort();
@@ -68,6 +72,7 @@ async function appendThemes(current) {
     await appendBooks(active);
 }
 
+//retrieve the books of the given theme and fill the template for each of them
 async function appendBooks(theme) {
     let books;
     if (theme==="All") {
@@ -88,7 +93,7 @@ async function appendBooks(theme) {
 
 
 
-
+//check if the user is logged in, if so display cart and info in the navbar, otherwise display login and registration button
 $(function() {
     if(localStorage.getItem("token")) {
         $("#account-area").append('<a href="/pages/cart.html"> <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>\n' +
@@ -110,6 +115,7 @@ $(function() {
 });
 
 $(function() {
+    //when a user adds a book the cart, send the request to the server
     $(document).on("click", ".cart", function(){
         const token = localStorage.getItem("token");
         if(!token) alert("You must be logged in to add items to the cart!");
@@ -136,6 +142,7 @@ $(function() {
         }
     });
 
+    //when the user leaves the page, save in local storage the variables for the orientation info of the next page (also the current theme selected)
     $(document).on("click", ".outgoing", function() {
         if(window.location.href.includes("?id="))
             localStorage.setItem("link",window.location.href);
@@ -144,11 +151,13 @@ $(function() {
         localStorage.setItem("page","<< Themes / "+active);
     });
 
+    //when the user clicks on logout, remove the jwt token from localstorage
     $(document).on("click", "#logout", function(){
         localStorage.removeItem("token");
         location.reload();
     });
 
+    //when the user clicks on a theme, make it active and change the books displayed
     $(document).on("click", ".list-group-item", async function() {
         active = this.id;
         $("#info").text("Themes / "+active);
@@ -157,6 +166,7 @@ $(function() {
     });
 });
 
+//retrieve the theme id (if present) and fill the page
 $(async function() {
     const id = $.urlParam("id");
     if(id) await appendThemes(id);

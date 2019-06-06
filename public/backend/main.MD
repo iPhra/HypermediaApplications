@@ -32,7 +32,7 @@ The web architecture implemented is a three tier one, in which data, the busines
 represent different actors which interact between them as shown in the previous picture.
 
 Furthermore, the Data tier represents the DBMS and the storage part, in our case a PostgreSQL database server.
-The application layer interacts both with the database and the presentation layer; in the first case it retrieve data from
+The application layer interacts both with the database and the presentation layer; in the first case it retrieves data from
 the database, while in the latter it responds to the API requests received from clients.
 Finally, the presentation layer renders the HTML page, both the static and the dynamic part, and presents it to the user.
 Notice that, it is ensured that the HTML is rendered client side (presentation tier) since the HTML pages are rendered using
@@ -68,6 +68,8 @@ It's not been dealt with server side as we didn't find it meaningful, so if cach
 - Genre: enumeration of all possible genres.
 - Theme: enumeration of all possible themes.
 
+Please note that the fields "author_id", "event_id" and "book_id" are not included in the schemas because not all endpoints use them, while some have them as required. For the latter, the id field is specified in the endpoint itself.
+
 
 ### Data model
 Here follows a graphical representation of the design of the relational database supporting the data layer of the system. Please notice that to guarantee better clarity the scheme already implements the final table structure of the database; as a consequence all the relations, were needed, are projected on additional tables. 
@@ -87,6 +89,8 @@ Next we present the description of the mapping between relational tables and the
  - User: the user model presents a 1 to 1 correspondence with the relative table in the database apart from one attribute; the admin attribute contained in the table is an information that does not have to be exposed through the APIs. It allows to determine whether a user has the required permissions to perform certain actions. (Even if these functionalities are not implemented we can think of adding, deleting and updating books, authors etc.)
  - Genre: this model  rather that mapping to the "genre" table inside the database find a direct correspondence in an enumeration defined as "genre_name".
  - Theme: the exact same considerations also hold for this data model.
+ 
+ Please note that the database is deployed on Heroku and was filled manually, since there was no need to keep a local PostgreSQL database to fill and then synchronise every time.
 
 ## Implementation
 ### Tools used

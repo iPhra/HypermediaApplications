@@ -1,8 +1,10 @@
+//retrieve the parameter "name" in the URL
 $.urlParam = function(name){
     const results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
     return results[1] || 0;
 };
 
+//create the template allowing to have multiple authors for each book
 function createAuthors(authors) {
     let author_link;
     let author_name;
@@ -19,20 +21,22 @@ function createAuthors(authors) {
     return result;
 }
 
+//retrieve the authors of the specified book
 async function retrieveAuthors(book_id) {
     return (await fetch('/v2/books/'+book_id+'/authors')).json()
 }
 
+//fill the template for a single review of the book
 function fillReview(review) {
     const review_author = review.user_name;
     const review_text = review.text;
 
     let rating = "";
     for(let i=0; i<review.rating; i++) {
-        rating = rating + `<span class=\"fa fa-star checked\"></span>`;
+        rating = rating + `<span class=\"fa fa-star checked\"></span>`; //fill the stars of the rating
     }
     for(let i=0; i<5-review.rating; i++) {
-        rating = rating + `<span class="fa fa-star"></span>`;
+        rating = rating + `<span class="fa fa-star"></span>`; //add the empty stars
     }
 
     return `<div class="card review">
@@ -46,6 +50,7 @@ function fillReview(review) {
                   </div>`;
 }
 
+//fill the template for a single book similar to the given one
 function fillSimilar(book, authors) {
     const img = "../assets/images/books/"+book.imgpath;
     const book_link = "/pages/book.html?id="+book.book_id;
@@ -75,6 +80,7 @@ function fillSimilar(book, authors) {
             </div>`;
 }
 
+//fill the template for a single event of the book
 function fillEvent(event) {
     const img = "../assets/images/events/"+event.event.imgpath;
     const event_location = event.event.location;
@@ -95,6 +101,7 @@ function fillEvent(event) {
                 </div>`;
 }
 
+//retrieve all the reviews and fill the template for each one
 async function appendReviews(book_id) {
     const reviews =  await (await fetch('/v2/books/'+book_id+'/reviews')).json();
 
@@ -105,6 +112,7 @@ async function appendReviews(book_id) {
     $('#review-content').prepend(html);
 }
 
+//retrieve all the similar books and fill the template for each one
 async function appendSimilars(book_id) {
     const similars = await (await fetch('/v2/books/'+book_id+'/similars')).json();
 
@@ -117,6 +125,7 @@ async function appendSimilars(book_id) {
     $('#similar-content').prepend(html);
 }
 
+//retrieve all the events and fill the template for each one
 async function appendEvents(book_id) {
     const events = await (await fetch('/v2/books/'+book_id+'/events')).json();
 
@@ -127,6 +136,7 @@ async function appendEvents(book_id) {
     $('#event-content').prepend(html);
 }
 
+//fill the template for the book
 async function appendBook(book_id) {
     let book;
     try {
@@ -178,7 +188,7 @@ async function appendBook(book_id) {
 
 
 
-
+//check if the user is logged in, if so display cart and info in the navbar, otherwise display login and registration button
 $(function() {
     if(localStorage.getItem("token")) {
         $("#account-area").append('<a href="/pages/cart.html"> <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>\n' +
@@ -200,13 +210,16 @@ $(function() {
 });
 
 $(function() {
+    //set the orientation info taking info from localstorage
     $("#info").attr("href",localStorage.getItem("link")).text(localStorage.getItem("page"));
 
+    //when the user leaves the page, save in local storage the variables for the orientation info of the next page
     $(document).on("click", ".outgoing", function() {
         localStorage.setItem("link",window.location.href);
         localStorage.setItem("page","<< Books / "+$("title").text());
-    })
+    });
 
+    //when a user adds a book the cart, send the request to the server
     $(document).on("click", ".cart", function(){
         const token = localStorage.getItem("token");
         if(!token) alert("You must be logged in to add items to the cart!");
@@ -233,11 +246,13 @@ $(function() {
         }
     });
 
+    //when the user clicks on logout, remove the jwt token from localstorage
     $(document).on("click", "#logout", function(){
         localStorage.removeItem("token");
         location.reload();
     });
 
+    //when the user clicks on read more, bring him to the full abstract
     $(document).on("click", "#read-more", function() {
         $("#book-tab-content").addClass('active').addClass('show').siblings().removeClass('active').removeClass('show');
         $("#book-tab").addClass('active').addClass('show').parent().siblings().children().removeClass('active').removeClass('show');
@@ -245,7 +260,7 @@ $(function() {
     });
 
     $(window).scroll(function(){
-        // Avoid scrolling if the screen size is too small. Maintain responsiveness
+        //avoid scrolling if the screen size is too small. Maintain responsiveness
         if (screen.width >= 768) {
             const newPos = $(document).scrollTop();
             $('.floating-price').css({top: newPos});
@@ -253,6 +268,7 @@ $(function() {
     })
 });
 
+//retrieve the book id from URL and fill the page
 $(async function() {
     const book_id = $.urlParam("id");
     await appendBook(book_id);

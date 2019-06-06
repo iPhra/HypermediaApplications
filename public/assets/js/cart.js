@@ -1,3 +1,4 @@
+//create the template allowing to have multiple authors for each book
 function createAuthors(authors) {
     let author_link;
     let author_name;
@@ -14,6 +15,7 @@ function createAuthors(authors) {
     return result;
 }
 
+//fill the template for a single book
 function fillCart(book, authors) {
     const img = "../assets/images/books/"+book.imgpath;
     const title = book.title;
@@ -46,6 +48,7 @@ function fillCart(book, authors) {
                 <hr>`;
 }
 
+//retrieve the full cart and fill the template for each book retrieved
 async function appendCart() {
     const token = localStorage.getItem("token");
 
@@ -75,7 +78,7 @@ async function appendCart() {
 
 
 
-
+//check if the user is logged in, if so allow access to page, otherwise redirect to login
 $(async function() {
     if(localStorage.getItem("token")) {
         $("#account-area").append('<a href="/pages/cart.html"> <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>\n' +
@@ -94,16 +97,20 @@ $(async function() {
 });
 
 $(function() {
+    //when the user leaves the page, save in local storage the variables for the orientation info of the next page
     $(document).on("click", ".outgoing", function() {
         localStorage.setItem("link",window.location.href);
         localStorage.setItem("page","<< Cart");
     });
 
+    //when the user clicks on logout, remove the jwt token from localstorage and redirect to homepage
     $(document).on("click", "#logout", function(){
         localStorage.removeItem("token");
-        location.reload();
+        alert("Logout successful");
+        location.replace("/");
     });
 
+    //when the user clicks on checkout, send a request to the server to buy everything and empty the cart
     $(document).on("click", "#checkout", async function(){
         const token = localStorage.getItem("token");
 
@@ -125,6 +132,7 @@ $(function() {
         });
     });
 
+    //when the user clicks on empty, send a user to the server to empty the cart
     $(document).on("click", "#empty", function(){
         const token = localStorage.getItem("token");
 
@@ -146,6 +154,7 @@ $(function() {
         });
     });
 
+    //when the user clicks on remove, send a request to the server to remove the book from the cart
     $(document).on("click", ".remove", function(){
         const token = localStorage.getItem("token");
         const id = $(this).attr("id");

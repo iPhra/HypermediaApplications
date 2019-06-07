@@ -48,6 +48,11 @@ nav .fa-shopping-cart, .fa-user {
     text-align: justify;
 }
 
+.align-all {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 
 /* keep card deck responsive */

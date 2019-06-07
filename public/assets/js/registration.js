@@ -1,3 +1,4 @@
+//check if the user is logged in, if so display cart and info in the navbar, otherwise display login and registration button
 $(function() {
     if(localStorage.getItem("token")) {
         $("#account-area").append('<a href="/pages/cart.html"> <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>\n' +
@@ -19,11 +20,13 @@ $(function() {
 });
 
 $(function() {
+    //when the user clicks on logout, remove the jwt token from localstorage
     $(document).on("click", "#logout", function(){
         localStorage.removeItem("token");
         location.reload();
     });
 
+    //when the user clicks on registration, retrieve the credentials and send a request to the server
     $("#submit-form").click(function(){
         const form = $("#registration-form").serializeArray().reduce(function(obj, item) {
             obj[item.name] = item.value;
@@ -51,6 +54,7 @@ $(function() {
         });
     });
 
+    //check if password and confirm password are the same, otherwise show red error message
     $('#password, #confirm_password').on('keyup', function () {
         if ($('#password').val() === $('#confirm_password').val()) {
             $('#message').html('Matching').css('color', 'green');

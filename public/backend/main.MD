@@ -10,11 +10,11 @@
 
  - Deliverable D0: the web application is accessible at [this address](https://polimi-hyp-2019-team-10489796.herokuapp.com).
  - Deliverable D2: the YAML or JSON file containing the specification of the app
-  API can be found at [this address](https://example.com/backend/spec.yaml).
+  API can be found at [this address](https://polimi-hyp-2019-team-10489796.herokuapp.com/backend/spec.yaml).
  - Deliverable D3: the SwaggerUI page of the same API is available at
-  [this address](https://example.com/backend/swaggerui).
+  [this address](https://polimi-hyp-2019-team-10489796.herokuapp.com/backend/swaggerui).
  - Deliverable D4: the source code of D0 is available as a zip file at
-  [this address](https://example.com/backend/app.zip).
+  [this address](https://polimi-hyp-2019-team-10489796.herokuapp.com/backend/app.zip).
  - Deliverable D5: the address of the online source control repository is
   available [this address](https://github.com/Molteh/LorenzoMolteniPiccinini). We hereby declare that this
   is a private repository and, upon request, we will give access to the
@@ -32,7 +32,7 @@ The web architecture implemented is a three tier one, in which data, the busines
 represent different actors which interact between them as shown in the previous picture.
 
 Furthermore, the Data tier represents the DBMS and the storage part, in our case a PostgreSQL database server.
-The application layer interacts both with the database and the presentation layer; in the first case it retrieve data from
+The application layer interacts both with the database and the presentation layer; in the first case it retrieves data from
 the database, while in the latter it responds to the API requests received from clients.
 Finally, the presentation layer renders the HTML page, both the static and the dynamic part, and presents it to the user.
 Notice that, it is ensured that the HTML is rendered client side (presentation tier) since the HTML pages are rendered using
@@ -68,15 +68,29 @@ It's not been dealt with server side as we didn't find it meaningful, so if cach
 - Genre: enumeration of all possible genres.
 - Theme: enumeration of all possible themes.
 
+Please note that the fields "author_id", "event_id" and "book_id" are not included in the schemas because not all endpoints use them, while some have them as required. For the latter, the id field is specified in the endpoint itself.
+
 
 ### Data model
-How these map to the OpenAPI data model?
+Here follows a graphical representation of the design of the relational database supporting the data layer of the system. Please notice that to guarantee better clarity the scheme already implements the final table structure of the database; as a consequence all the relations, were needed, are projected on additional tables. 
 
 ![ER Diagram](Hypermedia-ERD.png)
 
 For what concerns the table top10, representing the Bestsellers of the month, we decided to fill it manually with 10 arbitrary chosen books.
 In a real implementation of the system we would fill the table with a trigger that activates every day and updates the 10 most sold books of the month thus far. 
 
+Next we present the description of the mapping between relational tables and the OpenAPI data model. 
+
+ - Book: the content between the OpenAPI model and the database table has a 1 to 1 correspondence apart from the missing book_id. Also only certain attributes are mandatory in the OenAPI model since depending on the kind or request different subsets of the book content needs to be sent.
+ - Author:
+ - Event: similarly to book, the event model find a direct correspondence in a database table with the exclusion of the id for the aforementioned reasons.
+ - Review: the same considerations made for book and author hold for this model as well.
+ - Cart: this is probably the model that has the biggest differences when compared to its database counterpart; While in the database table "cart" is mainly used to link books with the user who picked them, without carrying any additional content (since it is part of the "book" table), in the OpenAPI model for convenience reasons the cart also contains all the relevant information that we want to show about the books it contains.
+ - User: the user model presents a 1 to 1 correspondence with the relative table in the database apart from one attribute; the admin attribute contained in the table is an information that does not have to be exposed through the APIs. It allows to determine whether a user has the required permissions to perform certain actions. (Even if these functionalities are not implemented we can think of adding, deleting and updating books, authors etc.)
+ - Genre: this model  rather that mapping to the "genre" table inside the database find a direct correspondence in an enumeration defined as "genre_name".
+ - Theme: the exact same considerations also hold for this data model.
+ 
+ Please note that the database is deployed on Heroku and was filled manually, since there was no need to keep a local PostgreSQL database to fill and then synchronise every time.
 
 ## Implementation
 ### Tools used

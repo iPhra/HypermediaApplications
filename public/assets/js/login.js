@@ -1,3 +1,4 @@
+//check if the user is logged in, if so display cart and info in the navbar, otherwise display login and registration button
 $(function() {
     if(localStorage.getItem("token")) {
         $("#account-area").append('<a href="/pages/cart.html"> <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>\n' +
@@ -19,12 +20,16 @@ $(function() {
 });
 
 $(function() {
+    //when the user clicks on logout, remove the jwt token from localstorage
     $(document).on("click", "#logout", function(){
         localStorage.removeItem("token");
         location.reload();
     });
 
+    //when the user clicks on login, retrieve the credentials and send a request to the server
     $("#submit-form").click(function(){
+
+        //create json object from the form data
         const form = $("#content").serializeArray().reduce(function(obj, item) {
             obj[item.name] = item.value;
             return obj;
@@ -37,8 +42,8 @@ $(function() {
             type: "POST",
             dataType: "json",
             success: function(res) {
-                const token = JSON.stringify(res.token);
-                localStorage.setItem("token", token.substring(1,token.length-1));
+                const token = JSON.stringify(res.token); //retrieve token from response
+                localStorage.setItem("token", token.substring(1,token.length-1)); //save the token in the localstorage
                 alert('Login successful');
                 location.replace("/");
             },

@@ -1,3 +1,4 @@
+//fill the template for a single author
 function fillTemplate(author) {
     const img = "../assets/images/authors/"+author.author.imgpath;
     const author_name = author.author.name;
@@ -18,6 +19,7 @@ function fillTemplate(author) {
                 </div>`;
 }
 
+//retrieve all the authors, sort them and fill the template
 async function appendAuthors() {
     let authors = await (await fetch('/v2/authors')).json();
     authors.sort(function(a, b){
@@ -38,7 +40,7 @@ async function appendAuthors() {
 
 
 
-
+//check if the user is logged in, if so display cart and info in the navbar, otherwise display login and registration button
 $(function() {
     if(localStorage.getItem("token")) {
         $("#account-area").append('<a href="/pages/cart.html"> <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>\n' +
@@ -60,17 +62,20 @@ $(function() {
 });
 
 $(function() {
+    //when the user clicks on logout, remove the jwt token from localstorage
     $(document).on("click", "#logout", function(){
         localStorage.removeItem("token");
         location.reload();
     });
 
+    //when the user leaves the page, save in local storage the variables for the orientation info of the next page
     $(document).on("click", ".outgoing", function() {
         localStorage.setItem("link",window.location.href);
         localStorage.setItem("page","<< All Authors");
     });
 });
 
+//fill the page
 $(async function() {
     await appendAuthors();
 });

@@ -55,8 +55,10 @@ exports.accountCartCheckoutPOST = async (token) => {
  * no response value expected for this operation
  **/
 exports.accountCartEmptyPOST = async (token) => {
+  //check if the user is logged in, if so retrieve his user_id
   const user_id = await checkToken(token);
 
+  //empty the cart
   await database("cart").where({
     "user_id" : user_id
   }).del();
@@ -70,8 +72,10 @@ exports.accountCartEmptyPOST = async (token) => {
  * no response value expected for this operation
  **/
 exports.accountCartDELETE = async (item, token) => {
+  //check if the user is logged in, if so retrieve his user_id
   const user_id = await checkToken(token);
 
+  //remove the item
   await database("cart").where({
     "user_id" : user_id,
     "book_id" : item.book_id

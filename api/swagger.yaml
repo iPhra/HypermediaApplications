@@ -748,6 +748,8 @@ definitions:
         type: "string"
       surname:
         type: "string"
+      biography:
+        type: "string"
       imgpath:
         type: "string"
     example:

@@ -833,11 +833,11 @@ definitions:
       surname:
         type: "string"
     example:
-      password: "password"
-      user_id: 0
-      surname: "surname"
-      name: "name"
-      email: "email"
+      password: "paolo"
+      user_id: 21
+      surname: "cognome"
+      name: "nome"
+      email: "paolo"
   Genre:
     type: "string"
     enum:
@@ -909,6 +909,9 @@ definitions:
         type: "string"
       password:
         type: "string"
+    example:
+      email: "paolo"
+      password: "paolo"
   inline_response_200_4:
     properties:
       token:

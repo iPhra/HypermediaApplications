@@ -136,6 +136,7 @@ paths:
         required: true
         type: "integer"
         format: "int64"
+
       responses:
         200:
           description: "The full description of the retrieved book."
@@ -728,6 +729,7 @@ definitions:
       themes:
       - {}
       - {}
+      - {}
       num_of_pages: 6
       imgpath: "imgpath"
       genres:
@@ -835,10 +837,10 @@ definitions:
       surname:
         type: "string"
     example:
-      password: "paolo"
-      surname: "cognome"
-      name: "nome"
-      email: "paolo"
+      password: "test"
+      surname: "test"
+      name: "test"
+      email: "test"
   Genre:
     type: "string"
     enum:
@@ -886,6 +888,7 @@ definitions:
       book_id:
         type: "integer"
         format: "int64"
+        example: 1
   item:
     type: "object"
     required:
@@ -911,8 +914,8 @@ definitions:
       password:
         type: "string"
     example:
-      email: "paolo"
-      password: "paolo"
+      email: "test"
+      password: "test"
   inline_response_200_4:
     properties:
       token:

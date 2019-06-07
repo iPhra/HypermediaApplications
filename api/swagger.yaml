@@ -614,8 +614,6 @@ paths:
         required: false
         schema:
           $ref: "#/definitions/User"
-        example:
-          - user_id: 21
       responses:
         200:
           description: "Account updated."

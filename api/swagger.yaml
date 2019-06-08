@@ -12,7 +12,7 @@ tags:
 - name: "Authors"
 - name: "Account"
 - name: "Cart"
-- name: "Event"
+- name: "Events"
 schemes:
 - "https"
 paths:
@@ -897,6 +897,7 @@ definitions:
       book_id:
         type: "integer"
         format: "int64"
+        example: 1
   inline_response_200_3:
     properties:
       user_id:

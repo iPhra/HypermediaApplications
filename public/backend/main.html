@@ -82,7 +82,7 @@
 <img src="Hypermedia-ERD.png" alt="ER Diagram" style="max-width:700px; max-height:700px;" /><p class="caption">ER Diagram</p>
 </div>
 <p>For what concerns the table top10, representing the Bestsellers of the month, we decided to fill it manually with 10 arbitrary chosen books. In a real implementation of the system we would fill the table with a trigger that activates every day and updates the 10 most sold books of the month thus far.</p>
-<p>For what concerns the table purchases, it was included in the first design of the database before receiving further specifications of what pages to implement. Since there's no order history page, the table is not used to provide data to the client, but it's still updated at every checkout.</p>
+<p>For what concerns the table purchase, it was included in the first design of the database before receiving further specifications of what pages to implement. Since there's no order history page, the table is not used to provide data to the client, but it's still updated at every checkout.</p>
 <p>Next we present the description of the mapping between relational tables and the OpenAPI data model.</p>
 <ul>
 <li>Book: the content between the OpenAPI model and the database table has a 1 to 1 correspondence apart from the missing book_id. Also only certain attributes are mandatory in the OenAPI model since depending on the kind or request different subsets of the book content needs to be sent.</li>

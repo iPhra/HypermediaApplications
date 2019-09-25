@@ -29,6 +29,6 @@ The project has been developed with the following technologies:
 | Francesco | Lorenzo  | francesco.lorenzo@mail.polimi.it |
 
 ## Documentation
-- [Backend](link_na)
+- [Backend](https://github.com/Molteh/LorenzoMolteniPiccinini/blob/master/public/backend/main.MD)
 
 More documents to be added.. 

@@ -30,5 +30,5 @@ The project has been developed with the following technologies:
 
 ## Documentation
 - [Backend](https://github.com/Molteh/LorenzoMolteniPiccinini/blob/master/public/backend/main.MD)
-
-More documents to be added.. 
+- [Design](https://github.com/Molteh/LorenzoMolteniPiccinini/blob/master/documentation/LorenzoMolteniPiccinini-20June2019-design.pdf)
+- [Usability](https://github.com/Molteh/LorenzoMolteniPiccinini/blob/master/documentation/LorenzoMolteniPiccinini-20June2019-usability.pdf)

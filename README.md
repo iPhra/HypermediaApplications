@@ -11,7 +11,7 @@ Repository of the project developed for the "Hypermedia Applications" course, pa
 
 This course aims at providing students with the knowledge and skills needed to design and to implement complex, high quality web based hypermedia applications for stationary and mobile devices.
 
-This repository refers to the 2019 edition of the course, which main topic is an online library.
+This repository refers to the 2019 edition of the course, whose main topic is an online library.
 
 ## Website
 [Lambrooklyn Inc.](https://polimi-hyp-2019-team-10489796.herokuapp.com/)
@@ -26,7 +26,7 @@ The project has been developed with the following technologies:
 | ---------- | --------- | --------------- |
 | Luca | Molteni | luca7.molteni@mail.polimi.it |
 | Federico | Piccinini | federico1.piccinini@mail.polimi.it |
-| Francesco | Lorenzo  | francesco.lorenzo@mail.polimi.it |
+| Francesco | Lorenzo  | francesco1.lorenzo@mail.polimi.it |
 
 ## Documentation
 - [Backend](https://github.com/Molteh/LorenzoMolteniPiccinini/blob/master/public/backend/main.MD)

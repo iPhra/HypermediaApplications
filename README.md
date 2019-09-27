@@ -17,9 +17,9 @@ This repository refers to the 2019 edition of the course, whose main topic is an
 [Lambrooklyn Inc.](https://polimi-hyp-2019-team-10489796.herokuapp.com/)
 
 The project has been developed with the following technologies:
-- Backend: node.js
+- Backend: Node.js
 - Database: PostgreSQL
-- Frontend: HTML5, CSS3, jQuery
+- Frontend: HTML5, CSS3, jQuery, Bootstrap
 
 ## Group
 | First name | Last Name | Email address   |
